@@ -26,12 +26,12 @@ export type ProductConfig = {
  * Change this file first when adapting the repository into a real product.
  */
 export const productConfig: ProductConfig = {
-  mode: 'saas',
+  mode: 'tool',
   brand: {
-    name: 'Starter Product',
-    mark: 'SP',
+    name: 'FN Sprite Hub',
+    mark: 'FN',
     description:
-      'A focused product starter with typed routes, shared UI, and repository-wide verification.',
+      'Browse and filter Fortnite Sprites by name, rarity, collection status, and ability.',
   },
   starter: {
     showPreviewBanner: true,

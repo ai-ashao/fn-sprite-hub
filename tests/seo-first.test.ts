@@ -84,7 +84,7 @@ describe('Tool SEO Brief contract', () => {
     expect(
       validateSeoFirstState({
         config,
-        brief: null,
+        brief: readyBrief,
         guideSlugs: ['build-with-the-skill', 'real-product-guide'],
       }),
     ).toContain(
@@ -94,7 +94,7 @@ describe('Tool SEO Brief contract', () => {
     expect(
       validateSeoFirstState({
         config,
-        brief: null,
+        brief: readyBrief,
         guideSlugs: ['real-product-guide'],
       }),
     ).toEqual([])

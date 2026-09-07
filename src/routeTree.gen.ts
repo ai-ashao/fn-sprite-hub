@@ -12,9 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -25,7 +22,6 @@ import { Route as ApiHealthRouteImport } from './routes/api.health'
 import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as ZhIndexRouteImport } from './routes/zh.index'
-import { Route as ApiSandboxSessionRouteImport } from './routes/api.sandbox.session'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,21 +36,6 @@ const AboutRoute = AboutRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -107,19 +88,11 @@ const ZhIndexRoute = ZhIndexRouteImport.update({
   path: '/zh/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSandboxSessionRoute = ApiSandboxSessionRouteImport.update({
-  id: '/api/sandbox/session',
-  path: '/api/sandbox/session',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/pricing': typeof PricingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -130,15 +103,11 @@ export interface FileRoutesByFullPath {
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides/': typeof GuidesIndexRoute
   '/zh/': typeof ZhIndexRoute
-  '/api/sandbox/session': typeof ApiSandboxSessionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/pricing': typeof PricingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -149,16 +118,12 @@ export interface FileRoutesByTo {
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides': typeof GuidesIndexRoute
   '/zh': typeof ZhIndexRoute
-  '/api/sandbox/session': typeof ApiSandboxSessionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/pricing': typeof PricingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -169,7 +134,6 @@ export interface FileRoutesById {
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides/': typeof GuidesIndexRoute
   '/zh/': typeof ZhIndexRoute
-  '/api/sandbox/session': typeof ApiSandboxSessionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -177,9 +141,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
-    | '/dashboard'
-    | '/login'
-    | '/pricing'
     | '/privacy-policy'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -190,15 +151,11 @@ export interface FileRouteTypes {
     | '/guides/$slug'
     | '/guides/'
     | '/zh/'
-    | '/api/sandbox/session'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
-    | '/dashboard'
-    | '/login'
-    | '/pricing'
     | '/privacy-policy'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -209,15 +166,11 @@ export interface FileRouteTypes {
     | '/guides/$slug'
     | '/guides'
     | '/zh'
-    | '/api/sandbox/session'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
-    | '/dashboard'
-    | '/login'
-    | '/pricing'
     | '/privacy-policy'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -228,16 +181,12 @@ export interface FileRouteTypes {
     | '/guides/$slug'
     | '/guides/'
     | '/zh/'
-    | '/api/sandbox/session'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  DashboardRoute: typeof DashboardRoute
-  LoginRoute: typeof LoginRoute
-  PricingRoute: typeof PricingRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -248,7 +197,6 @@ export interface RootRouteChildren {
   GuidesSlugRoute: typeof GuidesSlugRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
   ZhIndexRoute: typeof ZhIndexRoute
-  ApiSandboxSessionRoute: typeof ApiSandboxSessionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -272,27 +220,6 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -365,13 +292,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZhIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/sandbox/session': {
-      id: '/api/sandbox/session'
-      path: '/api/sandbox/session'
-      fullPath: '/api/sandbox/session'
-      preLoaderRoute: typeof ApiSandboxSessionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -379,9 +299,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  DashboardRoute: DashboardRoute,
-  LoginRoute: LoginRoute,
-  PricingRoute: PricingRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -392,7 +309,6 @@ const rootRouteChildren: RootRouteChildren = {
   GuidesSlugRoute: GuidesSlugRoute,
   GuidesIndexRoute: GuidesIndexRoute,
   ZhIndexRoute: ZhIndexRoute,
-  ApiSandboxSessionRoute: ApiSandboxSessionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -3,13 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { createGtagQueue } from '../src/components/privacy-controls'
 import { disabledEmailAdapter } from '../src/lib/adapters/email'
 import { disabledStorageAdapter } from '../src/lib/adapters/storage'
-import {
-  expiredSandboxSessionCookie,
-  hasSandboxSession,
-  sandboxSessionCookie,
-} from '../src/lib/auth/sandbox-session'
 import { parsePublicEnv } from '../src/lib/config/env'
-import { isSandboxEnabled } from '../src/lib/config/runtime'
 import { FixedWindowRateLimiter } from '../src/lib/security/rate-limit'
 import { moduleManifests } from '../src/modules/manifests'
 
@@ -22,26 +16,6 @@ describe('platform contracts', () => {
     expect(() =>
       parsePublicEnv({ VITE_SITE_URL: 'https://example.com', VITE_GA4_ID: 'invalid' }),
     ).toThrow(/VITE_GA4_ID/)
-  })
-
-  it('keeps sandbox routes disabled in production unless explicitly enabled', () => {
-    expect(isSandboxEnabled({ development: true, flag: 'false' })).toBe(true)
-    expect(isSandboxEnabled({ development: false, flag: 'false' })).toBe(false)
-    expect(isSandboxEnabled({ development: false, flag: 'true' })).toBe(true)
-  })
-
-  it('recognizes only the explicit HttpOnly sandbox session cookie value', () => {
-    const cookie = sandboxSessionCookie()
-    const request = new Request('http://local.test', {
-      headers: { cookie: cookie.split(';')[0] || '' },
-    })
-    expect(cookie).toContain('HttpOnly')
-    expect(cookie).toContain('SameSite=Lax')
-    expect(hasSandboxSession(request)).toBe(true)
-    expect(hasSandboxSession(new Request('http://local.test'))).toBe(false)
-    expect(sandboxSessionCookie({ secure: true })).toContain('; Secure')
-    expect(expiredSandboxSessionCookie()).toContain('Max-Age=0')
-    expect(expiredSandboxSessionCookie({ secure: true })).toContain('; Secure')
   })
 
   it('queues native gtag arguments instead of a rest-parameter array', () => {

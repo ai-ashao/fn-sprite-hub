@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Jonesy",
+    "rarity": "Rare",
+    "ability": "Recover health or shields after taking damage.",
+    "owned": 3,
+    "total": 4,
+    "status": "owned",
+    "tone": "moss",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Jonesy_L.webp"
+  },
+  {
+    "name": "Adventure",
+    "rarity": "Rare",
+    "ability": "Upgrade a random item with each level up.",
+    "owned": 2,
+    "total": 4,
+    "status": "missing",
+    "tone": "moss",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Dwarf_L.webp"
+  },
+  {
+    "name": "Bush",
+    "rarity": "Rare",
+    "ability": "Gain a bush after a duration; improves with levels.",
+    "owned": 4,
+    "total": 4,
+    "status": "mastered",
+    "tone": "moss",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_BushRanger_L.webp"
+  },
+  {
+    "name": "Sonic",
+    "rarity": "Epic",
+    "ability": "Sprint faster with each level up.",
+    "owned": 3,
+    "total": 4,
+    "status": "owned",
+    "tone": "sky",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Obsidian_L.webp"
+  },
+  {
+    "name": "Tails",
+    "rarity": "Epic",
+    "ability": "Hover in the air with improved speed.",
+    "owned": 2,
+    "total": 4,
+    "status": "missing",
+    "tone": "ember",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Monkey_L.webp"
+  },
+  {
+    "name": "Shadow",
+    "rarity": "Epic",
+    "ability": "Automatically reload unequipped weapons.",
+    "owned": 1,
+    "total": 4,
+    "status": "missing",
+    "tone": "star",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Scribe_L.webp"
+  },
+  {
+    "name": "8-Bit",
+    "rarity": "Rare",
+    "ability": "Find an 8-Bit Shotgun and gain a score multiplier.",
+    "owned": 4,
+    "total": 4,
+    "status": "mastered",
+    "tone": "ember",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_EightBitBlaster_L.webp"
+  },
+  {
+    "name": "Jackrabbit",
+    "rarity": "Legendary",
+    "ability": "Double jump with a shorter cooldown at higher levels.",
+    "owned": 2,
+    "total": 4,
+    "status": "missing",
+    "tone": "moss",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_JazzJackrabbit_L.webp"
+  },
+  {
+    "name": "Crown",
+    "rarity": "Mythic",
+    "ability": "Levels up through wins and Crown Wins.",
+    "owned": 4,
+    "total": 4,
+    "status": "mastered",
+    "tone": "ember",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Crown_L.webp"
+  },
+  {
+    "name": "Killswitch",
+    "rarity": "Legendary",
+    "ability": "Enter Hangtime with improved accuracy.",
+    "owned": 2,
+    "total": 4,
+    "status": "missing",
+    "tone": "moss",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Killswitch_L.webp"
+  },
+  {
+    "name": "Klombo",
+    "rarity": "Mythic",
+    "ability": "Gain random items at each level.",
+    "owned": 4,
+    "total": 4,
+    "status": "mastered",
+    "tone": "star",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Klombo_L.webp"
+  },
+  {
+    "name": "Mega Man",
+    "rarity": "Rare",
+    "ability": "Slide farther with reduced friction.",
+    "owned": 3,
+    "total": 4,
+    "status": "owned",
+    "tone": "sky",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ImprovedSlide_L.webp"
+  },
+  {
+    "name": "Overshield",
+    "rarity": "Rare",
+    "ability": "Grants Overshield that scales with level.",
+    "owned": 2,
+    "total": 4,
+    "status": "missing",
+    "tone": "sky",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Overshield_L.webp"
+  },
+  {
+    "name": "X-Ray",
+    "rarity": "Legendary",
+    "ability": "Periodically marks nearby enemies.",
+    "owned": 1,
+    "total": 4,
+    "status": "missing",
+    "tone": "ember",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_WinnerB_L.webp"
+  },
+  {
+    "name": "Onigiri",
+    "rarity": "Rare",
+    "ability": "A Design-A-Sprite winner added mid-season.",
+    "owned": 3,
+    "total": 4,
+    "status": "owned",
+    "tone": "moss",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_WinnerC_L.webp"
+  },
+  {
+    "name": "Storm Scout",
+    "rarity": "Rare",
+    "ability": "Storm utility and future-circle awareness.",
+    "owned": 1,
+    "total": 4,
+    "status": "missing",
+    "tone": "star",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_StormScout_L.webp"
+  }
+]

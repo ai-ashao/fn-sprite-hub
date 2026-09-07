@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { isSandboxEnabled } from '@/lib/config/runtime'
+import { site } from '@/lib/site'
 
 export const Route = createFileRoute('/api/health')({
   server: {
@@ -7,9 +7,8 @@ export const Route = createFileRoute('/api/health')({
       GET: () =>
         Response.json({
           ok: true,
-          product: 'shiplean',
+          product: site.name,
           runtime: 'tanstack-start',
-          sandbox: isSandboxEnabled(),
         }),
     },
   },

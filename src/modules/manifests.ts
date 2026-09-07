@@ -1,5 +1,5 @@
 export type ModuleManifest = {
-  id: 'auth' | 'email' | 'storage'
+  id: 'email' | 'storage'
   version: string
   optional: boolean
   env: string[]
@@ -12,19 +12,6 @@ export type ModuleManifest = {
 }
 
 export const moduleManifests: ModuleManifest[] = [
-  {
-    id: 'auth',
-    version: '0.1.0',
-    optional: false,
-    env: [],
-    tables: [],
-    routes: ['/login', '/dashboard', '/api/sandbox/session'],
-    securityBoundary:
-      'The local demo uses an explicit HttpOnly session and never implies production auth.',
-    dependsOn: [],
-    disable: 'Keep public routes and replace the demo session before removing protected routes.',
-    acceptance: ['anonymous session request is rejected', 'local login sets an HttpOnly cookie'],
-  },
   {
     id: 'email',
     version: '0.1.0',

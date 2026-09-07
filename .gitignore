@@ -1,6 +1,7 @@
 node_modules/
 .output/
 dist/
+test-results/
 .wrangler/
 .gstack/
 research/
