@@ -1,162 +1,114 @@
 [
   {
     "name": "Jonesy",
-    "rarity": "Rare",
-    "ability": "Recover health or shields after taking damage.",
-    "owned": 3,
-    "total": 4,
-    "status": "owned",
-    "tone": "moss",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Jonesy_L.webp"
+    "slug": "jonesy",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Jonesy_L.webp",
+    "output": "/images/sprites/jonesy.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Adventure",
-    "rarity": "Rare",
-    "ability": "Upgrade a random item with each level up.",
-    "owned": 2,
-    "total": 4,
-    "status": "missing",
-    "tone": "moss",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Dwarf_L.webp"
+    "slug": "adventure",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Dwarf_L.webp",
+    "output": "/images/sprites/adventure.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Bush",
-    "rarity": "Rare",
-    "ability": "Gain a bush after a duration; improves with levels.",
-    "owned": 4,
-    "total": 4,
-    "status": "mastered",
-    "tone": "moss",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_BushRanger_L.webp"
+    "slug": "bush",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_BushRanger_L.webp",
+    "output": "/images/sprites/bush.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Sonic",
-    "rarity": "Epic",
-    "ability": "Sprint faster with each level up.",
-    "owned": 3,
-    "total": 4,
-    "status": "owned",
-    "tone": "sky",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Obsidian_L.webp"
+    "slug": "sonic",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Obsidian_L.webp",
+    "output": "/images/sprites/sonic.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Tails",
-    "rarity": "Epic",
-    "ability": "Hover in the air with improved speed.",
-    "owned": 2,
-    "total": 4,
-    "status": "missing",
-    "tone": "ember",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Monkey_L.webp"
+    "slug": "tails",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Monkey_L.webp",
+    "output": "/images/sprites/tails.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Shadow",
-    "rarity": "Epic",
-    "ability": "Automatically reload unequipped weapons.",
-    "owned": 1,
-    "total": 4,
-    "status": "missing",
-    "tone": "star",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Scribe_L.webp"
+    "slug": "shadow",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_NarrowFlea_Scribe_L.webp",
+    "output": "/images/sprites/shadow.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "8-Bit",
-    "rarity": "Rare",
-    "ability": "Find an 8-Bit Shotgun and gain a score multiplier.",
-    "owned": 4,
-    "total": 4,
-    "status": "mastered",
-    "tone": "ember",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_EightBitBlaster_L.webp"
+    "slug": "8-bit",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_EightBitBlaster_L.webp",
+    "output": "/images/sprites/8-bit.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Jackrabbit",
-    "rarity": "Legendary",
-    "ability": "Double jump with a shorter cooldown at higher levels.",
-    "owned": 2,
-    "total": 4,
-    "status": "missing",
-    "tone": "moss",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_JazzJackrabbit_L.webp"
+    "slug": "jackrabbit",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_JazzJackrabbit_L.webp",
+    "output": "/images/sprites/jackrabbit.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Crown",
-    "rarity": "Mythic",
-    "ability": "Levels up through wins and Crown Wins.",
-    "owned": 4,
-    "total": 4,
-    "status": "mastered",
-    "tone": "ember",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Crown_L.webp"
+    "slug": "crown",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Crown_L.webp",
+    "output": "/images/sprites/crown.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Killswitch",
-    "rarity": "Legendary",
-    "ability": "Enter Hangtime with improved accuracy.",
-    "owned": 2,
-    "total": 4,
-    "status": "missing",
-    "tone": "moss",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Killswitch_L.webp"
+    "slug": "killswitch",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Killswitch_L.webp",
+    "output": "/images/sprites/killswitch.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Klombo",
-    "rarity": "Mythic",
-    "ability": "Gain random items at each level.",
-    "owned": 4,
-    "total": 4,
-    "status": "mastered",
-    "tone": "star",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Klombo_L.webp"
+    "slug": "klombo",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Klombo_L.webp",
+    "output": "/images/sprites/klombo.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Mega Man",
-    "rarity": "Rare",
-    "ability": "Slide farther with reduced friction.",
-    "owned": 3,
-    "total": 4,
-    "status": "owned",
-    "tone": "sky",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ImprovedSlide_L.webp"
+    "slug": "mega-man",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ImprovedSlide_L.webp",
+    "output": "/images/sprites/mega-man.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Overshield",
-    "rarity": "Rare",
-    "ability": "Grants Overshield that scales with level.",
-    "owned": 2,
-    "total": 4,
-    "status": "missing",
-    "tone": "sky",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Overshield_L.webp"
+    "slug": "overshield",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_Overshield_L.webp",
+    "output": "/images/sprites/overshield.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "X-Ray",
-    "rarity": "Legendary",
-    "ability": "Periodically marks nearby enemies.",
-    "owned": 1,
-    "total": 4,
-    "status": "missing",
-    "tone": "ember",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_WinnerB_L.webp"
+    "slug": "x-ray",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_WinnerB_L.webp",
+    "output": "/images/sprites/x-ray.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Onigiri",
-    "rarity": "Rare",
-    "ability": "A Design-A-Sprite winner added mid-season.",
-    "owned": 3,
-    "total": 4,
-    "status": "owned",
-    "tone": "moss",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_WinnerC_L.webp"
+    "slug": "onigiri",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_WinnerC_L.webp",
+    "output": "/images/sprites/onigiri.webp",
+    "use": "prototype/test asset source; review before monetized production"
   },
   {
     "name": "Storm Scout",
-    "rarity": "Rare",
-    "ability": "Storm utility and future-circle awareness.",
-    "owned": 1,
-    "total": 4,
-    "status": "missing",
-    "tone": "star",
-    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_StormScout_L.webp"
+    "slug": "storm-scout",
+    "url": "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_StormScout_L.webp",
+    "output": "/images/sprites/storm-scout.webp",
+    "use": "prototype/test asset source; review before monetized production"
   }
 ]

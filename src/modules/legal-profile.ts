@@ -17,6 +17,7 @@ const analytics = publicEnv.ga4Id
 export const legalProfile = defineLegalProfile({
   templateVersion: legalTemplateVersion,
   templateKind: 'free-local-tool',
+  // Keep this as starter until the operator performs the actual legal review.
   reviewStatus: 'starter',
   productName: site.name,
   operatorName,
@@ -24,8 +25,8 @@ export const legalProfile = defineLegalProfile({
   contactEmail: defaultSupportEmailForSite(site.url, {
     fallbackSiteUrl: starterFallbackSiteUrl,
   }),
-  effectiveDate: '2026-09-03',
-  lastUpdated: '2026-09-03',
+  effectiveDate: '2026-09-07',
+  lastUpdated: '2026-09-07',
   governingLaw: 'the laws applicable where the product operator is established',
   features: {
     analytics,
@@ -62,7 +63,10 @@ export const legalProfile = defineLegalProfile({
           ]
         : []),
     ],
-    browserStorage: ['An analytics consent preference stored in local browser storage.'],
+    browserStorage: [
+      'FN Sprite Hub collection state stored in local browser storage under fn-sprite-hub:collection:v1. This collection is not uploaded to an FN Sprite Hub account or database.',
+      'An analytics consent preference stored in local browser storage when analytics is enabled.',
+    ],
     serviceProviders: [
       {
         name: 'Cloudflare',

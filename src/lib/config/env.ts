@@ -27,4 +27,26 @@ export function parsePublicEnv(source: Record<string, string | undefined>): Publ
   }
 }
 
+export function validateProductionSiteUrl(siteUrl: string): string[] {
+  const issues: string[] = []
+  const url = new URL(siteUrl)
+
+  if (url.protocol !== 'https:') issues.push('Production site URL must use HTTPS.')
+  if (['localhost', '127.0.0.1'].includes(url.hostname)) {
+    issues.push('Production site URL must not use localhost.')
+  }
+  if (['shiplean.dev', 'starter.invalid'].includes(url.hostname)) {
+    issues.push(`Production site URL must not use starter host: ${url.hostname}`)
+  }
+
+  return issues
+}
+
 export const publicEnv = parsePublicEnv(import.meta.env)
+
+if (import.meta.env.PROD) {
+  const issues = validateProductionSiteUrl(publicEnv.siteUrl)
+  if (issues.length > 0) {
+    throw new Error(`Invalid FN Sprite Hub production site URL: ${issues.join(' ')}`)
+  }
+}

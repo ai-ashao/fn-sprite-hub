@@ -1,19 +1,30 @@
-# Pancake-language migration plan
+# FN Sprite Hub implementation plan
 
-> [!NOTE]
-> This is a completed visual-migration record, not the rolling product source of truth. Current boundaries and evidence live in `README.md`, `ARCHITECTURE.md`, and `docs/mvp-acceptance.md`.
+The implementation source of truth is `docs/FN-SPRITE-HUB-V1.3.md`.
 
-## Completed scope
+## Implemented in this V1 bundle
 
-1. Map the reference sidebar, utility bar, sandbox banner, KPI cards, overview panels, and responsive collapse to ShipLean product roles.
-2. Replace the shared application shell with compact desktop and mobile navigation surfaces.
-3. Rebuild the English and Chinese marketing home around repository status and workflow panels.
-4. Apply the same visual system to pricing, guides, login inheritance, and the protected starter dashboard.
-5. Preserve local sandbox auth and all existing route, SEO, and Cloudflare-first behavior.
-6. Verify formatting, tests, build, strict types, fresh-server E2E, and live responsive behavior.
+- Phase 0: product identity, canonical site config, worker identity, English-only SEO registry, starter homepage replacement.
+- Phase 1: `SpriteFamily` + `SpriteEntry` current-season data foundation.
+- Phase 2: browser-local collection engine with migration-safe normalization.
+- Phase 3/4: Soft Fantasy tracker homepage, filters, entry state, progress, drawer and mobile layout.
+- Phase 5: nine SEO owner pages plus gated dynamic Sprite detail route.
+- Dynamic sitemap with `lastmod`.
 
-## Explicit exclusions
+## Deferred by design
 
-- No payment, order, entitlement, credit, database, or production auth implementation.
-- No copied reference assets, brand names, dashboard data, feedback widget, or scripts.
-- No framework or deployment-target expansion.
+- Matrix
+- Export image
+- Discord copy
+- Backup/restore UI
+- Encoded share URL
+- Past seasons
+- PT-BR / ES / DE / FR
+- Ads / CMP
+- Backend persistence
+
+## Release blockers intentionally not auto-resolved
+
+- Production asset/IP review
+- Legal profile human review
+- AdSense/CMP implementation if ads are enabled

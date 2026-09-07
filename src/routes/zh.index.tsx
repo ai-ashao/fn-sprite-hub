@@ -1,11 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { ProductHome, productHomeHead } from '@/components/product-home'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/zh/')({
-  head: () => productHomeHead('zh-CN'),
-  component: ChineseHome,
+  beforeLoad: () => {
+    throw redirect({ to: '/', replace: true })
+  },
+  head: () => ({
+    meta: [{ name: 'robots', content: 'noindex,nofollow' }],
+  }),
+  component: () => null,
 })
-
-function ChineseHome() {
-  return <ProductHome locale="zh-CN" />
-}

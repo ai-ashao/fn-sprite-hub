@@ -1,5 +1,29 @@
 import { createMiddleware, createStart } from '@tanstack/react-start'
 
+const canonicalPath = createMiddleware({ type: 'request' }).server(async ({ next, request }) => {
+  const url = new URL(request.url)
+  const pathname = url.pathname
+  const lastSegment = pathname.split('/').filter(Boolean).at(-1) || ''
+  const looksLikeFile = lastSegment.includes('.')
+  const isApi = pathname.startsWith('/api/')
+
+  if (
+    ['GET', 'HEAD'].includes(request.method) &&
+    pathname.length > 1 &&
+    pathname.endsWith('/') &&
+    !looksLikeFile &&
+    !isApi
+  ) {
+    url.pathname = pathname.replace(/\/+$/, '')
+    return new Response(null, {
+      status: 308,
+      headers: { location: url.toString() },
+    })
+  }
+
+  return next()
+})
+
 const securityHeaders = createMiddleware({ type: 'request' }).server(async ({ next }) => {
   const result = await next()
   const headers = new Headers(result.response.headers)
@@ -33,5 +57,5 @@ const securityHeaders = createMiddleware({ type: 'request' }).server(async ({ ne
 })
 
 export const startInstance = createStart(() => ({
-  requestMiddleware: [securityHeaders],
+  requestMiddleware: [canonicalPath, securityHeaders],
 }))

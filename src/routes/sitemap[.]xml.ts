@@ -1,13 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { sitemapPaths } from '@/i18n/routes'
+import { sitemapEntries } from '@/i18n/routes'
 import { absoluteUrl } from '@/lib/site'
 
 export const Route = createFileRoute('/sitemap.xml')({
   server: {
     handlers: {
       GET: () => {
-        const paths = sitemapPaths()
-        const urls = paths.map((path) => `<url><loc>${absoluteUrl(path)}</loc></url>`).join('')
+        const urls = sitemapEntries()
+          .map((entry) => {
+            const lastmod = entry.lastModified
+              ? `<lastmod>${escapeXml(entry.lastModified)}</lastmod>`
+              : ''
+            return `<url><loc>${escapeXml(absoluteUrl(entry.path))}</loc>${lastmod}</url>`
+          })
+          .join('')
+
         return new Response(
           `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`,
           { headers: { 'content-type': 'application/xml; charset=utf-8' } },
@@ -16,3 +23,12 @@ export const Route = createFileRoute('/sitemap.xml')({
     },
   },
 })
+
+function escapeXml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+}

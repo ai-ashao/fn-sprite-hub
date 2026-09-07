@@ -234,12 +234,13 @@ try {
   const activeMode = detectProductMode(home.text)
   assertSeoHead(home.text, { url: `${baseUrl}/`, indexable: true })
   assert(home.text.includes('application/ld+json'), 'Home JSON-LD is missing.')
-  assert(/hrefLang="en"/i.test(home.text), 'English hreflang is missing.')
-  assert(/hrefLang="zh-CN"/i.test(home.text), 'Chinese hreflang is missing.')
-  assert(/hrefLang="x-default"/i.test(home.text), 'Home x-default hreflang is missing.')
   assert(
-    /data-locale-switch[^>]+href="\/zh"/i.test(home.text),
-    'Home locale switch must target the equivalent Chinese route.',
+    !/rel="alternate"[^>]+hrefLang=/i.test(home.text),
+    'English-only Phase A must not publish false hreflang alternates.',
+  )
+  assert(
+    !home.text.includes('data-locale-switch'),
+    'English-only Phase A must not offer a false locale switch.',
   )
   assert(
     home.response.headers.get('x-content-type-options') === 'nosniff',
@@ -250,18 +251,11 @@ try {
     'CSP is missing.',
   )
 
-  const zh = await request('/zh')
-  assert(zh.text.includes('<html lang="zh-CN">'), 'Chinese route must set the document language.')
+  const zh = await request('/zh', { redirect: 'manual' })
   assert(
-    detectProductMode(zh.text) === activeMode,
-    'Localized home routes must use the same active product mode.',
-  )
-  assert(/hrefLang="en"/i.test(zh.text), 'English reciprocal hreflang is missing.')
-  assert(/hrefLang="zh-CN"/i.test(zh.text), 'Chinese hreflang is missing.')
-  assert(/hrefLang="x-default"/i.test(zh.text), 'x-default hreflang is missing.')
-  assert(
-    /data-locale-switch[^>]+href="\/"/i.test(zh.text),
-    'Chinese locale switch must target the equivalent English route.',
+    [301, 302, 307, 308].includes(zh.response.status) &&
+      new URL(zh.response.headers.get('location'), baseUrl).pathname === '/',
+    'Unreleased Chinese home must redirect to the English owner page.',
   )
 
   const pricing = await request('/pricing', { redirect: 'manual' })

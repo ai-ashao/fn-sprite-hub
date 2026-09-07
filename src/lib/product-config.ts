@@ -11,30 +11,19 @@ export type ProductConfig = {
   starter: {
     showPreviewBanner: boolean
   }
-  /**
-   * Optional surface overrides.
-   *
-   * SaaS defaults Pricing + App on; Tool defaults them off.
-   * Guides default off for both modes so ShipLean starter guidance never becomes
-   * indexable product content by accident.
-   */
   surfaces?: Partial<Record<ProductSurface, boolean>>
 }
 
-/**
- * ShipLean's runtime is a product template, not the ShipLean marketing website.
- * Change this file first when adapting the repository into a real product.
- */
 export const productConfig: ProductConfig = {
   mode: 'tool',
   brand: {
     name: 'FN Sprite Hub',
     mark: 'FN',
     description:
-      'Browse and filter Fortnite Sprites by name, rarity, collection status, and ability.',
+      'Free Fortnite Sprite Tracker and checklist for current Sprites, variants, rarity, locations and collection progress.',
   },
   starter: {
-    showPreviewBanner: true,
+    showPreviewBanner: false,
   },
 }
 
@@ -62,7 +51,6 @@ export function validateProductConfig(config: ProductConfig): ReadonlyArray<stri
   return issues
 }
 
-export function surfaceModeForPath(pathname: string): ProductMode {
-  if (pathname.startsWith('/tool-reference')) return 'tool'
+export function surfaceModeForPath(_pathname: string): ProductMode {
   return productConfig.mode
 }

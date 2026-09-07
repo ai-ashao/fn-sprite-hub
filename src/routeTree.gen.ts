@@ -11,16 +11,25 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ChecklistRouteImport } from './routes/checklist'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as LocationsRouteImport } from './routes/locations'
+import { Route as NewSpritesRouteImport } from './routes/new-sprites'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as RarestSpritesRouteImport } from './routes/rarest-sprites'
+import { Route as RarityRouteImport } from './routes/rarity'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as ToolReferenceRouteImport } from './routes/tool-reference'
 import { Route as ToolReferenceUploadRouteImport } from './routes/tool-reference-upload'
+import { Route as VariantsRouteImport } from './routes/variants'
 import { Route as ApiHealthRouteImport } from './routes/api.health'
 import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
+import { Route as GuidesHowToMasterSpritesRouteImport } from './routes/guides.how-to-master-sprites'
+import { Route as SpritesIndexRouteImport } from './routes/sprites.index'
+import { Route as SpritesSlugRouteImport } from './routes/sprites.$slug'
 import { Route as ZhIndexRouteImport } from './routes/zh.index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -33,14 +42,39 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChecklistRoute = ChecklistRouteImport.update({
+  id: '/checklist',
+  path: '/checklist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsRoute = LocationsRouteImport.update({
+  id: '/locations',
+  path: '/locations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewSpritesRoute = NewSpritesRouteImport.update({
+  id: '/new-sprites',
+  path: '/new-sprites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RarestSpritesRoute = RarestSpritesRouteImport.update({
+  id: '/rarest-sprites',
+  path: '/rarest-sprites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RarityRoute = RarityRouteImport.update({
+  id: '/rarity',
+  path: '/rarity',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -68,6 +102,11 @@ const ToolReferenceUploadRoute = ToolReferenceUploadRouteImport.update({
   path: '/tool-reference-upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VariantsRoute = VariantsRouteImport.update({
+  id: '/variants',
+  path: '/variants',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiHealthRoute = ApiHealthRouteImport.update({
   id: '/api/health',
   path: '/api/health',
@@ -83,6 +122,22 @@ const GuidesSlugRoute = GuidesSlugRouteImport.update({
   path: '/guides/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuidesHowToMasterSpritesRoute =
+  GuidesHowToMasterSpritesRouteImport.update({
+    id: '/guides/how-to-master-sprites',
+    path: '/guides/how-to-master-sprites',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SpritesIndexRoute = SpritesIndexRouteImport.update({
+  id: '/sprites/',
+  path: '/sprites/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpritesSlugRoute = SpritesSlugRouteImport.update({
+  id: '/sprites/$slug',
+  path: '/sprites/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZhIndexRoute = ZhIndexRouteImport.update({
   id: '/zh/',
   path: '/zh/',
@@ -92,47 +147,74 @@ const ZhIndexRoute = ZhIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/checklist': typeof ChecklistRoute
   '/contact': typeof ContactRoute
+  '/locations': typeof LocationsRoute
+  '/new-sprites': typeof NewSpritesRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/rarest-sprites': typeof RarestSpritesRoute
+  '/rarity': typeof RarityRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/tool-reference': typeof ToolReferenceRoute
   '/tool-reference-upload': typeof ToolReferenceUploadRoute
+  '/variants': typeof VariantsRoute
   '/api/health': typeof ApiHealthRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/guides/how-to-master-sprites': typeof GuidesHowToMasterSpritesRoute
+  '/sprites/$slug': typeof SpritesSlugRoute
   '/guides/': typeof GuidesIndexRoute
+  '/sprites/': typeof SpritesIndexRoute
   '/zh/': typeof ZhIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/checklist': typeof ChecklistRoute
   '/contact': typeof ContactRoute
+  '/locations': typeof LocationsRoute
+  '/new-sprites': typeof NewSpritesRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/rarest-sprites': typeof RarestSpritesRoute
+  '/rarity': typeof RarityRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/tool-reference': typeof ToolReferenceRoute
   '/tool-reference-upload': typeof ToolReferenceUploadRoute
+  '/variants': typeof VariantsRoute
   '/api/health': typeof ApiHealthRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/guides/how-to-master-sprites': typeof GuidesHowToMasterSpritesRoute
+  '/sprites/$slug': typeof SpritesSlugRoute
   '/guides': typeof GuidesIndexRoute
+  '/sprites': typeof SpritesIndexRoute
   '/zh': typeof ZhIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/checklist': typeof ChecklistRoute
   '/contact': typeof ContactRoute
+  '/locations': typeof LocationsRoute
+  '/new-sprites': typeof NewSpritesRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/rarest-sprites': typeof RarestSpritesRoute
+  '/rarity': typeof RarityRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/tool-reference': typeof ToolReferenceRoute
   '/tool-reference-upload': typeof ToolReferenceUploadRoute
+  '/variants': typeof VariantsRoute
   '/api/health': typeof ApiHealthRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/guides/how-to-master-sprites': typeof GuidesHowToMasterSpritesRoute
+  '/sprites/$slug': typeof SpritesSlugRoute
   '/guides/': typeof GuidesIndexRoute
+  '/sprites/': typeof SpritesIndexRoute
   '/zh/': typeof ZhIndexRoute
 }
 export interface FileRouteTypes {
@@ -140,62 +222,98 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/checklist'
     | '/contact'
+    | '/locations'
+    | '/new-sprites'
     | '/privacy-policy'
+    | '/rarest-sprites'
+    | '/rarity'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/tool-reference'
     | '/tool-reference-upload'
+    | '/variants'
     | '/api/health'
     | '/guides/$slug'
+    | '/guides/how-to-master-sprites'
+    | '/sprites/$slug'
     | '/guides/'
+    | '/sprites/'
     | '/zh/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/checklist'
     | '/contact'
+    | '/locations'
+    | '/new-sprites'
     | '/privacy-policy'
+    | '/rarest-sprites'
+    | '/rarity'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/tool-reference'
     | '/tool-reference-upload'
+    | '/variants'
     | '/api/health'
     | '/guides/$slug'
+    | '/guides/how-to-master-sprites'
+    | '/sprites/$slug'
     | '/guides'
+    | '/sprites'
     | '/zh'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/checklist'
     | '/contact'
+    | '/locations'
+    | '/new-sprites'
     | '/privacy-policy'
+    | '/rarest-sprites'
+    | '/rarity'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/tool-reference'
     | '/tool-reference-upload'
+    | '/variants'
     | '/api/health'
     | '/guides/$slug'
+    | '/guides/how-to-master-sprites'
+    | '/sprites/$slug'
     | '/guides/'
+    | '/sprites/'
     | '/zh/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ChecklistRoute: typeof ChecklistRoute
   ContactRoute: typeof ContactRoute
+  LocationsRoute: typeof LocationsRoute
+  NewSpritesRoute: typeof NewSpritesRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  RarestSpritesRoute: typeof RarestSpritesRoute
+  RarityRoute: typeof RarityRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   ToolReferenceRoute: typeof ToolReferenceRoute
   ToolReferenceUploadRoute: typeof ToolReferenceUploadRoute
+  VariantsRoute: typeof VariantsRoute
   ApiHealthRoute: typeof ApiHealthRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
+  GuidesHowToMasterSpritesRoute: typeof GuidesHowToMasterSpritesRoute
+  SpritesSlugRoute: typeof SpritesSlugRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
+  SpritesIndexRoute: typeof SpritesIndexRoute
   ZhIndexRoute: typeof ZhIndexRoute
 }
 
@@ -215,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checklist': {
+      id: '/checklist'
+      path: '/checklist'
+      fullPath: '/checklist'
+      preLoaderRoute: typeof ChecklistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -222,11 +347,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/locations': {
+      id: '/locations'
+      path: '/locations'
+      fullPath: '/locations'
+      preLoaderRoute: typeof LocationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-sprites': {
+      id: '/new-sprites'
+      path: '/new-sprites'
+      fullPath: '/new-sprites'
+      preLoaderRoute: typeof NewSpritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-policy': {
       id: '/privacy-policy'
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rarest-sprites': {
+      id: '/rarest-sprites'
+      path: '/rarest-sprites'
+      fullPath: '/rarest-sprites'
+      preLoaderRoute: typeof RarestSpritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rarity': {
+      id: '/rarity'
+      path: '/rarity'
+      fullPath: '/rarity'
+      preLoaderRoute: typeof RarityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -264,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolReferenceUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/variants': {
+      id: '/variants'
+      path: '/variants'
+      fullPath: '/variants'
+      preLoaderRoute: typeof VariantsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/health': {
       id: '/api/health'
       path: '/api/health'
@@ -285,6 +445,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/how-to-master-sprites': {
+      id: '/guides/how-to-master-sprites'
+      path: '/guides/how-to-master-sprites'
+      fullPath: '/guides/how-to-master-sprites'
+      preLoaderRoute: typeof GuidesHowToMasterSpritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sprites/': {
+      id: '/sprites/'
+      path: '/sprites'
+      fullPath: '/sprites/'
+      preLoaderRoute: typeof SpritesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sprites/$slug': {
+      id: '/sprites/$slug'
+      path: '/sprites/$slug'
+      fullPath: '/sprites/$slug'
+      preLoaderRoute: typeof SpritesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zh/': {
       id: '/zh/'
       path: '/zh'
@@ -298,16 +479,25 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ChecklistRoute: ChecklistRoute,
   ContactRoute: ContactRoute,
+  LocationsRoute: LocationsRoute,
+  NewSpritesRoute: NewSpritesRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  RarestSpritesRoute: RarestSpritesRoute,
+  RarityRoute: RarityRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   ToolReferenceRoute: ToolReferenceRoute,
   ToolReferenceUploadRoute: ToolReferenceUploadRoute,
+  VariantsRoute: VariantsRoute,
   ApiHealthRoute: ApiHealthRoute,
   GuidesSlugRoute: GuidesSlugRoute,
+  GuidesHowToMasterSpritesRoute: GuidesHowToMasterSpritesRoute,
+  SpritesSlugRoute: SpritesSlugRoute,
   GuidesIndexRoute: GuidesIndexRoute,
+  SpritesIndexRoute: SpritesIndexRoute,
   ZhIndexRoute: ZhIndexRoute,
 }
 export const routeTree = rootRouteImport
