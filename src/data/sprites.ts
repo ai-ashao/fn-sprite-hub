@@ -326,24 +326,62 @@ const finishLabels: Record<SpriteFinishKind, string> = {
   'loot-hacker': 'Loot Hacker',
 }
 
+const variantAssetIds: Readonly<Record<string, number>> = {
+  'klombo:gold': 6714,
+  'storm-scout:gold': 6715,
+  'bush:gold': 6716,
+  'crown:gold': 6717,
+  '8-bit:gold': 6718,
+  'sonic:gold': 6719,
+  'tails:gold': 6720,
+  'shadow:gold': 6721,
+  'adventure:gold': 6722,
+  'killswitch:gold': 6723,
+  'jackrabbit:gold': 6724,
+  'jonesy:gold': 6725,
+  'klombo:cheat-master': 6726,
+  'storm-scout:cheat-master': 6727,
+  'bush:cheat-master': 6728,
+  'crown:cheat-master': 6729,
+  '8-bit:cheat-master': 6730,
+  'sonic:cheat-master': 6731,
+  'tails:cheat-master': 6732,
+  'shadow:cheat-master': 6733,
+  'adventure:cheat-master': 6734,
+  'killswitch:cheat-master': 6735,
+  'jackrabbit:cheat-master': 6736,
+  'jonesy:cheat-master': 6737,
+  'x-ray:gold': 6894,
+  'x-ray:cheat-master': 6895,
+  'onigiri:gold': 6897,
+  'onigiri:cheat-master': 6898,
+  'overshield:gold': 6900,
+  'overshield:cheat-master': 6901,
+  'crown:loot-hacker': 6903,
+}
+
 function makeEntry(
   family: SpriteFamily,
   finish: SpriteFinishKind,
   releasedAt = family.patchAdded === 'v42.10' ? '2026-09-03' : '2026-08-20',
 ): SpriteEntry {
+  const variantAssetId = finish === 'normal' ? undefined : variantAssetIds[`${family.id}:${finish}`]
+
   return {
     id: `${family.id}:${finish}`,
     familyId: family.id,
     seasonId: currentSeason.id,
     finish,
     displayName: finish === 'normal' ? family.name : `${finishLabels[finish]} ${family.name}`,
-    image: family.familyImage,
-    imageMode: 'family-fallback',
+    image: variantAssetId ? `/images/sprites/${family.slug}/${finish}.png` : family.familyImage,
+    imageMode: variantAssetId ? 'entry' : 'family-fallback',
     released: true,
     releasedAt,
     patchAdded: family.patchAdded,
     verifiedAt: currentSeason.lastVerifiedAt,
-    sourceRefs: commonSources,
+    sourceRefs: variantAssetId
+      ? [...commonSources, `https://fortnite.gg/assets?id=${variantAssetId}`]
+      : commonSources,
   }
 }
 

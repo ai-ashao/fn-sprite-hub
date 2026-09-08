@@ -72,6 +72,9 @@ importers:
       jsdom:
         specifier: 26.1.0
         version: 26.1.0(supports-color@10.0.0)
+      sharp:
+        specifier: 0.35.2
+        version: 0.35.2
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3

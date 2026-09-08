@@ -14,6 +14,10 @@ export type ShareSelection = {
 
 export const shareEntriesPerPage = 24
 
+// Curated for silhouette, rarity and color contrast. This is intentionally
+// explicit rather than depending on spriteFamilies array order.
+export const celebrationFamilyIds = ['bush', 'sonic', 'crown', 'klombo', 'x-ray'] as const
+
 export function shareTemplateAvailable(
   template: ShareTemplate,
   collection: CollectionStateV1,
@@ -41,8 +45,9 @@ export function buildShareSelections(
 
   if (template === 'celebration') {
     if (!shareTemplateAvailable(template, collection)) return []
-    const representativeFamilies = spriteFamilies.slice(0, 5).map(({ id }) => id)
-    return [selection(template, representativeFamilies, [], 1, 1)]
+
+    const representativeFamilies = celebrationFamilyIds.filter((id) => familyById(id))
+    return [selection(template, [...representativeFamilies], [], 1, 1)]
   }
 
   const entries = currentReleasedEntries().filter((entry) => {

@@ -1083,6 +1083,10 @@ body {
   background: #ebe8df;
 }
 
+.sprite-share-preview:has(.sprite-share-pages) {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
 .sprite-share-preview img {
   width: auto;
   max-width: 100%;

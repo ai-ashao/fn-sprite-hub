@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'node:fs'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
   currentFamilyCount,
@@ -32,9 +34,28 @@ describe('FN Sprite Hub current-season data', () => {
     for (const entry of spriteEntries) {
       expect(familyIds.has(entry.familyId)).toBe(true)
       expect(entry.image.startsWith('/images/sprites/')).toBe(true)
-      expect(entry.imageMode).toBe('family-fallback')
       expect(entry.sourceRefs.length).toBeGreaterThan(0)
       expect(entry.verifiedAt).toBe('2026-09-08')
+
+      const file = path.join(process.cwd(), 'public', entry.image)
+      expect(existsSync(file), entry.image).toBe(true)
+    }
+
+    expect(spriteEntries.filter(({ imageMode }) => imageMode === 'family-fallback')).toHaveLength(
+      16,
+    )
+    expect(spriteEntries.filter(({ imageMode }) => imageMode === 'entry')).toHaveLength(31)
+  })
+
+  it('uses valid independent PNG artwork for every released variant', () => {
+    for (const entry of spriteEntries.filter(({ imageMode }) => imageMode === 'entry')) {
+      const bytes = readFileSync(path.join(process.cwd(), 'public', entry.image))
+      expect([...bytes.subarray(0, 8)], entry.image).toEqual([
+        0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+      ])
+      expect(
+        entry.sourceRefs.some((source) => source.startsWith('https://fortnite.gg/assets?id=')),
+      ).toBe(true)
     }
   })
 

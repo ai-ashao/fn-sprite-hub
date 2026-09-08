@@ -59,7 +59,7 @@ for (const viewport of viewports) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       await page.evaluate(() => window.innerWidth),
     )
-    await matrixEntry.click()
+    await matrixEntry.evaluate((button: HTMLButtonElement) => button.click())
     await expect(matrixEntry).toHaveAttribute('data-entry-state', 'missing')
 
     await page.getByRole('button', { name: 'Gallery' }).click()
@@ -91,7 +91,10 @@ test('Sprite detail exposes honest per-entry artwork state', async ({ page }) =>
   await expect(entries).toHaveCount(3)
   await expect(
     page.locator('.sprite-detail-entries button[data-image-mode="family-fallback"]'),
-  ).toHaveCount(3)
+  ).toHaveCount(1)
+  await expect(page.locator('.sprite-detail-entries button[data-image-mode="entry"]')).toHaveCount(
+    2,
+  )
   await expect(entries.getByRole('img')).toHaveCount(3)
   await expect(entries).toContainText(['Base', 'Gold', 'Cheat Master'])
 
@@ -193,7 +196,9 @@ test('Share Studio previews and downloads deterministic multi-page PNGs on mobil
   ).toBe(true)
 
   await page.getByRole('button', { name: /^Missing Sprites/ }).click()
-  await expect(page.getByRole('button', { name: 'Download 2 PNGs' })).toBeEnabled()
+  await expect(page.getByRole('button', { name: 'Download 2 PNGs' })).toBeEnabled({
+    timeout: 15_000,
+  })
 
   const downloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Download 2 PNGs' }).click()

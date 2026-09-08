@@ -34,7 +34,7 @@ const securityHeaders = createMiddleware({ type: 'request' }).server(async ({ ne
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
-      "img-src 'self' data:",
+      "img-src 'self' data: blob:",
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self'",
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",

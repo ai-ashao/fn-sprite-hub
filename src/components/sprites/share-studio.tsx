@@ -20,15 +20,6 @@ type RenderedPage = {
   file: File
 }
 
-function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(String(reader.result))
-    reader.onerror = () => reject(new Error('Could not prepare the PNG preview.'))
-    reader.readAsDataURL(blob)
-  })
-}
-
 const templates: ReadonlyArray<{
   id: ShareTemplate
   label: string
@@ -69,6 +60,15 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
     if (!dialog.open) dialog.showModal()
   }, [isOpen])
 
+  useEffect(
+    () => () => {
+      rendered.forEach(({ url }) => {
+        URL.revokeObjectURL(url)
+      })
+    },
+    [rendered],
+  )
+
   async function createPreview(nextSelections = selections) {
     const requestId = ++renderRequestRef.current
     setBusy(true)
@@ -83,11 +83,16 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
         pages.push({
           selection,
           blob,
-          url: await blobToDataUrl(blob),
+          url: URL.createObjectURL(blob),
           file: new File([blob], name, { type: 'image/png' }),
         })
       }
-      if (requestId !== renderRequestRef.current) return
+      if (requestId !== renderRequestRef.current) {
+        pages.forEach(({ url }) => {
+          URL.revokeObjectURL(url)
+        })
+        return
+      }
       setRendered(pages)
       setActivePage(0)
       const elapsed = Math.round(performance.now() - started)
