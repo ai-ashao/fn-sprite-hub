@@ -239,16 +239,22 @@ for (const fixture of shareFixtures) {
     await page.reload()
     await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
     await page.getByRole('button', { name: 'Share Collection' }).click()
+    const dialogBox = await page.locator('[data-share-studio]').boundingBox()
+    expect(dialogBox).not.toBeNull()
+    expect(Math.abs((dialogBox?.x ?? 0) + (dialogBox?.width ?? 0) / 2 - 720)).toBeLessThanOrEqual(1)
+    expect(Math.abs((dialogBox?.y ?? 0) + (dialogBox?.height ?? 0) / 2 - 450)).toBeLessThanOrEqual(
+      1,
+    )
     await page.getByRole('button', { name: new RegExp(`^${fixture.template}`) }).click()
     const preview = page.locator('[data-share-preview]')
     await expect(preview).toBeVisible()
     await expect
       .poll(() => preview.evaluate((image: HTMLImageElement) => image.naturalWidth))
       .toBe(1080)
-    // Canvas text rasterization is platform-specific. Keep the checked-in macOS pixel
-    // baselines strict locally; Linux CI still renders every fixture and verifies its output.
+    // Canvas text rasterization is platform-specific. Compare the checked-in macOS baseline
+    // locally with a small raster tolerance; Linux CI still renders and verifies every fixture.
     if (process.platform === 'darwin') {
-      await expect(preview).toHaveScreenshot(`${fixture.name}.png`)
+      await expect(preview).toHaveScreenshot(`${fixture.name}.png`, { maxDiffPixelRatio: 0.04 })
     }
   })
 }

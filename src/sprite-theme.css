@@ -959,9 +959,12 @@ body {
 }
 
 .sprite-share-dialog {
+  position: fixed;
+  inset: 0;
   width: min(1100px, calc(100vw - 28px));
   max-width: none;
   max-height: calc(100dvh - 28px);
+  margin: auto;
   padding: 0;
   overflow: hidden;
   border: 1px solid #d5d0c4;
