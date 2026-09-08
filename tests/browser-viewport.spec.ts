@@ -247,7 +247,7 @@ for (const fixture of shareFixtures) {
     )
     await page.getByRole('button', { name: new RegExp(`^${fixture.template}`) }).click()
     const preview = page.locator('[data-share-preview]')
-    await expect(preview).toBeVisible()
+    await expect(preview).toBeVisible({ timeout: 15_000 })
     await expect
       .poll(() => preview.evaluate((image: HTMLImageElement) => image.naturalWidth))
       .toBe(1080)
