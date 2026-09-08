@@ -17,6 +17,7 @@ export type SpriteFamily = {
   acquisitionHint: string
   verifiedAt: string
   sourceRefs: string[]
+  seoReady: boolean
 }
 
 export type SpriteEntry = {
@@ -63,7 +64,7 @@ const commonSources = [
   'https://fortnite.gg/sprites',
 ]
 
-export const spriteFamilies: readonly SpriteFamily[] = [
+const spriteFamilyData: readonly Omit<SpriteFamily, 'seoReady'>[] = [
   {
     id: 'jonesy',
     slug: 'jonesy',
@@ -309,6 +310,15 @@ export const spriteFamilies: readonly SpriteFamily[] = [
   },
 ] as const
 
+// Detail pages stay noindex until a human has reviewed their standalone search value.
+// Add family ids here only after that editorial review; technical completeness is not enough.
+const seoReadyFamilyIds = new Set<string>([])
+
+export const spriteFamilies: readonly SpriteFamily[] = spriteFamilyData.map((family) => ({
+  ...family,
+  seoReady: seoReadyFamilyIds.has(family.id),
+}))
+
 const finishLabels: Record<SpriteFinishKind, string> = {
   normal: 'Base',
   gold: 'Gold',
@@ -468,7 +478,7 @@ export const spriteSeoRegistry: readonly SpriteSeoRoute[] = spriteFamilies.map((
     familyId: family.id,
     slug: family.slug,
     path: `/sprites/${family.slug}`,
-    indexable: gate.score >= 4 && gate.hasRequiredSources,
+    indexable: gate.score >= 4 && gate.hasRequiredSources && family.seoReady,
     lastModified: family.verifiedAt,
   }
 })

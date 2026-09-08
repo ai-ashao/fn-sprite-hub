@@ -1,10 +1,15 @@
 import { useRef, useState } from 'react'
 import {
-  buildDiscordCollectionSummary,
   type CollectionStateV1,
   parseCollectionBackup,
   serializeCollectionBackup,
 } from '@/lib/sprites/collection'
+import {
+  buildDiscordShareText,
+  buildShareSelections,
+  type ShareTemplate,
+} from '@/lib/sprites/share-selection'
+import { ShareStudio } from './share-studio'
 
 type Props = {
   collection: CollectionStateV1
@@ -15,6 +20,8 @@ export function CollectionTools({ collection, onRestore }: Readonly<Props>) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
+  const [discordMode, setDiscordMode] =
+    useState<Exclude<ShareTemplate, 'celebration'>>('collection')
 
   function exportBackup() {
     const blob = new Blob([serializeCollectionBackup(collection)], { type: 'application/json' })
@@ -43,7 +50,15 @@ export function CollectionTools({ collection, onRestore }: Readonly<Props>) {
 
   async function copyDiscordSummary() {
     try {
-      await navigator.clipboard.writeText(buildDiscordCollectionSummary(collection))
+      const selections = buildShareSelections(discordMode, collection)
+      const combined = {
+        ...selections[0],
+        entryIds: selections.flatMap(({ entryIds }) => entryIds),
+        familyIds: selections.flatMap(({ familyIds }) => familyIds),
+        page: 1,
+        pageCount: 1,
+      }
+      await navigator.clipboard.writeText(buildDiscordShareText(combined, collection))
       setIsError(false)
       setMessage('Discord summary copied.')
     } catch {
@@ -61,15 +76,30 @@ export function CollectionTools({ collection, onRestore }: Readonly<Props>) {
         </span>
       </div>
       <div className="sprite-collection-tool-buttons">
+        <ShareStudio collection={collection} />
         <button onClick={exportBackup} type="button">
           Download backup
         </button>
         <button onClick={() => inputRef.current?.click()} type="button">
           Restore backup
         </button>
-        <button onClick={copyDiscordSummary} type="button">
-          Copy for Discord
-        </button>
+        <label className="sprite-discord-copy">
+          <span className="sr-only">Discord summary type</span>
+          <select
+            aria-label="Discord summary type"
+            onChange={(event) =>
+              setDiscordMode(event.target.value as Exclude<ShareTemplate, 'celebration'>)
+            }
+            value={discordMode}
+          >
+            <option value="collection">Collection Summary</option>
+            <option value="missing">Missing List</option>
+            <option value="unmastered">Need to Master</option>
+          </select>
+          <button onClick={copyDiscordSummary} type="button">
+            Copy for Discord
+          </button>
+        </label>
         <input
           accept="application/json,.json"
           className="sr-only"

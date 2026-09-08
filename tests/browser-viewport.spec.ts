@@ -143,6 +143,112 @@ test('backup, restore and Discord copy work without login', async ({ context, pa
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('Collected: 1/47')
 })
 
+test('Share Studio previews and downloads deterministic multi-page PNGs on mobile', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: () => true })
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: async () => {
+        ;(window as Window & { __shareCalled?: boolean }).__shareCalled = true
+      },
+    })
+  })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+  await page.getByRole('button', { name: 'Share Collection' }).click()
+
+  const studio = page.locator('[data-share-studio]')
+  await expect(studio).toBeVisible()
+  await expect(page.locator('[data-share-preview]')).toBeVisible()
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-share-preview]')
+        .evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBe(1080)
+  await expect(
+    page.getByRole('navigation', { name: 'Preview pages' }).getByRole('button'),
+  ).toHaveCount(2)
+  expect(
+    await page.locator('[data-share-preview]').evaluate((image: HTMLImageElement) => ({
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+    })),
+  ).toEqual({ width: 1080, height: 1350 })
+  const firstRenderMs = Number(await studio.locator('output').getAttribute('data-render-ms'))
+  expect(firstRenderMs).toBeLessThanOrEqual(2_000)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
+
+  await page.getByRole('button', { name: /^My Collection/ }).click()
+  await expect
+    .poll(async () => Number(await studio.locator('output').getAttribute('data-render-ms')))
+    .toBeLessThanOrEqual(1_000)
+  await page.getByRole('button', { name: 'Share', exact: true }).click()
+  expect(
+    await page.evaluate(() => (window as Window & { __shareCalled?: boolean }).__shareCalled),
+  ).toBe(true)
+
+  await page.getByRole('button', { name: /^Missing Sprites/ }).click()
+  await expect(page.getByRole('button', { name: 'Download 2 PNGs' })).toBeEnabled()
+
+  const downloadPromise = page.waitForEvent('download')
+  await page.getByRole('button', { name: 'Download 2 PNGs' }).click()
+  const download = await downloadPromise
+  expect(download.suggestedFilename()).toBe('fn-sprite-hub-missing-1-of-2.png')
+
+  await page.getByRole('button', { name: 'Close Share Studio' }).click()
+  await page.goto('/checklist')
+  await expect(page.getByRole('button', { name: 'Share Collection' })).toBeVisible()
+})
+
+const shareFixtures = [
+  { name: 'collection-normal', template: 'My Collection', owned: 20, mastered: 8 },
+  { name: 'missing-6', template: 'Missing Sprites', owned: 41, mastered: 8 },
+  { name: 'missing-24', template: 'Missing Sprites', owned: 23, mastered: 8 },
+  { name: 'missing-47-page-1', template: 'Missing Sprites', owned: 0, mastered: 0 },
+  { name: 'unmastered-12', template: 'Need to Master', owned: 12, mastered: 0 },
+  { name: 'celebration-complete', template: '100% Celebration', owned: 47, mastered: 8 },
+  { name: 'celebration-mastered', template: '100% Celebration', owned: 47, mastered: 47 },
+] as const
+
+for (const fixture of shareFixtures) {
+  test(`Share Studio visual fixture ${fixture.name}`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/')
+    await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+    await page.evaluate(({ owned, mastered }) => {
+      const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-entry-id]'))
+      const ids = Array.from(
+        new Set(buttons.map((button) => button.dataset.entryId).filter(Boolean)),
+      )
+      window.localStorage.setItem(
+        'fn-sprite-hub:collection:v1',
+        JSON.stringify({
+          schemaVersion: 1,
+          seasonId: 'c7s4',
+          ownedEntryIds: ids.slice(0, owned),
+          masteredEntryIds: ids.slice(0, mastered),
+          updatedAt: '2026-09-08T00:00:00.000Z',
+        }),
+      )
+    }, fixture)
+    await page.reload()
+    await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+    await page.getByRole('button', { name: 'Share Collection' }).click()
+    await page.getByRole('button', { name: new RegExp(`^${fixture.template}`) }).click()
+    const preview = page.locator('[data-share-preview]')
+    await expect(preview).toBeVisible()
+    await expect
+      .poll(() => preview.evaluate((image: HTMLImageElement) => image.naturalWidth))
+      .toBe(1080)
+    await expect(preview).toHaveScreenshot(`${fixture.name}.png`)
+  })
+}
+
 test('Phase A Chinese starter route does not stay indexable', async ({ page }) => {
   await page.goto('/zh')
   expect(new URL(page.url()).pathname).toBe('/')

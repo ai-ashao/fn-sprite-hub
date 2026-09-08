@@ -80,7 +80,7 @@ describe('Sprite collection state', () => {
     const summary = buildDiscordCollectionSummary(state)
     expect(summary).toContain('Collected: 1/47')
     expect(summary).toContain('Mastered: 0/47')
-    expect(summary).not.toContain('• Jonesy\n')
+    expect(summary).toContain('Need to Master:\n• Jonesy')
     expect(summary).toContain('• Gold Jonesy')
   })
 })

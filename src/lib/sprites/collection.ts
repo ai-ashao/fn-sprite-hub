@@ -139,7 +139,13 @@ export function buildDiscordCollectionSummary(state: CollectionStateV1): string 
     'Missing:',
     missingLines,
     '',
-    'FN Sprite Hub',
+    'Need to Master:',
+    currentReleasedEntries()
+      .filter((entry) => entryState(state, entry.id) === 'owned')
+      .map((entry) => `• ${entry.displayName}`)
+      .join('\n') || '• None',
+    '',
+    '✦ Track yours at FN Sprite Hub · fnspritehub.com',
   ].join('\n')
 }
 

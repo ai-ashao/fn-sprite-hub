@@ -51,7 +51,8 @@ describe('FN Sprite Hub current-season data', () => {
   it('builds one SEO detail route per current family', () => {
     expect(spriteSeoRegistry).toHaveLength(16)
     expect(spriteSeoRegistry.every((route) => route.path.startsWith('/sprites/'))).toBe(true)
-    expect(spriteSeoRegistry.every((route) => route.indexable)).toBe(true)
+    expect(spriteSeoRegistry.every((route) => !route.indexable)).toBe(true)
+    expect(spriteFamilies.every((family) => !family.seoReady)).toBe(true)
     for (const family of spriteFamilies) {
       expect(spriteDetailIndexability(family)).toMatchObject({
         score: 5,

@@ -16,9 +16,9 @@ describe('FN Sprite Hub Phase A routing', () => {
     expect(localeAlternatesForPath('/')).toEqual([])
   })
 
-  it('adds gated Sprite details to the sitemap without duplicates', () => {
-    expect(sitemapPaths()).toContain('/sprites/sonic')
-    expect(sitemapPaths()).toContain('/sprites/klombo')
+  it('keeps unreviewed Sprite details out of the sitemap without duplicates', () => {
+    expect(sitemapPaths()).not.toContain('/sprites/sonic')
+    expect(sitemapPaths()).not.toContain('/sprites/klombo')
     expect(new Set(sitemapPaths()).size).toBe(sitemapPaths().length)
   })
 
