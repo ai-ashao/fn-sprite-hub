@@ -1,4 +1,5 @@
 import {
+  currentSeason,
   entriesForFamily,
   finishLabel,
   rarityRank,
@@ -64,18 +65,42 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
               return (
                 <button
                   data-entry-state={state}
+                  data-image-mode={entry.imageMode}
                   key={entry.id}
                   onClick={() => collection.cycleEntry(entry.id)}
                   type="button"
                 >
-                  <strong>{finishLabel(entry.finish)}</strong>
-                  <span>
-                    {state === 'missing' ? 'Missing' : state === 'owned' ? 'Owned' : 'Mastered'}
+                  <span className="sprite-entry-art">
+                    <img
+                      alt={`${entry.displayName} Sprite artwork`}
+                      height={128}
+                      loading="lazy"
+                      src={entry.image}
+                      width={128}
+                    />
+                    <strong>{finishLabel(entry.finish)}</strong>
+                  </span>
+                  <span className="sprite-entry-state">
+                    {state === 'missing'
+                      ? '○ Missing'
+                      : state === 'owned'
+                        ? '✓ Owned'
+                        : '★ Mastered'}
                   </span>
                 </button>
               )
             })}
           </div>
+        </section>
+
+        <section>
+          <h2>Data freshness</h2>
+          <p>
+            Current-season roster and released finishes were last checked on{' '}
+            <time dateTime={currentSeason.lastVerifiedAt}>{currentSeason.lastVerifiedAt}</time> for{' '}
+            {currentSeason.patch}. Entry tiles use the family artwork when a separately reviewed
+            finish image is not available.
+          </p>
         </section>
 
         <section>

@@ -3,13 +3,16 @@ import type { EntryState } from '@/lib/sprites/collection'
 import { SpriteCard } from './sprite-card'
 import type { SortMode, StatusFilter } from './sprite-filters'
 
-type Props = {
+export type SpriteSelectionProps = {
   query: string
   status: StatusFilter
   rarity: string
   finish: string
   sort: SortMode
   getEntryState: (entryId: string) => EntryState
+}
+
+type Props = SpriteSelectionProps & {
   onCycleEntry: (entryId: string) => void
   onOpen: (familyId: string) => void
 }
@@ -26,10 +29,10 @@ function familyMatchesStatus(
   return states.some((state) => state === 'mastered')
 }
 
-export function SpriteGallery(props: Readonly<Props>) {
+export function selectSpriteFamilies(props: Readonly<SpriteSelectionProps>) {
   const query = props.query.trim().toLowerCase()
 
-  const families = [...spriteFamilies]
+  return [...spriteFamilies]
     .filter((family) => !query || family.name.toLowerCase().includes(query))
     .filter((family) => props.rarity === 'all' || family.rarity === props.rarity)
     .filter((family) => {
@@ -55,6 +58,10 @@ export function SpriteGallery(props: Readonly<Props>) {
       }
       return left.name.localeCompare(right.name)
     })
+}
+
+export function SpriteGallery(props: Readonly<Props>) {
+  const families = selectSpriteFamilies(props)
 
   return (
     <>

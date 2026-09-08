@@ -8,10 +8,12 @@ import {
 } from '@/data/sprites'
 import { useSpriteCollection } from '@/lib/sprites/collection'
 import { CollectionProgress } from './collection-progress'
+import { CollectionTools } from './collection-tools'
 import { HeroSpriteCluster } from './hero-sprite-cluster'
 import { SpriteDrawer } from './sprite-drawer'
 import { type SortMode, SpriteFilters, type StatusFilter } from './sprite-filters'
 import { SpriteGallery } from './sprite-gallery'
+import { SpriteMatrix } from './sprite-matrix'
 
 const faqItems = [
   [
@@ -35,6 +37,7 @@ export function SpriteTrackerHome() {
   const [rarity, setRarity] = useState<'all' | SpriteRarity>('all')
   const [finish, setFinish] = useState<'all' | SpriteFinishKind>('all')
   const [sort, setSort] = useState<SortMode>('name')
+  const [view, setView] = useState<'gallery' | 'matrix'>('gallery')
   const [drawerFamilyId, setDrawerFamilyId] = useState<string>()
 
   const dateLabel = useMemo(
@@ -128,16 +131,44 @@ export function SpriteTrackerHome() {
           status={status}
         />
 
-        <SpriteGallery
-          finish={finish}
-          getEntryState={collection.getEntryState}
-          onCycleEntry={collection.cycleEntry}
-          onOpen={setDrawerFamilyId}
-          query={query}
-          rarity={rarity}
-          sort={sort}
-          status={status}
-        />
+        <fieldset className="sprite-view-switch">
+          <legend className="sr-only">Collection view</legend>
+          <button
+            aria-pressed={view === 'gallery'}
+            onClick={() => setView('gallery')}
+            type="button"
+          >
+            Gallery
+          </button>
+          <button aria-pressed={view === 'matrix'} onClick={() => setView('matrix')} type="button">
+            Matrix
+          </button>
+        </fieldset>
+
+        {view === 'gallery' ? (
+          <SpriteGallery
+            finish={finish}
+            getEntryState={collection.getEntryState}
+            onCycleEntry={collection.cycleEntry}
+            onOpen={setDrawerFamilyId}
+            query={query}
+            rarity={rarity}
+            sort={sort}
+            status={status}
+          />
+        ) : (
+          <SpriteMatrix
+            finish={finish}
+            getEntryState={collection.getEntryState}
+            onCycleEntry={collection.cycleEntry}
+            query={query}
+            rarity={rarity}
+            sort={sort}
+            status={status}
+          />
+        )}
+
+        <CollectionTools collection={collection.collection} onRestore={collection.restore} />
 
         <div className="sprite-collection-actions">
           <span>Progress is stored only in this browser.</span>
@@ -156,7 +187,10 @@ export function SpriteTrackerHome() {
         <a href="/checklist">
           <small>FAST VIEW</small>
           <h2>Fortnite Sprite Checklist</h2>
-          <p>Use a compact list when you want to mark the current 47 released entries quickly.</p>
+          <p>
+            Use a compact list when you want to mark the current {currentReleasedEntryCount}{' '}
+            released entries quickly.
+          </p>
         </a>
         <a href="/sprites">
           <small>DATABASE</small>

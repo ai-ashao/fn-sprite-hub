@@ -6,7 +6,8 @@ FN Sprite Hub is a free, account-free Fortnite Sprite Tracker and checklist buil
 
 - Fortnite Sprite Tracker 2026
 - Current Chapter 7 Season 4 data model
-- 16 current Sprite families / 47 verified released entries (2026-09-07 snapshot)
+- 16 current Sprite families / 47 verified released entries (2026-09-08 snapshot)
+- Explicit per-entry artwork provenance (`entry` or `family-fallback`)
 - Entry-level Owned / Missing / Mastered tracking
 - Browser-local persistence
 - Search, rarity, variant and status filtering

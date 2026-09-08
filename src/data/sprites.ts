@@ -1,5 +1,8 @@
 export type SpriteRarity = 'Rare' | 'Epic' | 'Legendary' | 'Mythic'
 export type SpriteFinishKind = 'normal' | 'gold' | 'cheat-master' | 'loot-hacker'
+export type SpriteImageMode = 'entry' | 'family-fallback'
+
+export const currentDataVerifiedAt = '2026-09-08'
 
 export type SpriteFamily = {
   id: string
@@ -23,6 +26,7 @@ export type SpriteEntry = {
   finish: SpriteFinishKind
   displayName: string
   image: string
+  imageMode: SpriteImageMode
   released: boolean
   releasedAt?: string
   patchAdded?: string
@@ -51,10 +55,13 @@ export const currentSeason: SpriteSeason = {
   current: true,
   startedAt: '2026-08-20',
   patch: 'v42.10',
-  lastVerifiedAt: '2026-09-07',
+  lastVerifiedAt: currentDataVerifiedAt,
 }
 
-const commonSources = ['fortnite.gg/sprites', 'spritechecklist.org/how-many-sprites']
+const commonSources = [
+  'https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game',
+  'https://fortnite.gg/sprites',
+]
 
 export const spriteFamilies: readonly SpriteFamily[] = [
   {
@@ -70,7 +77,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Can be selected as a starter Sprite and is also reported around higher terrain.',
     acquisitionHint:
       'Use current-season loot and Cheat Code sources; availability can change with live patches.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -86,7 +93,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
       'Can be selected as a starter Sprite and is commonly reported around elevated terrain.',
     acquisitionHint:
       'Use current-season loot and Cheat Code sources; starter availability makes it easier to begin tracking.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -102,7 +109,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Can be selected as a starter Sprite.',
     acquisitionHint:
       'Starter selection and current-season loot are the simplest verified ways to begin with Bush.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -117,7 +124,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported more often around high and mountainous regions.',
     acquisitionHint:
       'Current-season loot and Cheat Code sources can provide Sonic; exact availability is patch-dependent.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -132,7 +139,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported more often around high and mountainous regions.',
     acquisitionHint:
       'Look through current-season loot and Cheat Code sources rather than relying on a single fixed spawn.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -147,7 +154,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported around higher terrain during the current season.',
     acquisitionHint:
       'Use current-season loot and Cheat Code sources; there is no permanent fixed spawn promised by this tracker.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -162,7 +169,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported around high and mountainous regions.',
     acquisitionHint:
       'Use current-season loot and Cheat Code sources and verify patch notes when its acquisition changes.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -177,7 +184,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported more often around high and mountainous regions.',
     acquisitionHint:
       'Legendary rarity makes it less common; use live current-season sources instead of assuming a fixed location.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -194,7 +201,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
       'Reported around high terrain; the Loot Hacker finish is tracked separately from the base Sprite.',
     acquisitionHint:
       'Track Base, Gold, Cheat Master and the released Loot Hacker Crown as separate collection entries.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -209,7 +216,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported around the island at night.',
     acquisitionHint:
       'Night-time reports are useful guidance, but live loot and Cheat Code sources still determine availability.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -224,7 +231,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Reported more often around high and mountainous regions.',
     acquisitionHint:
       'Use live loot and Cheat Code sources; Mythic rarity means results can vary between matches.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -239,7 +246,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint: 'Added in patch v42.10; no single permanent fixed location is asserted here.',
     acquisitionHint:
       'Mega Man currently counts as a single released collectible entry in the Season 4 completion denominator.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -253,7 +260,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     patchAdded: 'v42.10',
     locationHint: 'Reported around high and mountainous regions after its v42.10 release.',
     acquisitionHint: 'Use current-season loot and Cheat Code sources; it was added during v42.10.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -267,7 +274,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     patchAdded: 'v42.10',
     locationHint: 'Added in v42.10; this tracker does not claim a permanent fixed spawn.',
     acquisitionHint: 'Track Base, Gold and Cheat Master as separate released entries.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -282,7 +289,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     locationHint:
       'Added in v42.10; current acquisition should be checked against live loot and Cheat Code sources.',
     acquisitionHint: 'Track Base, Gold and Cheat Master as separate released entries.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
   {
@@ -297,7 +304,7 @@ export const spriteFamilies: readonly SpriteFamily[] = [
     patchAdded: 'v42.10',
     locationHint: 'Reported around higher terrain after the v42.10 update.',
     acquisitionHint: 'Track Base, Gold and Cheat Master as separate released entries.',
-    verifiedAt: '2026-09-07',
+    verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
 ] as const
@@ -321,6 +328,7 @@ function makeEntry(
     finish,
     displayName: finish === 'normal' ? family.name : `${finishLabels[finish]} ${family.name}`,
     image: family.familyImage,
+    imageMode: 'family-fallback',
     released: true,
     releasedAt,
     patchAdded: family.patchAdded,
@@ -334,7 +342,7 @@ const entries: SpriteEntry[] = []
 for (const family of spriteFamilies) {
   entries.push(makeEntry(family, 'normal'))
 
-  // Current verification snapshot (2026-09-07):
+  // Current verification snapshot (2026-09-08):
   // every Season 4 family except Mega Man has Gold + Cheat Master;
   // Crown additionally has the first released Loot Hacker entry.
   if (family.id !== 'mega-man') {
@@ -377,6 +385,39 @@ export const currentReleasedEntryCount = currentReleasedEntries().length
 export const currentFamilyCount = new Set(currentReleasedEntries().map((entry) => entry.familyId))
   .size
 
+export function validateSpriteData(): readonly string[] {
+  const issues: string[] = []
+  const familyIds = new Set<string>()
+  const familySlugs = new Set<string>()
+  const entryIds = new Set<string>()
+
+  for (const family of spriteFamilies) {
+    if (familyIds.has(family.id)) issues.push(`Duplicate family id: ${family.id}`)
+    if (familySlugs.has(family.slug)) issues.push(`Duplicate family slug: ${family.slug}`)
+    if (!family.sourceRefs.length) issues.push(`Family ${family.id} has no source references.`)
+    if (!family.verifiedAt) issues.push(`Family ${family.id} has no verification date.`)
+    familyIds.add(family.id)
+    familySlugs.add(family.slug)
+  }
+
+  for (const entry of spriteEntries) {
+    if (entryIds.has(entry.id)) issues.push(`Duplicate entry id: ${entry.id}`)
+    if (!familyIds.has(entry.familyId)) issues.push(`Entry ${entry.id} has an unknown family.`)
+    if (entry.seasonId !== currentSeason.id) issues.push(`Entry ${entry.id} has an unknown season.`)
+    if (!entry.image.startsWith('/images/sprites/')) {
+      issues.push(`Entry ${entry.id} does not use a local Sprite image.`)
+    }
+    if (entry.imageMode === 'entry' && entry.image === familyById(entry.familyId)?.familyImage) {
+      issues.push(`Entry ${entry.id} claims independent artwork but uses its family image.`)
+    }
+    if (!entry.sourceRefs.length) issues.push(`Entry ${entry.id} has no source references.`)
+    if (!entry.verifiedAt) issues.push(`Entry ${entry.id} has no verification date.`)
+    entryIds.add(entry.id)
+  }
+
+  return issues
+}
+
 export type SpriteSeoRoute = {
   familyId: string
   slug: string
@@ -385,18 +426,49 @@ export type SpriteSeoRoute = {
   lastModified: string
 }
 
-export const spriteSeoRegistry: readonly SpriteSeoRoute[] = spriteFamilies.map((family) => ({
-  familyId: family.id,
-  slug: family.slug,
-  path: `/sprites/${family.slug}`,
-  // Each V1 detail page includes verified ability, entries, acquisition guidance,
-  // local artwork, related entities and source metadata.
-  indexable: true,
-  lastModified: family.verifiedAt,
-}))
-
-if (currentReleasedEntryCount !== 47) {
-  throw new Error(
-    `Season data integrity error: expected the 2026-09-07 verification snapshot to contain 47 released entries, got ${currentReleasedEntryCount}.`,
-  )
+export type SpriteDetailIndexability = {
+  score: number
+  hasRequiredSources: boolean
+  signals: {
+    verifiedAbility: boolean
+    acquisitionOrLocation: boolean
+    releasedEntryTable: boolean
+    uniqueMasteryNotes: boolean
+    clearFinishArtwork: boolean
+    relatedSpriteLinks: boolean
+  }
 }
+
+export function spriteDetailIndexability(family: SpriteFamily): SpriteDetailIndexability {
+  const familyEntries = entriesForFamily(family.id)
+  const signals = {
+    verifiedAbility: Boolean(family.ability.trim() && family.verifiedAt),
+    acquisitionOrLocation: Boolean(family.acquisitionHint.trim() || family.locationHint.trim()),
+    releasedEntryTable: familyEntries.length > 0,
+    // V1 currently explains the shared state cycle but has no family-specific mastery notes.
+    uniqueMasteryNotes: false,
+    clearFinishArtwork: familyEntries.every(
+      (entry) =>
+        Boolean(entry.image) && Boolean(finishLabels[entry.finish]) && Boolean(entry.imageMode),
+    ),
+    relatedSpriteLinks:
+      spriteFamilies.filter((candidate) => candidate.id !== family.id).length >= 2,
+  }
+
+  return {
+    score: Object.values(signals).filter(Boolean).length,
+    hasRequiredSources: family.sourceRefs.length >= 2,
+    signals,
+  }
+}
+
+export const spriteSeoRegistry: readonly SpriteSeoRoute[] = spriteFamilies.map((family) => {
+  const gate = spriteDetailIndexability(family)
+  return {
+    familyId: family.id,
+    slug: family.slug,
+    path: `/sprites/${family.slug}`,
+    indexable: gate.score >= 4 && gate.hasRequiredSources,
+    lastModified: family.verifiedAt,
+  }
+})

@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import {
+  buildDiscordCollectionSummary,
   type CollectionStateV1,
   collectionMetrics,
   cycleEntryState,
   entryState,
   normalizeCollectionState,
+  parseCollectionBackup,
+  serializeCollectionBackup,
 } from '@/lib/sprites/collection'
 
 const empty: CollectionStateV1 = {
@@ -51,5 +54,33 @@ describe('Sprite collection state', () => {
       mastered: 1,
       missing: 46,
     })
+  })
+
+  it('round-trips a valid JSON backup', () => {
+    const state = cycleEntryState(empty, 'jonesy:normal')
+    expect(parseCollectionBackup(serializeCollectionBackup(state))).toEqual({ ok: true, state })
+  })
+
+  it('rejects malformed, unknown and inconsistent backups without producing replacement state', () => {
+    expect(parseCollectionBackup('{bad')).toMatchObject({ ok: false })
+    expect(
+      parseCollectionBackup(
+        JSON.stringify({ ...empty, ownedEntryIds: ['unknown:normal'], masteredEntryIds: [] }),
+      ),
+    ).toMatchObject({ ok: false, error: 'Unknown Sprite entry ID: unknown:normal' })
+    expect(
+      parseCollectionBackup(
+        JSON.stringify({ ...empty, ownedEntryIds: [], masteredEntryIds: ['jonesy:normal'] }),
+      ),
+    ).toMatchObject({ ok: false, error: 'Mastered entry must also be owned: jonesy:normal' })
+  })
+
+  it('builds a Discord-ready summary from derived collection data', () => {
+    const state = cycleEntryState(empty, 'jonesy:normal')
+    const summary = buildDiscordCollectionSummary(state)
+    expect(summary).toContain('Collected: 1/47')
+    expect(summary).toContain('Mastered: 0/47')
+    expect(summary).not.toContain('• Jonesy\n')
+    expect(summary).toContain('• Gold Jonesy')
   })
 })

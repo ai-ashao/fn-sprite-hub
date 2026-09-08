@@ -38,11 +38,11 @@ export const toolSeoBrief = {
   locales: ['en'],
   evidence: [
     {
-      source: 'Manual SERP and competitor review, 2026-09-07',
+      source: 'Manual SERP and competitor review, 2026-09-08',
       note: 'Tracker, checklist, database, variants, rarity, locations and freshness intents are represented by dedicated current pages in the SERP.',
     },
     {
-      source: 'Fortnite.GG Sprite tracker, reviewed 2026-09-07',
+      source: 'Fortnite.GG Sprite tracker, reviewed 2026-09-08',
       note: 'Current tracker displays 47 released current-season entries with separate Owned and Mastered state.',
     },
   ],

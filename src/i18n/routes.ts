@@ -1,4 +1,4 @@
-import { spriteSeoRegistry } from '@/data/sprites'
+import { currentDataVerifiedAt, spriteSeoRegistry } from '@/data/sprites'
 import { type GuideSlug, guides } from '@/lib/guides'
 import { isLegalProfileLaunchReady } from '@/lib/legal'
 import { legalProfile } from '@/modules/legal-profile'
@@ -34,19 +34,49 @@ export type PublicPageRoute = {
 const legalPagesIndexable = isLegalProfileLaunchReady(legalProfile)
 
 const staticPages: PublicPageRoute[] = [
-  { id: 'home', indexable: true, paths: { en: '/' }, lastModified: '2026-09-07' },
-  { id: 'checklist', indexable: true, paths: { en: '/checklist' }, lastModified: '2026-09-07' },
-  { id: 'sprites', indexable: true, paths: { en: '/sprites' }, lastModified: '2026-09-07' },
-  { id: 'variants', indexable: true, paths: { en: '/variants' }, lastModified: '2026-09-07' },
-  { id: 'rarity', indexable: true, paths: { en: '/rarity' }, lastModified: '2026-09-07' },
-  { id: 'locations', indexable: true, paths: { en: '/locations' }, lastModified: '2026-09-07' },
-  { id: 'rarest', indexable: true, paths: { en: '/rarest-sprites' }, lastModified: '2026-09-07' },
-  { id: 'new', indexable: true, paths: { en: '/new-sprites' }, lastModified: '2026-09-07' },
+  { id: 'home', indexable: true, paths: { en: '/' }, lastModified: currentDataVerifiedAt },
+  {
+    id: 'checklist',
+    indexable: true,
+    paths: { en: '/checklist' },
+    lastModified: currentDataVerifiedAt,
+  },
+  {
+    id: 'sprites',
+    indexable: true,
+    paths: { en: '/sprites' },
+    lastModified: currentDataVerifiedAt,
+  },
+  {
+    id: 'variants',
+    indexable: true,
+    paths: { en: '/variants' },
+    lastModified: currentDataVerifiedAt,
+  },
+  { id: 'rarity', indexable: true, paths: { en: '/rarity' }, lastModified: currentDataVerifiedAt },
+  {
+    id: 'locations',
+    indexable: true,
+    paths: { en: '/locations' },
+    lastModified: currentDataVerifiedAt,
+  },
+  {
+    id: 'rarest',
+    indexable: true,
+    paths: { en: '/rarest-sprites' },
+    lastModified: currentDataVerifiedAt,
+  },
+  {
+    id: 'new',
+    indexable: true,
+    paths: { en: '/new-sprites' },
+    lastModified: currentDataVerifiedAt,
+  },
   {
     id: 'mastery',
     indexable: true,
     paths: { en: '/guides/how-to-master-sprites' },
-    lastModified: '2026-09-07',
+    lastModified: currentDataVerifiedAt,
   },
 
   // Compatibility surfaces remain available but are excluded from the V1 topical index set.

@@ -66,6 +66,87 @@ export function saveCollectionState(storage: Pick<Storage, 'setItem'>, state: Co
   storage.setItem(collectionStorageKey, JSON.stringify(normalizeCollectionState(state)))
 }
 
+export type CollectionImportResult =
+  | { ok: true; state: CollectionStateV1 }
+  | { ok: false; error: string }
+
+export function serializeCollectionBackup(state: CollectionStateV1): string {
+  return `${JSON.stringify(normalizeCollectionState(state), null, 2)}\n`
+}
+
+export function parseCollectionBackup(text: string): CollectionImportResult {
+  let value: unknown
+  try {
+    value = JSON.parse(text)
+  } catch {
+    return { ok: false, error: 'This file is not valid JSON.' }
+  }
+
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return { ok: false, error: 'The backup must contain one collection object.' }
+  }
+
+  const raw = value as Partial<CollectionStateV1>
+  if (raw.schemaVersion !== 1) {
+    return { ok: false, error: 'Unsupported backup schema version.' }
+  }
+  if (raw.seasonId !== currentSeason.id) {
+    return { ok: false, error: 'This backup belongs to a different Fortnite season.' }
+  }
+  if (!Array.isArray(raw.ownedEntryIds) || !raw.ownedEntryIds.every(isString)) {
+    return { ok: false, error: 'Owned entry IDs must be a list of strings.' }
+  }
+  if (!Array.isArray(raw.masteredEntryIds) || !raw.masteredEntryIds.every(isString)) {
+    return { ok: false, error: 'Mastered entry IDs must be a list of strings.' }
+  }
+  if (typeof raw.updatedAt !== 'string' || Number.isNaN(Date.parse(raw.updatedAt))) {
+    return { ok: false, error: 'The backup has an invalid update date.' }
+  }
+
+  const valid = validEntryIds()
+  const unknownIds = [...raw.ownedEntryIds, ...raw.masteredEntryIds].filter((id) => !valid.has(id))
+  if (unknownIds.length) {
+    return { ok: false, error: `Unknown Sprite entry ID: ${unknownIds[0]}` }
+  }
+
+  const owned = new Set(raw.ownedEntryIds)
+  const invalidMastered = raw.masteredEntryIds.find((id) => !owned.has(id))
+  if (invalidMastered) {
+    return {
+      ok: false,
+      error: `Mastered entry must also be owned: ${invalidMastered}`,
+    }
+  }
+
+  return { ok: true, state: normalizeCollectionState(raw) }
+}
+
+export function buildDiscordCollectionSummary(state: CollectionStateV1): string {
+  const metrics = collectionMetrics(state)
+  const missing = currentReleasedEntries().filter(
+    (entry) => entryState(state, entry.id) === 'missing',
+  )
+  const missingLines = missing.length
+    ? missing.map((entry) => `• ${entry.displayName}`).join('\n')
+    : '• None — collection complete!'
+
+  return [
+    'My Fortnite Sprite Collection',
+    '',
+    `Collected: ${metrics.owned}/${metrics.total}`,
+    `Mastered: ${metrics.mastered}/${metrics.total}`,
+    '',
+    'Missing:',
+    missingLines,
+    '',
+    'FN Sprite Hub',
+  ].join('\n')
+}
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+
 export type EntryState = 'missing' | 'owned' | 'mastered'
 
 export function entryState(collection: CollectionStateV1, entryId: string): EntryState {
@@ -138,6 +219,10 @@ export function useSpriteCollection() {
     })
   }, [])
 
+  const restore = useCallback((state: CollectionStateV1) => {
+    setCollection(normalizeCollectionState(state))
+  }, [])
+
   const metrics = useMemo(() => collectionMetrics(collection), [collection])
 
   return {
@@ -145,6 +230,7 @@ export function useSpriteCollection() {
     collection,
     metrics,
     cycleEntry,
+    restore,
     reset,
     getEntryState: (entryId: string) => entryState(collection, entryId),
   }

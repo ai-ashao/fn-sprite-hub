@@ -89,12 +89,22 @@ export function SpriteDrawer({
                 <button
                   className="sprite-drawer-entry"
                   data-entry-state={state}
+                  data-image-mode={entry.imageMode}
                   key={entry.id}
                   onClick={() => onCycleEntry(entry.id)}
                   type="button"
                 >
-                  <strong>{finishLabel(entry.finish)}</strong>
-                  <span>{stateText[state]}</span>
+                  <span className="sprite-entry-art">
+                    <img
+                      alt={`${entry.displayName} Sprite artwork`}
+                      height={96}
+                      loading="lazy"
+                      src={entry.image}
+                      width={96}
+                    />
+                    <strong>{finishLabel(entry.finish)}</strong>
+                  </span>
+                  <span className="sprite-entry-state">{stateText[state]}</span>
                 </button>
               )
             })}

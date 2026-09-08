@@ -1,4 +1,4 @@
-import { currentSeason, spriteFamilies } from '@/data/sprites'
+import { currentReleasedEntryCount, currentSeason, spriteFamilies } from '@/data/sprites'
 import { SpriteContentLayout } from './content-layout'
 
 const newestIds = new Set(['storm-scout', 'x-ray', 'onigiri', 'overshield', 'mega-man'])
@@ -28,7 +28,7 @@ export function NewSpritesPage() {
         </div>
         <p>
           Loot Hacker Crown is also counted as a separately released collectible entry in the
-          current 47-entry denominator.
+          current {currentReleasedEntryCount}-entry denominator.
         </p>
       </section>
     </SpriteContentLayout>

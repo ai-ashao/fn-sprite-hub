@@ -73,6 +73,7 @@ export function SpriteCard({
                 aria-label={`${finishLabel(entry.finish)} ${family.name}: ${state}. Click to cycle state.`}
                 className="sprite-entry-chip"
                 data-entry-state={state}
+                data-image-mode={entry.imageMode}
                 key={entry.id}
                 onClick={() => onCycleEntry(entry.id)}
                 title={`${finishLabel(entry.finish)} · ${state}`}
