@@ -1,0 +1,879 @@
+[
+  {
+    "entryId": "8-bit:cheat-master",
+    "localPath": "/images/sprites/8-bit/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6730"
+    ],
+    "assetId": 6730,
+    "assetPage": "https://fortnite.gg/assets?id=6730",
+    "sourceUrl": "https://fnggcdn.com/assets/MT8HRt.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "8-bit:gold",
+    "localPath": "/images/sprites/8-bit/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6718"
+    ],
+    "assetId": 6718,
+    "assetPage": "https://fortnite.gg/assets?id=6718",
+    "sourceUrl": "https://fnggcdn.com/assets/EhZcJQ.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "8-bit:normal",
+    "localPath": "/images/sprites/8-bit.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "adventure:cheat-master",
+    "localPath": "/images/sprites/adventure/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6734"
+    ],
+    "assetId": 6734,
+    "assetPage": "https://fortnite.gg/assets?id=6734",
+    "sourceUrl": "https://fnggcdn.com/assets/lx7RNQ.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "adventure:gold",
+    "localPath": "/images/sprites/adventure/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6722"
+    ],
+    "assetId": 6722,
+    "assetPage": "https://fortnite.gg/assets?id=6722",
+    "sourceUrl": "https://fnggcdn.com/assets/lC64Zq.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "adventure:normal",
+    "localPath": "/images/sprites/adventure.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "bush:cheat-master",
+    "localPath": "/images/sprites/bush/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6728"
+    ],
+    "assetId": 6728,
+    "assetPage": "https://fortnite.gg/assets?id=6728",
+    "sourceUrl": "https://fnggcdn.com/assets/j8Xqdv.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "bush:gold",
+    "localPath": "/images/sprites/bush/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6716"
+    ],
+    "assetId": 6716,
+    "assetPage": "https://fortnite.gg/assets?id=6716",
+    "sourceUrl": "https://fnggcdn.com/assets/7c8qRB.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "bush:normal",
+    "localPath": "/images/sprites/bush.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "crown:cheat-master",
+    "localPath": "/images/sprites/crown/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6729"
+    ],
+    "assetId": 6729,
+    "assetPage": "https://fortnite.gg/assets?id=6729",
+    "sourceUrl": "https://fnggcdn.com/assets/xyQS7t.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "crown:gold",
+    "localPath": "/images/sprites/crown/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6717"
+    ],
+    "assetId": 6717,
+    "assetPage": "https://fortnite.gg/assets?id=6717",
+    "sourceUrl": "https://fnggcdn.com/assets/kXICHs.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "crown:loot-hacker",
+    "localPath": "/images/sprites/crown/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6903"
+    ],
+    "assetId": 6903,
+    "assetPage": "https://fortnite.gg/assets?id=6903",
+    "sourceUrl": "https://fnggcdn.com/assets/w0edGJ.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "crown:normal",
+    "localPath": "/images/sprites/crown.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "jackrabbit:cheat-master",
+    "localPath": "/images/sprites/jackrabbit/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6736"
+    ],
+    "assetId": 6736,
+    "assetPage": "https://fortnite.gg/assets?id=6736",
+    "sourceUrl": "https://fnggcdn.com/assets/yu0qdi.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "jackrabbit:gold",
+    "localPath": "/images/sprites/jackrabbit/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6724"
+    ],
+    "assetId": 6724,
+    "assetPage": "https://fortnite.gg/assets?id=6724",
+    "sourceUrl": "https://fnggcdn.com/assets/fHzZ3K.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "jackrabbit:normal",
+    "localPath": "/images/sprites/jackrabbit.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "jonesy:cheat-master",
+    "localPath": "/images/sprites/jonesy/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6737"
+    ],
+    "assetId": 6737,
+    "assetPage": "https://fortnite.gg/assets?id=6737",
+    "sourceUrl": "https://fnggcdn.com/assets/OzjU4w.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "jonesy:gold",
+    "localPath": "/images/sprites/jonesy/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6725"
+    ],
+    "assetId": 6725,
+    "assetPage": "https://fortnite.gg/assets?id=6725",
+    "sourceUrl": "https://fnggcdn.com/assets/tPLZfl.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "jonesy:normal",
+    "localPath": "/images/sprites/jonesy.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "killswitch:cheat-master",
+    "localPath": "/images/sprites/killswitch/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6735"
+    ],
+    "assetId": 6735,
+    "assetPage": "https://fortnite.gg/assets?id=6735",
+    "sourceUrl": "https://fnggcdn.com/assets/vKEKeV.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "killswitch:gold",
+    "localPath": "/images/sprites/killswitch/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6723"
+    ],
+    "assetId": 6723,
+    "assetPage": "https://fortnite.gg/assets?id=6723",
+    "sourceUrl": "https://fnggcdn.com/assets/lFCmnP.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "killswitch:normal",
+    "localPath": "/images/sprites/killswitch.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "klombo:cheat-master",
+    "localPath": "/images/sprites/klombo/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6726"
+    ],
+    "assetId": 6726,
+    "assetPage": "https://fortnite.gg/assets?id=6726",
+    "sourceUrl": "https://fnggcdn.com/assets/lSPWza.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "klombo:gold",
+    "localPath": "/images/sprites/klombo/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6714"
+    ],
+    "assetId": 6714,
+    "assetPage": "https://fortnite.gg/assets?id=6714",
+    "sourceUrl": "https://fnggcdn.com/assets/Bge6PE.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "klombo:normal",
+    "localPath": "/images/sprites/klombo.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "mega-man:normal",
+    "localPath": "/images/sprites/mega-man.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "onigiri:cheat-master",
+    "localPath": "/images/sprites/onigiri/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6898"
+    ],
+    "assetId": 6898,
+    "assetPage": "https://fortnite.gg/assets?id=6898",
+    "sourceUrl": "https://fnggcdn.com/assets/RuRPR6.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "onigiri:gold",
+    "localPath": "/images/sprites/onigiri/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6897"
+    ],
+    "assetId": 6897,
+    "assetPage": "https://fortnite.gg/assets?id=6897",
+    "sourceUrl": "https://fnggcdn.com/assets/ZRLC1I.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "onigiri:normal",
+    "localPath": "/images/sprites/onigiri.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "overshield:cheat-master",
+    "localPath": "/images/sprites/overshield/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6901"
+    ],
+    "assetId": 6901,
+    "assetPage": "https://fortnite.gg/assets?id=6901",
+    "sourceUrl": "https://fnggcdn.com/assets/xWABAX.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "overshield:gold",
+    "localPath": "/images/sprites/overshield/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6900"
+    ],
+    "assetId": 6900,
+    "assetPage": "https://fortnite.gg/assets?id=6900",
+    "sourceUrl": "https://fnggcdn.com/assets/gPC3OF.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "overshield:normal",
+    "localPath": "/images/sprites/overshield.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "shadow:cheat-master",
+    "localPath": "/images/sprites/shadow/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6733"
+    ],
+    "assetId": 6733,
+    "assetPage": "https://fortnite.gg/assets?id=6733",
+    "sourceUrl": "https://fnggcdn.com/assets/ogIPYD.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "shadow:gold",
+    "localPath": "/images/sprites/shadow/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6721"
+    ],
+    "assetId": 6721,
+    "assetPage": "https://fortnite.gg/assets?id=6721",
+    "sourceUrl": "https://fnggcdn.com/assets/KbBT2x.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "shadow:normal",
+    "localPath": "/images/sprites/shadow.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "sonic:cheat-master",
+    "localPath": "/images/sprites/sonic/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6731"
+    ],
+    "assetId": 6731,
+    "assetPage": "https://fortnite.gg/assets?id=6731",
+    "sourceUrl": "https://fnggcdn.com/assets/IlDV5Z.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "sonic:gold",
+    "localPath": "/images/sprites/sonic/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6719"
+    ],
+    "assetId": 6719,
+    "assetPage": "https://fortnite.gg/assets?id=6719",
+    "sourceUrl": "https://fnggcdn.com/assets/xIvjpR.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "sonic:normal",
+    "localPath": "/images/sprites/sonic.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "storm-scout:cheat-master",
+    "localPath": "/images/sprites/storm-scout/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6727"
+    ],
+    "assetId": 6727,
+    "assetPage": "https://fortnite.gg/assets?id=6727",
+    "sourceUrl": "https://fnggcdn.com/assets/N42ZkL.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "storm-scout:gold",
+    "localPath": "/images/sprites/storm-scout/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6715"
+    ],
+    "assetId": 6715,
+    "assetPage": "https://fortnite.gg/assets?id=6715",
+    "sourceUrl": "https://fnggcdn.com/assets/gcgryS.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "storm-scout:normal",
+    "localPath": "/images/sprites/storm-scout.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "tails:cheat-master",
+    "localPath": "/images/sprites/tails/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6732"
+    ],
+    "assetId": 6732,
+    "assetPage": "https://fortnite.gg/assets?id=6732",
+    "sourceUrl": "https://fnggcdn.com/assets/kWGlTk.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "tails:gold",
+    "localPath": "/images/sprites/tails/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6720"
+    ],
+    "assetId": 6720,
+    "assetPage": "https://fortnite.gg/assets?id=6720",
+    "sourceUrl": "https://fnggcdn.com/assets/kO8Xiq.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "tails:normal",
+    "localPath": "/images/sprites/tails.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "x-ray:cheat-master",
+    "localPath": "/images/sprites/x-ray/cheat-master.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6895"
+    ],
+    "assetId": 6895,
+    "assetPage": "https://fortnite.gg/assets?id=6895",
+    "sourceUrl": "https://fnggcdn.com/assets/pjnWfR.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "x-ray:gold",
+    "localPath": "/images/sprites/x-ray/gold.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6894"
+    ],
+    "assetId": 6894,
+    "assetPage": "https://fortnite.gg/assets?id=6894",
+    "sourceUrl": "https://fnggcdn.com/assets/itIwfn.png",
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  },
+  {
+    "entryId": "x-ray:normal",
+    "localPath": "/images/sprites/x-ray.webp",
+    "imageMode": "family-fallback",
+    "sourceType": "fallback",
+    "sourceUrls": [
+      "https://www.fortnite.com/news/fortnite-override-break-the-rules-change-the-game",
+      "https://fortnite.gg/sprites"
+    ],
+    "assetId": null,
+    "assetPage": null,
+    "sourceUrl": null,
+    "reviewedAt": "2026-09-08",
+    "policyOrTermsRef": null,
+    "displayUseReview": "pending",
+    "exportUseReview": "pending",
+    "reviewNote": null
+  }
+]
