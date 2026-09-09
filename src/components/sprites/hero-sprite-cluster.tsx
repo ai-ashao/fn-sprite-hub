@@ -9,7 +9,7 @@ export function HeroSpriteCluster() {
     <figure
       aria-label="Current season Sprite artwork"
       className="sprite-hero-visual"
-      data-sprite-hero
+      data-sprite-hero-art
     >
       <div className="sprite-aura" aria-hidden="true" />
       <div className="sprite-leaf sprite-leaf-left" aria-hidden="true" />

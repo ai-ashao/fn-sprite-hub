@@ -19,12 +19,28 @@ type Props = {
 const statuses: StatusFilter[] = ['all', 'missing', 'owned', 'mastered']
 
 export function SpriteFilters(props: Readonly<Props>) {
+  const hasActiveFilters =
+    props.query.trim().length > 0 ||
+    props.status !== 'all' ||
+    props.rarity !== 'all' ||
+    props.finish !== 'all' ||
+    props.sort !== 'name'
+
+  function resetFilters() {
+    props.onQueryChange('')
+    props.onStatusChange('all')
+    props.onRarityChange('all')
+    props.onFinishChange('all')
+    props.onSortChange('name')
+  }
+
   return (
     <div className="sprite-toolbar" data-sprite-search>
       <label className="sprite-search">
         <span className="sr-only">Search Sprites</span>
         <span aria-hidden="true">⌕</span>
         <input
+          aria-label="Search Sprites"
           onChange={(event) => props.onQueryChange(event.target.value)}
           placeholder="Search sprites..."
           type="search"
@@ -52,6 +68,7 @@ export function SpriteFilters(props: Readonly<Props>) {
         <label>
           <span className="sr-only">Rarity</span>
           <select
+            aria-label="Filter by rarity"
             onChange={(event) => props.onRarityChange(event.target.value as Props['rarity'])}
             value={props.rarity}
           >
@@ -66,6 +83,7 @@ export function SpriteFilters(props: Readonly<Props>) {
         <label>
           <span className="sr-only">Variant</span>
           <select
+            aria-label="Filter by variant"
             onChange={(event) => props.onFinishChange(event.target.value as Props['finish'])}
             value={props.finish}
           >
@@ -80,6 +98,7 @@ export function SpriteFilters(props: Readonly<Props>) {
         <label>
           <span className="sr-only">Sort</span>
           <select
+            aria-label="Sort Sprite families"
             onChange={(event) => props.onSortChange(event.target.value as SortMode)}
             value={props.sort}
           >
@@ -88,6 +107,15 @@ export function SpriteFilters(props: Readonly<Props>) {
             <option value="completion-low">Least complete</option>
           </select>
         </label>
+
+        <button
+          className="sprite-filter-reset"
+          disabled={!hasActiveFilters}
+          onClick={resetFilters}
+          type="button"
+        >
+          Reset
+        </button>
       </div>
     </div>
   )

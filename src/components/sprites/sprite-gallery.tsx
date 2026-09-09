@@ -14,7 +14,6 @@ export type SpriteSelectionProps = {
 
 type Props = SpriteSelectionProps & {
   onCycleEntry: (entryId: string) => void
-  onOpen: (familyId: string) => void
 }
 
 function familyMatchesStatus(
@@ -67,9 +66,11 @@ export function SpriteGallery(props: Readonly<Props>) {
     <>
       <div className="sprite-viewbar">
         <div>
-          <strong>{families.length} Sprite families</strong>
+          <strong>{families.length}</strong>
+          <span> of {spriteFamilies.length} Sprite families</span>
           <span> · current season</span>
         </div>
+        <span className="sprite-viewbar-hint">Artwork and names open the full Sprite page</span>
       </div>
 
       {families.length ? (
@@ -81,7 +82,6 @@ export function SpriteGallery(props: Readonly<Props>) {
               getEntryState={props.getEntryState}
               key={family.id}
               onCycleEntry={props.onCycleEntry}
-              onOpen={props.onOpen}
             />
           ))}
         </div>

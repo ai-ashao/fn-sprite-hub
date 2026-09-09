@@ -10,7 +10,6 @@ import { useSpriteCollection } from '@/lib/sprites/collection'
 import { CollectionProgress } from './collection-progress'
 import { CollectionTools } from './collection-tools'
 import { HeroSpriteCluster } from './hero-sprite-cluster'
-import { SpriteDrawer } from './sprite-drawer'
 import { type SortMode, SpriteFilters, type StatusFilter } from './sprite-filters'
 import { SpriteGallery } from './sprite-gallery'
 import { SpriteMatrix } from './sprite-matrix'
@@ -38,7 +37,6 @@ export function SpriteTrackerHome() {
   const [finish, setFinish] = useState<'all' | SpriteFinishKind>('all')
   const [sort, setSort] = useState<SortMode>('name')
   const [view, setView] = useState<'gallery' | 'matrix'>('gallery')
-  const [drawerFamilyId, setDrawerFamilyId] = useState<string>()
 
   const dateLabel = useMemo(
     () =>
@@ -79,7 +77,7 @@ export function SpriteTrackerHome() {
       <script type="application/ld+json">{JSON.stringify(webAppSchema)}</script>
       <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
 
-      <section className="sprite-hero">
+      <section className="sprite-hero" data-sprite-hero>
         <div className="sprite-container sprite-hero-grid">
           <div className="sprite-hero-copy">
             <p className="sprite-kicker">Chapter 7 Season 4 · Current</p>
@@ -106,7 +104,10 @@ export function SpriteTrackerHome() {
         <header className="sprite-collection-head">
           <div>
             <h2>Your Sprite Collection</h2>
-            <p>Click an entry once for Owned, again for Mastered, and a third time to clear it.</p>
+            <p>
+              Tap a variant to cycle Missing → Owned → Mastered. Open a Sprite image or name for its
+              full page.
+            </p>
           </div>
           <CollectionProgress
             collectionPercent={collection.metrics.collectionPercent}
@@ -150,7 +151,6 @@ export function SpriteTrackerHome() {
             finish={finish}
             getEntryState={collection.getEntryState}
             onCycleEntry={collection.cycleEntry}
-            onOpen={setDrawerFamilyId}
             query={query}
             rarity={rarity}
             sort={sort}
@@ -245,13 +245,6 @@ export function SpriteTrackerHome() {
           ))}
         </div>
       </section>
-
-      <SpriteDrawer
-        familyId={drawerFamilyId}
-        getEntryState={collection.getEntryState}
-        onClose={() => setDrawerFamilyId(undefined)}
-        onCycleEntry={collection.cycleEntry}
-      />
     </div>
   )
 }

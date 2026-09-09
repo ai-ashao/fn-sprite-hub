@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { publicEnv } from '@/lib/config/env'
 import { epicFanContentDisclaimer, hasConfiguredEpicFanContentDisclaimer } from '@/lib/fan-content'
 import { site } from '@/lib/site'
+import polishStyles from '@/sprite-polish.css?url'
 import spriteStyles from '@/sprite-theme.css?url'
 import styles from '@/styles.css?url'
 
@@ -35,6 +36,7 @@ export const Route = createRootRoute({
     links: [
       { rel: 'stylesheet', href: styles },
       { rel: 'stylesheet', href: spriteStyles },
+      { rel: 'stylesheet', href: polishStyles },
     ],
   }),
   component: RootComponent,
@@ -68,8 +70,8 @@ function RootComponent() {
             })}
           </nav>
 
-          <span className="fn-language-pill" title="More languages after English SEO validation">
-            EN · English
+          <span className="fn-language-pill" title="English">
+            EN
           </span>
         </div>
       </header>
@@ -78,32 +80,21 @@ function RootComponent() {
         <Outlet />
       </main>
 
-      <footer className="fn-footer" data-site-footer>
-        <div className="fn-footer-inner">
-          <div>
-            <a className="fn-brand" href="/">
-              <span className="fn-brand-mark small" aria-hidden="true">
-                <i />
-                <b />
-              </span>
-              <span>FN Sprite Hub</span>
-            </a>
-            <p>
-              Free, fan-made Fortnite Sprite tracking tools. Collection progress stays in your
-              browser.
-            </p>
-          </div>
+      <footer className="fn-footer fn-footer-compact" data-site-footer>
+        <div className="fn-footer-inner fn-footer-legal-row">
+          <p>© {new Date().getFullYear()} FN Sprite Hub. All rights reserved.</p>
           <nav aria-label="Footer">
             <a href="/about">About</a>
             <a href="/contact">Contact</a>
-            <a href="/privacy-policy">Privacy</a>
-            <a href="/terms-of-service">Terms</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-of-service">Terms of Service</a>
           </nav>
         </div>
+
         {hasConfiguredEpicFanContentDisclaimer ? (
-          <div className="fn-disclaimer" data-epic-fan-content-disclaimer>
+          <p className="fn-disclaimer" data-epic-fan-content-disclaimer>
             {epicFanContentDisclaimer}
-          </div>
+          </p>
         ) : null}
       </footer>
     </div>
