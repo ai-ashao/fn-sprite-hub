@@ -8,7 +8,8 @@ import {
 import type { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import { publicEnv } from '@/lib/config/env'
-import { epicFanContentDisclaimer, site } from '@/lib/site'
+import { epicFanContentDisclaimer, hasConfiguredEpicFanContentDisclaimer } from '@/lib/fan-content'
+import { site } from '@/lib/site'
 import spriteStyles from '@/sprite-theme.css?url'
 import styles from '@/styles.css?url'
 
@@ -99,9 +100,11 @@ function RootComponent() {
             <a href="/terms-of-service">Terms</a>
           </nav>
         </div>
-        <div className="fn-disclaimer" data-epic-fan-content-disclaimer>
-          {epicFanContentDisclaimer}
-        </div>
+        {hasConfiguredEpicFanContentDisclaimer ? (
+          <div className="fn-disclaimer" data-epic-fan-content-disclaimer>
+            {epicFanContentDisclaimer}
+          </div>
+        ) : null}
       </footer>
     </div>
   )
