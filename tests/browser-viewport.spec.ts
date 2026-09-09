@@ -23,6 +23,9 @@ for (const viewport of viewports) {
     await expect(page.locator('[data-sprite-status-filter]')).toBeVisible()
     await expect(page.locator('[data-sprite-gallery]')).toBeVisible()
     await expect(page.locator('[data-sprite-card]')).toHaveCount(16)
+    await expect(page.locator('[data-epic-fan-content-disclaimer]')).toHaveText(
+      'Portions of the materials used are trademarks and/or copyrighted works of Epic Games, Inc. All rights reserved by Epic. This material is not official and is not endorsed by Epic.',
+    )
 
     const galleryBox = await page.locator('[data-sprite-gallery]').boundingBox()
     expect(galleryBox).not.toBeNull()

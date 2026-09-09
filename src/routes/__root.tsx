@@ -8,7 +8,7 @@ import {
 import type { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import { publicEnv } from '@/lib/config/env'
-import { site } from '@/lib/site'
+import { epicFanContentDisclaimer, site } from '@/lib/site'
 import spriteStyles from '@/sprite-theme.css?url'
 import styles from '@/styles.css?url'
 
@@ -99,9 +99,8 @@ function RootComponent() {
             <a href="/terms-of-service">Terms</a>
           </nav>
         </div>
-        <div className="fn-disclaimer">
-          FN Sprite Hub is an unofficial fan-made project and is not affiliated with or endorsed by
-          Epic Games. Fortnite and related marks belong to their respective owners.
+        <div className="fn-disclaimer" data-epic-fan-content-disclaimer>
+          {epicFanContentDisclaimer}
         </div>
       </footer>
     </div>
