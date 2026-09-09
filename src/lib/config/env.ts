@@ -4,12 +4,17 @@ export type PublicEnv = {
   googleSiteVerification?: string
 }
 
+export const defaultSiteUrl = 'https://fnspritehub.com'
+
 export function parsePublicEnv(source: Record<string, string | undefined>): PublicEnv {
-  const rawSiteUrl = source.VITE_SITE_URL?.trim() || 'https://shiplean.dev'
+  const rawSiteUrl = source.VITE_SITE_URL?.trim() || defaultSiteUrl
   let siteUrl: string
+
   try {
     const url = new URL(rawSiteUrl)
-    if (!['http:', 'https:'].includes(url.protocol)) throw new Error('unsupported protocol')
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      throw new Error('unsupported protocol')
+    }
     siteUrl = url.toString().replace(/\/$/, '')
   } catch {
     throw new Error('VITE_SITE_URL must be an absolute http(s) URL.')
