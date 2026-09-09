@@ -1,4 +1,5 @@
 import { createMiddleware, createStart } from '@tanstack/react-start'
+import { site } from '@/lib/site'
 
 const canonicalPath = createMiddleware({ type: 'request' }).server(async ({ next, request }) => {
   const url = new URL(request.url)
@@ -45,6 +46,7 @@ const securityHeaders = createMiddleware({ type: 'request' }).server(async ({ ne
   headers.set('referrer-policy', 'strict-origin-when-cross-origin')
   headers.set('x-content-type-options', 'nosniff')
   headers.set('x-frame-options', 'DENY')
+  if (!site.indexingEnabled) headers.set('x-robots-tag', 'noindex, nofollow')
 
   return {
     ...result,

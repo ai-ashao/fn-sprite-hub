@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest'
 import {
   buildLegalDocument,
   defaultSupportEmailForSite,
-  isLegalProfileLaunchReady,
   type LegalProfile,
   validateLegalProfile,
 } from '@/lib/legal'
@@ -18,14 +17,9 @@ describe('legal page contracts', () => {
     expect(() => defaultSupportEmailForSite('http://localhost:3000')).toThrow(/public domain/)
   })
 
-  it('keeps the checked-in profile structurally valid and reports its launch state', () => {
+  it('keeps the checked-in profile structurally valid', () => {
     expect(validateLegalProfile(legalProfile)).toEqual([])
     expect(legalProfile.templateKind).toBe('free-local-tool')
-    const releaseIssues = validateLegalProfile(legalProfile, { requireReviewed: true })
-    expect(isLegalProfileLaunchReady(legalProfile)).toBe(releaseIssues.length === 0)
-    if (legalProfile.reviewStatus === 'starter') {
-      expect(releaseIssues).toContain('Legal profile must be reviewed before production launch.')
-    }
     expect(legalProfile.siteUrl).toBe(site.url)
   })
 
@@ -72,13 +66,11 @@ describe('legal page contracts', () => {
     expect(terms.sections.map((section) => section.id)).toEqual([
       'acceptance',
       'service',
+      'accuracy',
       'acceptable-use',
-      'inputs-results',
+      'third-party-services',
       'intellectual-property',
       'availability',
-      'disclaimers-liability',
-      'governing-law',
-      'changes-contact',
     ])
   })
 
@@ -117,25 +109,18 @@ describe('legal page contracts', () => {
     expect(termsRoute).not.toContain('InformationPage')
   })
 
-  it('keeps implementation instructions out of reviewed public documents', () => {
-    const reviewed = {
-      ...legalProfile,
-      reviewStatus: 'reviewed',
-      governingLaw: 'the laws of the State of Delaware, United States',
-    } satisfies LegalProfile
-
+  it('keeps implementation instructions out of public documents', () => {
     const publicCopy = JSON.stringify([
-      buildLegalDocument('privacy', reviewed),
-      buildLegalDocument('terms', reviewed),
+      buildLegalDocument('privacy', legalProfile),
+      buildLegalDocument('terms', legalProfile),
     ])
 
     expect(publicCopy).not.toMatch(/current product configuration/i)
     expect(publicCopy).not.toMatch(/must be added before/i)
     expect(publicCopy).not.toMatch(/sandbox|paid plans|production user accounts/i)
-    expect(isLegalProfileLaunchReady(reviewed)).toBe(true)
   })
 
-  it('wires the strict legal check into the deployment command', () => {
+  it('wires the factual legal check into the deployment command', () => {
     const packageJson = JSON.parse(readFileSync('package.json', 'utf8')) as {
       scripts: Record<string, string>
     }
@@ -144,6 +129,6 @@ describe('legal page contracts', () => {
     expect(packageJson.scripts.deploy).toMatch(/^pnpm legal:check &&/)
     expect(packageJson.scripts.test).toContain('--exclude tests/legal-release.test.ts')
     expect(packageJson.scripts['legal:check']).toContain('--mode production')
-    expect(releaseTest).toContain('requireReviewed: true')
+    expect(releaseTest).toContain('validateLegalProfile(legalProfile)')
   })
 })

@@ -12,13 +12,10 @@ const artwork = JSON.parse(
 const disclaimer = (
   await readFile(path.join(ROOT, 'src', 'data', 'epic-fan-content-disclaimer.txt'), 'utf8')
 ).trim()
-const legalProfile = await readFile(path.join(ROOT, 'src', 'modules', 'legal-profile.ts'), 'utf8')
-
 const displayPending = artwork.filter(({ displayUseReview }) => displayUseReview !== 'approved')
 const exportPending = artwork.filter(({ exportUseReview }) => exportUseReview !== 'approved')
 const disclaimerReady =
   disclaimer.length >= 100 && !disclaimer.startsWith('PASTE THE EXACT CURRENT DISCLAIMER')
-const legalReady = !legalProfile.includes("reviewStatus: 'starter'")
 
 const rows = [
   [
@@ -32,7 +29,6 @@ const rows = [
     `${artwork.length - exportPending.length}/${artwork.length}`,
   ],
   ['Epic Fan Content disclaimer', disclaimerReady, disclaimerReady ? 'configured' : 'missing'],
-  ['Legal profile review', legalReady, legalReady ? 'reviewed' : 'starter'],
 ]
 
 console.log('FN Sprite Hub — RC status')

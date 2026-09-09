@@ -28,7 +28,7 @@
 3. **当前 i18n 是 en + zh-CN 且 `/zh` 会进入 public route registry**：Phase A 必须先切成英文唯一 production locale；ES / PT-BR / DE / FR 等英文稳定后再逐步启用。
 4. **当前 Header Link 类型只支持 `home/workflow/tools/guides/pricing`**：无法表达 Tracker / Checklist / Sprites / Rarity / Variants / Locations，必须做产品级 Navigation refactor。
 5. **现有 Playwright 首页门禁强绑定 ShipLean Generic Tool Landing selectors**：不能为了过测试把 Sprite Tracker 硬塞成通用 ToolLanding；必须把 active-home browser contract 改成 FN Sprite Hub 的真实 UX contract。
-6. **当前 Legal Profile 仍是 `reviewStatus: starter`，且未声明 Collection localStorage**：可以开发，但 `pnpm deploy` 的 production legal gate 在正式发布前必须完成。
+6. **Legal Profile 必须声明真实的 Collection localStorage 与第三方服务**：`pnpm legal:check` 验证这些产品事实，不维护法律审阅状态机。
 7. **Wrangler worker 名仍是 `shiplean`**：发布前必须改为 `fn-sprite-hub`。
 8. **`VITE_SITE_URL` 缺失时会 fallback 到 `https://shiplean.dev`**：这是 Canonical 高风险项，必须增加 production hard-fail。
 9. **当前 Canonical helper 只输出 canonical，不会自动把 `/checklist/` 重定向到 `/checklist`**：需要明确的 trailing-slash redirect 行为与测试。
@@ -2132,15 +2132,13 @@ ToolSeoPageType += 'entity' | 'database' | 'content'
 
 ```text
 templateKind: free-local-tool
-reviewStatus: starter
-browserStorage: analytics consent only
+browserStorage: collection state and analytics consent preference
 ```
 
-V1 开发阶段可以继续运行普通测试，但 production deploy 现有 `legal-release.test.ts` 会要求 legal profile launch-ready。
+Privacy 与 Terms 是普通、真实的静态页面。`legal-release.test.ts` 只检查法律配置中的必填产品事实与数据处理描述。
 
 发布前必须：
 
-- `reviewStatus` 改为 reviewed / launch-ready 所要求状态
 - 更新 effective / lastUpdated
 - 确认 operator / support email
 - `browserStorage` 增加：

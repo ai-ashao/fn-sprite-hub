@@ -20,6 +20,7 @@ export function pageHead(input: PageSeoInput) {
   const title = input.title === site.name ? site.name : `${input.title} · ${site.name}`
   const canonical = absoluteUrl(input.path)
   const socialImage = input.socialImage ? validSocialImageUrl(input.socialImage) : undefined
+  const indexable = site.indexingEnabled && input.indexable !== false
 
   return {
     meta: [
@@ -38,7 +39,7 @@ export function pageHead(input: PageSeoInput) {
             { name: 'twitter:image', content: socialImage },
           ]
         : []),
-      ...(input.indexable === false ? [{ name: 'robots', content: 'noindex,nofollow' }] : []),
+      ...(!indexable ? [{ name: 'robots', content: 'noindex,nofollow' }] : []),
     ],
     links: [
       { rel: 'canonical', href: canonical },

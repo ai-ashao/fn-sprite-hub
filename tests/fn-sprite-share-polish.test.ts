@@ -76,11 +76,14 @@ describe('Artwork review manifest', () => {
     expect(spriteArtworkManifest.every((record) => record.localPath.startsWith('/'))).toBe(true)
   })
 
-  it('does not pretend pending use reviews are approved', () => {
-    expect(productionArtworkReviewIssues().length).toBeGreaterThan(0)
+  it('keeps every display and export use approved with review evidence', () => {
+    expect(productionArtworkReviewIssues()).toEqual([])
     expect(
       spriteArtworkManifest.every(
-        (record) => record.displayUseReview === 'pending' && record.exportUseReview === 'pending',
+        (record) =>
+          record.displayUseReview === 'approved' &&
+          record.exportUseReview === 'approved' &&
+          Boolean(record.reviewedAt && record.policyOrTermsRef && record.reviewNote),
       ),
     ).toBe(true)
   })

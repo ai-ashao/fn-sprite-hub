@@ -53,6 +53,12 @@ function tagsWithAttribute(html, tagName, attributeName, expectedValue) {
   )
 }
 
+function hasNoindex(html) {
+  return tagsWithAttribute(html, 'meta', 'name', 'robots').some((tag) =>
+    attribute(tag, 'content')?.toLowerCase().includes('noindex'),
+  )
+}
+
 function assertSeoHead(html, { url, indexable }) {
   const titleMatches = [...html.matchAll(/<title>([^<]*)<\/title>/gi)]
   assert(titleMatches.length === 1, `${url} must render exactly one title.`)
@@ -80,12 +86,8 @@ function assertSeoHead(html, { url, indexable }) {
     assert(attribute(matches[0], 'content')?.trim(), `${url} ${name} must not be empty.`)
   }
 
-  const robots = tagsWithAttribute(html, 'meta', 'name', 'robots')
-  const hasNoindex = robots.some((tag) =>
-    attribute(tag, 'content')?.toLowerCase().includes('noindex'),
-  )
   assert(
-    indexable ? !hasNoindex : hasNoindex,
+    indexable ? !hasNoindex(html) : hasNoindex(html),
     `${url} robots metadata must match its indexability contract.`,
   )
 }
@@ -232,7 +234,11 @@ try {
   const home = await request('/')
   assert(home.response.status === 200, 'Home route must return 200.')
   const activeMode = detectProductMode(home.text)
-  assertSeoHead(home.text, { url: `${baseUrl}/`, indexable: true })
+  const siteIndexingPaused = home.response.headers
+    .get('x-robots-tag')
+    ?.toLowerCase()
+    .includes('noindex')
+  assertSeoHead(home.text, { url: `${baseUrl}/`, indexable: !siteIndexingPaused })
   assert(home.text.includes('application/ld+json'), 'Home JSON-LD is missing.')
   assert(
     !/rel="alternate"[^>]+hrefLang=/i.test(home.text),
@@ -273,13 +279,20 @@ try {
       !/rel="alternate"[^>]+hrefLang=/i.test(pricing.text),
       'A single-locale page must not publish false hreflang alternates.',
     )
-    assertSeoHead(pricing.text, { url: `${baseUrl}/pricing`, indexable: true })
+    assertSeoHead(pricing.text, {
+      url: `${baseUrl}/pricing`,
+      indexable: !siteIndexingPaused,
+    })
   }
 
   const robots = await request('/robots.txt')
   assert(
-    robots.response.status === 200 && robots.text.includes('/sitemap.xml'),
+    robots.response.status === 200 && robots.text.includes('Allow: /'),
     'robots.txt is invalid.',
+  )
+  assert(
+    robots.text.includes('/sitemap.xml') === !siteIndexingPaused,
+    'robots.txt sitemap discovery must match the global indexing state.',
   )
 
   const sitemap = await request('/sitemap.xml')
@@ -289,7 +302,7 @@ try {
     'Noindex Tool Landing reference routes must not appear in sitemap.xml.',
   )
   assert(
-    sitemap.text.includes('/pricing') === pricingAvailable,
+    sitemap.text.includes('/pricing') === (pricingAvailable && !siteIndexingPaused),
     'Pricing sitemap membership must match the active product-surface contract.',
   )
 
@@ -305,7 +318,10 @@ try {
   }
 
   const indexedUrls = sitemapUrls(sitemap.text)
-  assert(indexedUrls.length > 0, 'sitemap.xml must contain at least one public URL.')
+  assert(
+    siteIndexingPaused ? indexedUrls.length === 0 : indexedUrls.length > 0,
+    'sitemap.xml contents must match the global indexing state.',
+  )
   assert(
     new Set(indexedUrls).size === indexedUrls.length,
     'sitemap.xml must not contain duplicates.',
@@ -321,7 +337,7 @@ try {
     indexedHtml.set(indexedUrl, page.text)
   }
 
-  await auditInternalLinkGraph(indexedHtml)
+  if (indexedHtml.size > 0) await auditInternalLinkGraph(indexedHtml)
 
   const privacy = await request('/privacy-policy')
   assert(privacy.response.status === 200, 'Privacy Policy route must return 200.')
@@ -340,26 +356,25 @@ try {
     terms.text.includes('data-legal-document="terms"'),
     'Terms of Service must use the shared legal document template.',
   )
-  const legalDocumentsAreStarter = terms.text.includes('data-legal-review-status="starter"')
-  const privacyIsNoindex = privacy.text.includes('noindex,nofollow')
-  const termsAreNoindex = terms.text.includes('noindex,nofollow')
   assert(
-    privacyIsNoindex === legalDocumentsAreStarter && termsAreNoindex === legalDocumentsAreStarter,
-    'Legal page robots metadata must match the legal review state.',
-  )
-  assert(
-    sitemap.text.includes('/privacy-policy') !== legalDocumentsAreStarter &&
-      sitemap.text.includes('/terms-of-service') !== legalDocumentsAreStarter,
-    'Only launch-ready legal pages may appear in sitemap.xml.',
+    sitemap.text.includes('/privacy-policy') === !siteIndexingPaused &&
+      sitemap.text.includes('/terms-of-service') === !siteIndexingPaused,
+    'Legal page sitemap membership must match the global indexing state.',
   )
   assertSeoHead(privacy.text, {
     url: `${baseUrl}/privacy-policy`,
-    indexable: !legalDocumentsAreStarter,
+    indexable: !siteIndexingPaused,
   })
   assertSeoHead(terms.text, {
     url: `${baseUrl}/terms-of-service`,
-    indexable: !legalDocumentsAreStarter,
+    indexable: !siteIndexingPaused,
   })
+  assert(
+    terms.text.includes('Game information and accuracy') &&
+      terms.text.includes('Third-party services and advertising') &&
+      terms.text.includes('Fortnite and intellectual property'),
+    'Terms must expose the product-specific tool-site sections.',
+  )
 
   const textReference = await request('/tool-reference')
   assert(textReference.response.status === 200, 'Text Tool Landing reference must return 200.')
@@ -450,7 +465,7 @@ try {
   }
 
   console.log(
-    `E2E smoke passed for ${activeMode} mode: SEO-first sitemap, internal-link graph, mode-aware surfaces, metadata, legal templates, tool references, security, and local session lifecycle.`,
+    `E2E smoke passed for ${activeMode} mode: indexing ${siteIndexingPaused ? 'paused' : 'enabled'}, sitemap, internal-link graph, mode-aware surfaces, metadata, legal pages, tool references, security, and local session lifecycle.`,
   )
 } finally {
   server.kill('SIGTERM')

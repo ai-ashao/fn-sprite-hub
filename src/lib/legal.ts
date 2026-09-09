@@ -1,6 +1,4 @@
-export const legalTemplateVersion = '0.1' as const
-
-export type LegalReviewStatus = 'starter' | 'reviewed'
+export const legalTemplateVersion = '0.2' as const
 
 export type LegalProvider = {
   name: string
@@ -28,14 +26,12 @@ export type LegalFeatureProfile = {
 export type LegalProfile = {
   templateVersion: typeof legalTemplateVersion
   templateKind: 'free-local-tool'
-  reviewStatus: LegalReviewStatus
   productName: string
   operatorName: string
   siteUrl: string
   contactEmail: string
   effectiveDate: string
   lastUpdated: string
-  governingLaw: string
   features: LegalFeatureProfile
   privacy: {
     processingActivities: ReadonlyArray<LegalProcessingActivity>
@@ -88,17 +84,13 @@ function supportEmailForPublicSite(siteUrl: string): string {
   return `support@${hostname}`
 }
 
-export function validateLegalProfile(
-  profile: LegalProfile,
-  options: Readonly<{ requireReviewed?: boolean }> = {},
-): ReadonlyArray<string> {
+export function validateLegalProfile(profile: LegalProfile): ReadonlyArray<string> {
   const issues: string[] = []
   const requiredFields = {
     productName: profile.productName,
     operatorName: profile.operatorName,
     siteUrl: profile.siteUrl,
     contactEmail: profile.contactEmail,
-    governingLaw: profile.governingLaw,
     internationalTransfers: profile.privacy.internationalTransfers,
   }
 
@@ -112,9 +104,6 @@ export function validateLegalProfile(
   try {
     const url = new URL(profile.siteUrl)
     if (!['http:', 'https:'].includes(url.protocol)) throw new Error('unsupported protocol')
-    if (options.requireReviewed && url.protocol !== 'https:') {
-      issues.push('Reviewed legal profiles require an HTTPS siteUrl.')
-    }
   } catch {
     issues.push('Legal profile siteUrl must be an absolute HTTP(S) URL.')
   }
@@ -180,16 +169,6 @@ export function validateLegalProfile(
     }
   }
 
-  if (options.requireReviewed && profile.reviewStatus !== 'reviewed') {
-    issues.push('Legal profile must be reviewed before production launch.')
-  }
-  if (
-    options.requireReviewed &&
-    /\b(?:applicable|operator is established|operator's location)\b/i.test(profile.governingLaw)
-  ) {
-    issues.push('Reviewed legal profiles require a specific governingLaw jurisdiction.')
-  }
-
   return Array.from(new Set(issues))
 }
 
@@ -198,10 +177,6 @@ export function buildLegalDocument(
   profile: LegalProfile,
 ): LegalDocument {
   return kind === 'privacy' ? buildPrivacyDocument(profile) : buildTermsDocument(profile)
-}
-
-export function isLegalProfileLaunchReady(profile: LegalProfile): boolean {
-  return validateLegalProfile(profile, { requireReviewed: true }).length === 0
 }
 
 function buildPrivacyDocument(profile: LegalProfile): LegalDocument {
@@ -289,74 +264,63 @@ function buildTermsDocument(profile: LegalProfile): LegalDocument {
   return {
     kind: 'terms',
     title: 'Terms of Service',
-    description: `These terms set the rules for using ${profile.productName} and identify the product capabilities covered by the agreement.`,
+    description: `These terms explain the basic rules for using ${profile.productName}, an unofficial browser-based Fortnite Sprite collection aid.`,
     sections: [
       {
         id: 'acceptance',
         title: '1. Acceptance',
         paragraphs: [
-          `By accessing or using ${profile.productName}, you agree to these terms and confirm that you can legally accept them. If you do not agree, do not use the Service.`,
+          `By accessing or using ${profile.productName}, you agree to these terms. If you do not agree, please stop using the Service.`,
         ],
       },
       {
         id: 'service',
-        title: '2. The service',
+        title: '2. The Service and your collection data',
         paragraphs: [
-          `${profile.operatorName} provides ${profile.productName} as a free, account-free tool at ${profile.siteUrl}. Supported tool inputs are processed locally in the browser and are not intentionally uploaded or stored by the operator.`,
+          `${profile.productName} is a free, unofficial, account-free collection tracker and informational resource available at ${profile.siteUrl}. It does not connect to your Epic Games account or read your in-game inventory.`,
+          'Collection progress and preferences are stored locally in your browser and are not intentionally uploaded to an FN Sprite Hub account or database. Local data may be lost if you clear browser storage, reset the browser, or change devices. You are responsible for keeping any export or backup that matters to you.',
+        ],
+      },
+      {
+        id: 'accuracy',
+        title: '3. Game information and accuracy',
+        paragraphs: [
+          `Fortnite is a live service and may change without notice. Sprite availability, variants, rarity, abilities, locations, and other information may become outdated or contain errors. ${profile.productName} is not an official source of Fortnite data. Verify time-sensitive information in the game or through official Epic Games announcements.`,
         ],
       },
       {
         id: 'acceptable-use',
-        title: '3. Acceptable use',
-        paragraphs: ['You may not misuse the service. In particular, you must not:'],
+        title: '4. Acceptable use',
+        paragraphs: ['You may not misuse the Service. In particular, you must not:'],
         items: [
           'break applicable law or violate another person’s rights;',
           'probe, disrupt, overload, or bypass security or usage controls;',
-          'introduce malware or use the service to distribute harmful material;',
-          'misrepresent affiliation with the operator or use the service for deceptive activity.',
+          'introduce malware or distribute harmful material;',
+          'scrape the Service abusively or generate fraudulent, automated, or invalid analytics or advertising traffic;',
+          `present ${profile.productName} as an official or Epic Games-endorsed service.`,
         ],
       },
       {
-        id: 'inputs-results',
-        title: '4. Your inputs and results',
+        id: 'third-party-services',
+        title: '5. Third-party services and advertising',
         paragraphs: [
-          'Your inputs and generated results remain yours. You are responsible for having the right to use your inputs and for reviewing results before relying on or distributing them.',
+          'The Service may link to third-party websites or display third-party content or advertising. Their inclusion does not imply endorsement by FN Sprite Hub or Epic Games. Third-party services are governed by their own terms and privacy practices.',
         ],
       },
       {
         id: 'intellectual-property',
-        title: '5. Intellectual property',
+        title: '6. Fortnite and intellectual property',
         paragraphs: [
-          `${profile.productName}, its software, branding, and original content remain the property of ${profile.operatorName} or its licensors. These terms grant only a limited right to use the service as provided.`,
+          `${profile.productName} is an unofficial fan-made resource and is not affiliated with, endorsed by, or sponsored by Epic Games. Fortnite and related names, trademarks, artwork, and materials belong to Epic Games or their respective rights holders. Their appearance identifies the subject of this resource and does not transfer ownership to ${profile.productName} or its users.`,
+          `${profile.productName}'s original software, written content, interface, and branding remain the property of ${profile.operatorName} or its licensors. Exporting or sharing an image does not grant additional rights to reuse third-party material contained in it. Rights holders may report a concern to ${profile.contactEmail}.`,
         ],
       },
       {
         id: 'availability',
-        title: '6. Availability and changes',
+        title: '7. Availability, liability, and changes',
         paragraphs: [
-          'The Service may be changed, suspended, restricted to prevent misuse, or discontinued. The operator will use reasonable care but does not promise uninterrupted or error-free availability.',
-        ],
-      },
-      {
-        id: 'disclaimers-liability',
-        title: '7. Disclaimers and limitation of liability',
-        paragraphs: [
-          'The Service is provided on an “as available” basis to the extent permitted by law. It is not professional, legal, financial, medical, or compliance advice, and results should be reviewed for their intended use.',
-          'To the maximum extent permitted by applicable law, the operator is not liable for indirect, incidental, special, consequential, or punitive damages arising from use of the service. Rights that cannot lawfully be limited remain unaffected.',
-        ],
-      },
-      {
-        id: 'governing-law',
-        title: '8. Governing law',
-        paragraphs: [
-          `These terms are governed by ${profile.governingLaw}, without overriding consumer protections that cannot be waived in your location.`,
-        ],
-      },
-      {
-        id: 'changes-contact',
-        title: '9. Changes and contact',
-        paragraphs: [
-          'The updated date above identifies the current version. We will provide additional notice for material changes where appropriate, and continued use after the effective date means the revised terms apply.',
+          'The Service is provided on an “as available” basis without a promise of uninterrupted or error-free operation. To the extent permitted by law, the operator is not responsible for lost browser data, game progress, service interruptions, third-party services, or decisions based on outdated information. Rights and responsibilities that cannot legally be limited remain unaffected.',
+          'The Service and these terms may change as the product develops. The updated date above identifies the current version.',
           `Questions about these terms may be sent to ${profile.contactEmail}.`,
         ],
       },

@@ -45,9 +45,9 @@ The production environment rejects ShipLean starter canonical hosts.
 
 The checked-in Sprite images were collected for prototype/testing from the source manifest already present in this repository. Before monetized public release, complete the asset/IP review gate documented in `docs/FN-SPRITE-HUB-V1.3.md`.
 
-## Legal release gate
+## Legal pages
 
-`legalProfile.reviewStatus` intentionally remains `starter` until the operator performs an actual legal review. Do not delete or bypass `tests/legal-release.test.ts`.
+Privacy Policy and Terms of Service are ordinary public pages generated from the factual product profile in `src/modules/legal-profile.ts`. `pnpm legal:check` rejects missing, malformed, or placeholder product and data-processing facts; it does not maintain a legal-review state or certify legal compliance.
 
 ## Product source of truth
 

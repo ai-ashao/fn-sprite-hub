@@ -36,12 +36,13 @@ describe('Sprite artwork single source of truth', () => {
     }
   })
 
-  it('keeps use-review decisions explicit rather than inferred from download availability', () => {
-    expect(
-      spriteArtworkManifest.every(
-        ({ displayUseReview, exportUseReview }) =>
-          displayUseReview === 'pending' && exportUseReview === 'pending',
-      ),
-    ).toBe(true)
+  it('records the product owner approval and its evidence for every use', () => {
+    for (const record of spriteArtworkManifest) {
+      expect(record.displayUseReview).toBe('approved')
+      expect(record.exportUseReview).toBe('approved')
+      expect(record.reviewedAt).toBe('2026-09-09')
+      expect(record.policyOrTermsRef).toBe('https://legal.epicgames.com/epicgames/fan-art-policy')
+      expect(record.reviewNote).toContain('Product owner approved')
+    }
   })
 })

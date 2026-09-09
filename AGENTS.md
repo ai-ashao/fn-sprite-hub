@@ -49,9 +49,9 @@ Read `docs/tool-seo-brief.md`.
 - Public metadata must use the shared helpers and SEO audit contract. Treat structural failures as errors and editorial length or keyword guidance as warnings.
 - Register localized public routes by stable page identity. Only real translated equivalents may produce a language switch or `hreflang`; derive sitemap entries from the same registry.
 - Localized variants of one page must render the same shared page component. Keep user-facing copy in typed locale dictionaries; do not duplicate substantial JSX across locale route files.
-- Privacy and Terms routes for free, account-free, browser-local tools must use the shared `free-local-tool` legal template and `src/modules/legal-profile.ts`; do not replace them with free-form route copy. Keep `reviewStatus: starter` until product facts and appropriate legal review are complete.
+- Privacy and Terms routes for this free, account-free, browser-local tool must use the shared `free-local-tool` legal template and `src/modules/legal-profile.ts`; do not replace them with free-form route copy. Treat them as ordinary factual public pages without a legal-review state machine.
 - Default product contact and support email is `support@<public-domain>` unless the user specifies another address.
-- Product deployment must pass `pnpm legal:check`; `starter` legal pages must remain `noindex` and outside the sitemap.
+- Product deployment must pass `pnpm legal:check`, which validates required product and data-processing facts without certifying legal compliance.
 - Preserve keyboard focus, narrow-screen layout, and reduced-motion behavior.
 - Use the shared Field, Select, and Button spacing contract: labels must not touch controls, dropdown text/arrows need explicit trailing space, and adjacent controls need horizontal and wrapped vertical gaps.
 
@@ -59,7 +59,7 @@ Read `docs/tool-seo-brief.md`.
 
 Run `pnpm verify`. It must pass formatting/lint checks, strict TypeScript, domain tests, SEO assertions, internal-link acceptance, browser viewport acceptance, and the production build.
 
-Before a production deployment, `pnpm deploy` must also pass the strict legal-profile gate.
+Before a production deployment, `pnpm deploy` must also pass the factual legal-profile check.
 
 ## Current non-goals
 

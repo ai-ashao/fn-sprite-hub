@@ -1,7 +1,6 @@
 import { currentDataVerifiedAt, spriteSeoRegistry } from '@/data/sprites'
 import { type GuideSlug, guides } from '@/lib/guides'
-import { isLegalProfileLaunchReady } from '@/lib/legal'
-import { legalProfile } from '@/modules/legal-profile'
+import { site } from '@/lib/site'
 import { defaultLocale, type Locale } from './config'
 
 export type PublicPageId =
@@ -30,8 +29,6 @@ export type PublicPageRoute = {
   paths: LocalizedPaths
   lastModified?: string
 }
-
-const legalPagesIndexable = isLegalProfileLaunchReady(legalProfile)
 
 const staticPages: PublicPageRoute[] = [
   { id: 'home', indexable: true, paths: { en: '/' }, lastModified: currentDataVerifiedAt },
@@ -84,8 +81,8 @@ const staticPages: PublicPageRoute[] = [
   { id: 'guides', indexable: false, paths: { en: '/guides' } },
   { id: 'about', indexable: true, paths: { en: '/about' } },
   { id: 'contact', indexable: true, paths: { en: '/contact' } },
-  { id: 'privacy', indexable: legalPagesIndexable, paths: { en: '/privacy-policy' } },
-  { id: 'terms', indexable: legalPagesIndexable, paths: { en: '/terms-of-service' } },
+  { id: 'privacy', indexable: true, paths: { en: '/privacy-policy' } },
+  { id: 'terms', indexable: true, paths: { en: '/terms-of-service' } },
 ]
 
 const legacyGuidePages: PublicPageRoute[] = guides.map((guide) => ({
@@ -122,7 +119,7 @@ export function localizedPath(pageId: PublicPageId, locale: Locale): string | un
 export function isPublicPageIndexable(pageId: PublicPageId): boolean {
   const page = publicPageRoutes.find((candidate) => candidate.id === pageId)
   if (!page) throw new Error(`Unknown public page: ${pageId}`)
-  return page.indexable
+  return site.indexingEnabled && page.indexable
 }
 
 export function localizedPathOrDefault(pageId: PublicPageId, locale: Locale): string {
@@ -158,6 +155,8 @@ export function hreflangAlternates(_pageId: PublicPageId): Array<{
 }
 
 export function sitemapEntries(): SitemapEntry[] {
+  if (!site.indexingEnabled) return []
+
   const staticEntries = publicPageRoutes.flatMap((page) => {
     if (!page.indexable) return []
     const path = page.paths.en

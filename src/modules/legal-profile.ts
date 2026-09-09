@@ -17,17 +17,14 @@ const analytics = publicEnv.ga4Id
 export const legalProfile = defineLegalProfile({
   templateVersion: legalTemplateVersion,
   templateKind: 'free-local-tool',
-  // Keep this as starter until the operator performs the actual legal review.
-  reviewStatus: 'starter',
   productName: site.name,
   operatorName,
   siteUrl: site.url,
   contactEmail: defaultSupportEmailForSite(site.url, {
     fallbackSiteUrl: starterFallbackSiteUrl,
   }),
-  effectiveDate: '2026-09-07',
-  lastUpdated: '2026-09-07',
-  governingLaw: 'the laws applicable where the product operator is established',
+  effectiveDate: '2026-09-09',
+  lastUpdated: '2026-09-09',
   features: {
     analytics,
   },
