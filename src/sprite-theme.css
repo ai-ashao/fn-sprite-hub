@@ -864,11 +864,6 @@ body {
   font-weight: 850;
 }
 
-.sprite-entry-chip span:first-child {
-  display: inline-block;
-  width: 14px;
-}
-
 [data-entry-state="owned"] {
   border-color: color-mix(in srgb, var(--sprite-moss) 60%, #fff);
   background: #eef5e9;
@@ -1377,12 +1372,12 @@ body {
 }
 
 .sprite-page-hero {
-  max-width: 920px;
   padding-top: 56px;
   padding-bottom: 28px;
 }
 
 .sprite-page-hero h1 {
+  max-width: 1040px;
   font-size: clamp(42px, 6vw, 66px);
 }
 

@@ -421,6 +421,10 @@
   margin-top: 18px;
 }
 
+.sprite-detail-actions .sprite-primary-link {
+  margin-top: 0;
+}
+
 .sprite-secondary-link {
   display: inline-flex;
   align-items: center;
@@ -493,6 +497,11 @@
 
 .sprite-detail-variants-section .sprite-detail-entries > button {
   min-width: 0;
+  display: grid;
+  grid-template-rows: 150px auto;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 0;
   padding: 12px;
   border: 1px solid #e1dbd0;
   border-radius: 16px;
@@ -523,14 +532,22 @@
 }
 
 .sprite-detail-variants-section .sprite-entry-art {
+  width: 100%;
   min-height: 150px;
   display: grid;
   place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 55%, rgb(255 255 255 / 86%), transparent 58%), #f0eee7;
 }
 
 .sprite-detail-variants-section .sprite-entry-art img {
   width: 100%;
   height: 142px;
+  padding: 6px;
+  border-radius: 0;
+  background: transparent;
+  box-sizing: border-box;
   object-fit: contain;
   filter: drop-shadow(0 12px 18px rgb(72 69 59 / 10%));
 }
@@ -738,6 +755,10 @@
 
   .sprite-detail-variants-section .sprite-entry-art {
     min-height: 122px;
+  }
+
+  .sprite-detail-variants-section .sprite-detail-entries > button {
+    grid-template-rows: 122px auto;
   }
 
   .sprite-detail-variants-section .sprite-entry-art img {
