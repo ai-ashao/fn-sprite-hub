@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
+import finalPatchStyles from '@/final-ui-patch.css?url'
 import { publicEnv } from '@/lib/config/env'
 import { epicFanContentDisclaimer, hasConfiguredEpicFanContentDisclaimer } from '@/lib/fan-content'
 import { site } from '@/lib/site'
@@ -37,6 +38,7 @@ export const Route = createRootRoute({
       { rel: 'stylesheet', href: styles },
       { rel: 'stylesheet', href: spriteStyles },
       { rel: 'stylesheet', href: polishStyles },
+      { rel: 'stylesheet', href: finalPatchStyles },
     ],
   }),
   component: RootComponent,
@@ -73,6 +75,23 @@ function RootComponent() {
           <span className="fn-language-pill" title="English">
             EN
           </span>
+
+          <details className="fn-mobile-nav" data-mobile-navigation>
+            <summary aria-label="Toggle primary navigation">
+              <span aria-hidden="true">☰</span>
+              <span className="sr-only">Menu</span>
+            </summary>
+            <nav aria-label="Mobile primary navigation">
+              {nav.map(([label, href]) => {
+                const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
+                return (
+                  <a aria-current={active ? 'page' : undefined} href={href} key={href}>
+                    {label}
+                  </a>
+                )
+              })}
+            </nav>
+          </details>
         </div>
       </header>
 

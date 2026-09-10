@@ -38,7 +38,7 @@ const securityHeaders = createMiddleware({ type: 'request' }).server(async ({ ne
       "img-src 'self' data: blob:",
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com",
       "connect-src 'self' https://www.google-analytics.com",
     ].join('; '),
   )

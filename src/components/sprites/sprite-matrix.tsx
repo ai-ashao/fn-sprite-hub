@@ -25,6 +25,9 @@ export function SpriteMatrix(props: Readonly<Props>) {
 
   return (
     <div className="sprite-matrix-scroll" data-sprite-matrix>
+      <span aria-hidden="true" className="sprite-matrix-swipe-hint">
+        Swipe to compare variants →
+      </span>
       <table className="sprite-matrix">
         <caption className="sr-only">
           Current-season Sprite collection matrix. Activate an available entry to cycle Missing,

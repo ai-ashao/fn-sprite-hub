@@ -25,6 +25,7 @@ export function SpriteFilters(props: Readonly<Props>) {
     props.rarity !== 'all' ||
     props.finish !== 'all' ||
     props.sort !== 'name'
+  const advancedFilterCount = Number(props.rarity !== 'all') + Number(props.finish !== 'all')
 
   function resetFilters() {
     props.onQueryChange('')
@@ -64,7 +65,7 @@ export function SpriteFilters(props: Readonly<Props>) {
         ))}
       </fieldset>
 
-      <div className="sprite-filter-selects">
+      <div className="sprite-filter-selects sprite-filter-selects-desktop">
         <label>
           <span className="sr-only">Rarity</span>
           <select
@@ -116,6 +117,69 @@ export function SpriteFilters(props: Readonly<Props>) {
         >
           Reset
         </button>
+      </div>
+
+      <div className="sprite-mobile-filter-row" data-mobile-filter-controls>
+        <details className="sprite-mobile-filter-details">
+          <summary>
+            <span>Filters</span>
+            {advancedFilterCount > 0 ? (
+              <span className="sprite-mobile-filter-count" title={`${advancedFilterCount} active`}>
+                {advancedFilterCount}
+              </span>
+            ) : null}
+          </summary>
+          <div className="sprite-mobile-filter-panel">
+            <label>
+              <span>Rarity</span>
+              <select
+                aria-label="Filter by rarity"
+                onChange={(event) => props.onRarityChange(event.target.value as Props['rarity'])}
+                value={props.rarity}
+              >
+                <option value="all">All rarities</option>
+                <option value="Rare">Rare</option>
+                <option value="Epic">Epic</option>
+                <option value="Legendary">Legendary</option>
+                <option value="Mythic">Mythic</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Variant</span>
+              <select
+                aria-label="Filter by variant"
+                onChange={(event) => props.onFinishChange(event.target.value as Props['finish'])}
+                value={props.finish}
+              >
+                <option value="all">All variants</option>
+                <option value="normal">Base</option>
+                <option value="gold">Gold</option>
+                <option value="cheat-master">Cheat Master</option>
+                <option value="loot-hacker">Loot Hacker</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <label className="sprite-mobile-sort">
+          <span className="sr-only">Sort</span>
+          <select
+            aria-label="Sort Sprite families"
+            onChange={(event) => props.onSortChange(event.target.value as SortMode)}
+            value={props.sort}
+          >
+            <option value="name">Name A–Z</option>
+            <option value="rarity-high">Rarity high → low</option>
+            <option value="completion-low">Least complete</option>
+          </select>
+        </label>
+
+        {hasActiveFilters ? (
+          <button className="sprite-mobile-filter-clear" onClick={resetFilters} type="button">
+            Clear filters
+          </button>
+        ) : null}
       </div>
     </div>
   )

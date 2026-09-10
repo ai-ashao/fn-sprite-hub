@@ -27,6 +27,24 @@ for (const viewport of viewports) {
       'Portions of the materials used are trademarks and/or copyrighted works of Epic Games, Inc. All rights reserved by Epic. This material is not official and is not endorsed by Epic.',
     )
 
+    const mobileNavigation = page.locator('[data-mobile-navigation]')
+    const mobileFilterControls = page.locator('[data-mobile-filter-controls]')
+    if (viewport.name.startsWith('mobile')) {
+      await expect(mobileNavigation).toBeVisible()
+      await mobileNavigation.locator('summary').click()
+      await expect(
+        mobileNavigation.getByRole('navigation', { name: 'Mobile primary navigation' }),
+      ).toBeVisible()
+      await expect(mobileFilterControls).toBeVisible()
+      await mobileFilterControls.locator('summary').click()
+      await expect(
+        mobileFilterControls.getByRole('combobox', { name: 'Filter by rarity' }),
+      ).toBeVisible()
+    } else {
+      await expect(mobileNavigation).toBeHidden()
+      await expect(mobileFilterControls).toBeHidden()
+    }
+
     const galleryBox = await page.locator('[data-sprite-gallery]').boundingBox()
     expect(galleryBox).not.toBeNull()
     if (viewport.name.startsWith('desktop')) {
@@ -58,6 +76,12 @@ for (const viewport of viewports) {
 
     await page.getByRole('button', { name: 'Matrix' }).click()
     const matrixEntry = page.locator('[data-sprite-matrix] [data-entry-id="8-bit:normal"]')
+    const matrixSwipeHint = page.locator('.sprite-matrix-swipe-hint')
+    if (viewport.name.startsWith('mobile')) {
+      await expect(matrixSwipeHint).toBeVisible()
+    } else {
+      await expect(matrixSwipeHint).toBeHidden()
+    }
     await expect(matrixEntry).toHaveAttribute('data-entry-state', 'mastered')
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       await page.evaluate(() => window.innerWidth),
