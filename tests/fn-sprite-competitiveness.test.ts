@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { test } from 'vitest'
+import { test, vi } from 'vitest'
 import { releasedFinishesFor } from '../src/data/released-sprite-finishes'
 import {
   type CollectionCatalog,
@@ -65,6 +65,16 @@ function setup(raw?: string, coordinated = true) {
   b.initialize()
   return { port, a, b }
 }
+
+test('CollectionStore construction does not generate random values in module scope', () => {
+  const randomUUID = vi.spyOn(globalThis.crypto, 'randomUUID')
+  try {
+    new CollectionStore(catalog, () => new MemoryStorage(), lock())
+    assert.equal(randomUUID.mock.calls.length, 0)
+  } finally {
+    randomUUID.mockRestore()
+  }
+})
 
 test('QA01: opening a new collection performs no storage writes', () => {
   const { port, a } = setup()

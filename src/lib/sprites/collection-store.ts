@@ -41,7 +41,7 @@ export class CollectionStore {
   private queue: Promise<unknown> = Promise.resolve()
   private started = false
   private counter = 0
-  private readonly clientId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`
+  private clientId: string | undefined
   constructor(
     readonly catalog: CollectionCatalog,
     private readonly storage: () => StoragePort,
@@ -72,6 +72,7 @@ export class CollectionStore {
     for (const listener of this.listeners) listener()
   }
   private revision() {
+    this.clientId ??= globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`
     return `${this.clientId}:${++this.counter}`
   }
   private read(): LoadResult {
