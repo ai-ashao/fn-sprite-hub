@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: /(?:browser-viewport|share-polish-browser)\.spec\.ts/,
+  testMatch: /(?:browser-viewport|share-polish-browser|competitiveness-browser)\.spec\.ts/,
   timeout: 30_000,
   expect: { timeout: 5_000 },
   use: {

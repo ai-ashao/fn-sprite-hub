@@ -1,0 +1,106 @@
+{
+  "scope": "Actual pure-module browser harness; NOT full React application QA",
+  "browser": "144.0.7559.96",
+  "tests": [
+    {
+      "name": "Native Web Locks are available on loopback",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 161
+    },
+    {
+      "name": "QA01 no initialization write",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 78
+    },
+    {
+      "name": "QA02 v1 load and reload preservation",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 79
+    },
+    {
+      "name": "QA03-05 damaged raw protected under real storage",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 76
+    },
+    {
+      "name": "QA03-05 season raw protected under real storage",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 99
+    },
+    {
+      "name": "QA03-05 schema raw protected under real storage",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 78
+    },
+    {
+      "name": "QA03-05 invalid raw protected under real storage",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 111
+    },
+    {
+      "name": "QA06 simulated access error in Chromium",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 117
+    },
+    {
+      "name": "QA07 simulated quota error retains memory",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 137
+    },
+    {
+      "name": "QA11 no-lock fallback is non-destructive",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 121
+    },
+    {
+      "name": "QA08-10 native two-tab storage events without feedback writes",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 179
+    },
+    {
+      "name": "QA11 native Web Locks stress: 80 interleaved changes, no loss",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 177
+    },
+    {
+      "name": "QA12 native two-tab undo preserves other entry",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 126
+    },
+    {
+      "name": "QA17 protected snapshot failure aborts replacement",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 120
+    },
+    {
+      "name": "QA18 damaged original archived byte-for-byte before restore",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 121
+    },
+    {
+      "name": "QA23-24 share export guard rejects stale / busy results (not renderer)",
+      "status": "blocked",
+      "error": "Page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at http://127.0.0.1:42205/\nCall log:\n  - navigating to \"http://127.0.0.1:42205/\", waiting until \"load\"\n",
+      "duration_ms": 152
+    }
+  ],
+  "passed": 0,
+  "failed": 0,
+  "blocked": 16,
+  "note": "Original attempted run recorded in browser-core.log. Failures were classified after review as environment-blocked navigation; no browser test passed."
+}

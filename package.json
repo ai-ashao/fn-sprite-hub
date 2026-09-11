@@ -13,7 +13,7 @@
     "check": "biome check src tests scripts docs TASKS .agents .github AGENTS.md ARCHITECTURE.md CHANGELOG.md README.md package.json tsconfig.json vite.config.ts playwright.config.ts biome.json",
     "check:fix": "biome check --write src tests scripts docs TASKS .agents .github AGENTS.md ARCHITECTURE.md CHANGELOG.md README.md package.json tsconfig.json vite.config.ts playwright.config.ts biome.json",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --exclude tests/browser-viewport.spec.ts --exclude tests/share-polish-browser.spec.ts --exclude tests/legal-release.test.ts",
+    "test": "vitest run --exclude tests/browser-viewport.spec.ts --exclude tests/share-polish-browser.spec.ts --exclude tests/competitiveness-browser.spec.ts --exclude tests/legal-release.test.ts",
     "legal:check": "vitest run tests/legal-release.test.ts --mode production",
     "artwork:check": "node scripts/check-artwork-review.mjs",
     "fan-content:check": "node scripts/check-fan-content.mjs",

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { currentReleasedEntryCount } from '@/data/sprites'
 import {
   buildDiscordCollectionSummary,
   type CollectionStateV1,
@@ -49,10 +50,10 @@ describe('Sprite collection state', () => {
       masteredEntryIds: ['jonesy:normal'],
     }
     expect(collectionMetrics(state)).toMatchObject({
-      total: 47,
+      total: currentReleasedEntryCount,
       owned: 1,
       mastered: 1,
-      missing: 46,
+      missing: currentReleasedEntryCount - 1,
     })
   })
 
@@ -78,8 +79,8 @@ describe('Sprite collection state', () => {
   it('builds a Discord-ready summary from derived collection data', () => {
     const state = cycleEntryState(empty, 'jonesy:normal')
     const summary = buildDiscordCollectionSummary(state)
-    expect(summary).toContain('Collected: 1/47')
-    expect(summary).toContain('Mastered: 0/47')
+    expect(summary).toContain(`Collected: 1/${currentReleasedEntryCount}`)
+    expect(summary).toContain(`Mastered: 0/${currentReleasedEntryCount}`)
     expect(summary).toContain('Need to Master:\n• Jonesy')
     expect(summary).toContain('• Gold Jonesy')
   })

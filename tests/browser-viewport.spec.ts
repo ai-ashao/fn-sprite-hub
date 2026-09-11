@@ -1,4 +1,8 @@
 import { expect, test } from '@playwright/test'
+import {
+  reviewedFamilyCount as currentFamilyCount,
+  reviewedReleasedEntryCount as currentReleasedEntryCount,
+} from '../src/data/released-sprite-finishes'
 
 const viewports = [
   { name: 'desktop-1440', width: 1440, height: 900 },
@@ -22,7 +26,7 @@ for (const viewport of viewports) {
     await expect(page.locator('[data-sprite-search]')).toBeVisible()
     await expect(page.locator('[data-sprite-status-filter]')).toBeVisible()
     await expect(page.locator('[data-sprite-gallery]')).toBeVisible()
-    await expect(page.locator('[data-sprite-card]')).toHaveCount(16)
+    await expect(page.locator('[data-sprite-card]')).toHaveCount(currentFamilyCount)
     await expect(page.locator('[data-epic-fan-content-disclaimer]')).toHaveText(
       'Portions of the materials used are trademarks and/or copyrighted works of Epic Games, Inc. All rights reserved by Epic. This material is not official and is not endorsed by Epic.',
     )
@@ -148,7 +152,8 @@ test('backup, restore and Discord copy work without login', async ({ context, pa
     mimeType: 'application/json',
     buffer: Buffer.from(JSON.stringify(validBackup)),
   })
-  await expect(page.getByText('Collection restored from backup.')).toBeVisible()
+  await page.getByRole('button', { name: 'Confirm replacement', exact: true }).click()
+  await expect(page.getByText('Collection restored from backup.').first()).toBeVisible()
   await expect(
     page.locator('[data-sprite-card]').first().locator('.sprite-entry-chip').first(),
   ).toHaveAttribute('data-entry-state', 'owned')
@@ -170,7 +175,9 @@ test('backup, restore and Discord copy work without login', async ({ context, pa
 
   await page.getByRole('button', { name: 'Copy for Discord' }).click()
   await expect(page.getByText('Discord summary copied.')).toBeVisible()
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('Collected: 1/47')
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
+    `Collected: 1/${currentReleasedEntryCount}`,
+  )
 })
 
 test('Share Studio previews and downloads deterministic multi-page PNGs on mobile', async ({
@@ -239,12 +246,32 @@ test('Share Studio previews and downloads deterministic multi-page PNGs on mobil
 
 const shareFixtures = [
   { name: 'collection-normal', template: 'My Collection', owned: 20, mastered: 8 },
-  { name: 'missing-6', template: 'Missing Sprites', owned: 41, mastered: 8 },
-  { name: 'missing-24', template: 'Missing Sprites', owned: 23, mastered: 8 },
+  {
+    name: 'missing-6',
+    template: 'Missing Sprites',
+    owned: Math.max(0, currentReleasedEntryCount - 6),
+    mastered: 8,
+  },
+  {
+    name: 'missing-24',
+    template: 'Missing Sprites',
+    owned: Math.max(0, currentReleasedEntryCount - 24),
+    mastered: 8,
+  },
   { name: 'missing-47-page-1', template: 'Missing Sprites', owned: 0, mastered: 0 },
   { name: 'unmastered-12', template: 'Need to Master', owned: 12, mastered: 0 },
-  { name: 'celebration-complete', template: '100% Celebration', owned: 47, mastered: 8 },
-  { name: 'celebration-mastered', template: '100% Celebration', owned: 47, mastered: 47 },
+  {
+    name: 'celebration-complete',
+    template: '100% Celebration',
+    owned: currentReleasedEntryCount,
+    mastered: 8,
+  },
+  {
+    name: 'celebration-mastered',
+    template: '100% Celebration',
+    owned: currentReleasedEntryCount,
+    mastered: currentReleasedEntryCount,
+  },
 ] as const
 
 for (const fixture of shareFixtures) {

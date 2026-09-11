@@ -9,7 +9,7 @@ export const Route = createFileRoute('/guides/how-to-master-sprites')({
       locale: 'en',
       title: 'How to Master Sprites in Fortnite 2026',
       description:
-        'Learn what Mastered means for Fortnite Sprite entries and how to track Owned and Mastered status separately.',
+        'Understand Sprite collection XP, extraction and Crown / Klombo leveling rules using patch-sourced guidance. Track Owned and Mastered separately.',
     }),
   component: MasteryGuidePage,
 })

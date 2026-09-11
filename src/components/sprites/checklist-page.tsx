@@ -6,6 +6,7 @@ import {
   spriteFamilies,
 } from '@/data/sprites'
 import { useSpriteCollection } from '@/lib/sprites/collection'
+import { CollectionNotice } from './collection-notice'
 import { CollectionProgress } from './collection-progress'
 import { ShareStudio } from './share-studio'
 
@@ -29,6 +30,7 @@ export function SpriteChecklistPage() {
           owned={collection.metrics.owned}
           total={collection.metrics.total}
         />
+        <CollectionNotice />
         <ShareStudio
           buttonClassName="sprite-primary-link sprite-share-checklist-trigger"
           collection={collection.collection}

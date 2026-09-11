@@ -251,3 +251,156 @@
     letter-spacing: 0.02em;
   }
 }
+
+/* Competitiveness patch: additions to the existing final-ui-patch.css, not a new layer. */
+#collection {
+  scroll-margin-top: 88px;
+}
+.sprite-save-notice,
+.sprite-restore-preview,
+.sprite-quick-answer {
+  border: 1px solid var(--sprite-line, #ddd8cc);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+  background: #fffdf8;
+  color: var(--sprite-ink, #25261f);
+}
+.sprite-collection-shell > .sprite-save-notice,
+.sprite-collection-shell > .sprite-return-message {
+  margin: 12px 16px;
+}
+.sprite-save-notice {
+  font-size: 13px;
+  line-height: 1.55;
+}
+.sprite-save-notice p {
+  margin: 0;
+}
+.sprite-save-notice[data-save-level="warning"],
+.sprite-save-notice[data-save-level="error"] {
+  border-color: #b98658;
+  background: #fff6e9;
+}
+.sprite-save-notice[data-save-level="error"] {
+  border-color: #b05a41;
+}
+.sprite-safety-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.sprite-safety-actions:not(:empty) {
+  margin-top: 10px;
+}
+.sprite-safety-actions button,
+.sprite-share-loading button {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #cbc5b7;
+  border-radius: 10px;
+  background: #fffdf8;
+  color: #3f4937;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sprite-safety-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.sprite-safety-actions button:focus-visible,
+.sprite-continue-link:focus-visible,
+.sprite-practical-guide a:focus-visible,
+.sprite-sources a:focus-visible {
+  outline: 3px solid #668451;
+  outline-offset: 3px;
+}
+.sprite-continue-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #405c37;
+  font-weight: 750;
+}
+.sprite-return-message {
+  font-size: 13px;
+  color: #5c624f;
+}
+.sprite-detail-actions {
+  flex-wrap: wrap;
+}
+.sprite-quick-answer {
+  text-align: left;
+  background: #f1f5ed;
+}
+.sprite-quick-answer p {
+  margin: 8px 0;
+  line-height: 1.65;
+}
+.sprite-quick-answer small,
+.sprite-source-scope {
+  color: #606558;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.sprite-practical-guide h3,
+.sprite-rule-note h3 {
+  font-size: 20px;
+  margin: 20px 0 8px;
+}
+.sprite-practical-guide p,
+.sprite-rule-note p,
+.sprite-sources p {
+  line-height: 1.75;
+}
+.sprite-rule-note {
+  padding: 8px 18px 14px;
+  margin: 16px 0;
+  border-left: 3px solid #849b70;
+  background: #f5f5ee;
+}
+.sprite-restore-preview {
+  overflow-wrap: anywhere;
+}
+.sprite-restore-preview dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.sprite-restore-preview dt {
+  font-weight: 750;
+}
+.sprite-restore-preview dd {
+  margin: 6px 0;
+}
+.sprite-content-page:has(.sprite-steps) .sprite-page-hero {
+  padding-top: 30px;
+  padding-bottom: 16px;
+}
+.sprite-content-page:has(.sprite-steps) .sprite-page-hero h1 {
+  font-size: clamp(32px, 4vw, 48px);
+}
+@media (max-width: 680px) {
+  .sprite-restore-preview dl {
+    grid-template-columns: 1fr;
+  }
+  .sprite-quick-answer,
+  .sprite-save-notice,
+  .sprite-restore-preview {
+    padding: 12px;
+  }
+  .sprite-safety-actions {
+    align-items: stretch;
+  }
+  .sprite-safety-actions button {
+    text-align: left;
+    max-width: 100%;
+  }
+  .sprite-share-footer > div {
+    flex-wrap: wrap;
+  }
+  .sprite-rule-note {
+    padding-inline: 12px;
+  }
+}

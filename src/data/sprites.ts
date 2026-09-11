@@ -1,4 +1,6 @@
+import { releasedFinishesFor } from './released-sprite-finishes'
 import artworkData from './sprite-artworks.json'
+import { generalAcquisitionRule, guidanceSources, spriteGuidance } from './sprite-guidance'
 
 export type SpriteRarity = 'Rare' | 'Epic' | 'Legendary' | 'Mythic'
 export type SpriteFinishKind = 'normal' | 'gold' | 'cheat-master' | 'loot-hacker'
@@ -316,10 +318,28 @@ const spriteFamilyData: readonly Omit<SpriteFamily, 'seoReady'>[] = [
 // Add family ids here only after that editorial review; technical completeness is not enough.
 const seoReadyFamilyIds = new Set<string>([])
 
-export const spriteFamilies: readonly SpriteFamily[] = spriteFamilyData.map((family) => ({
-  ...family,
-  seoReady: seoReadyFamilyIds.has(family.id),
-}))
+export const spriteFamilies: readonly SpriteFamily[] = spriteFamilyData.map((family) => {
+  const guidance = spriteGuidance[family.id]
+  return {
+    ...family,
+    ability: guidance?.ability ?? family.ability,
+    acquisitionHint: guidance
+      ? (guidance.unlock ?? generalAcquisitionRule)
+      : family.acquisitionHint,
+    locationHint: guidance
+      ? 'The cited patch notes do not establish a permanent spawn coordinate for this family.'
+      : family.locationHint,
+    sourceRefs: guidance
+      ? [
+          ...new Set([
+            ...family.sourceRefs,
+            ...Object.values(guidanceSources).map((source) => source.url),
+          ]),
+        ]
+      : family.sourceRefs,
+    seoReady: seoReadyFamilyIds.has(family.id),
+  }
+})
 
 const finishLabels: Record<SpriteFinishKind, string> = {
   normal: 'Base',
@@ -361,17 +381,8 @@ function makeEntry(
 const entries: SpriteEntry[] = []
 
 for (const family of spriteFamilies) {
-  entries.push(makeEntry(family, 'normal'))
-
-  // Current verification snapshot (2026-09-08):
-  // every Season 4 family except Mega Man has Gold + Cheat Master;
-  // Crown additionally has the first released Loot Hacker entry.
-  if (family.id !== 'mega-man') {
-    entries.push(makeEntry(family, 'gold'))
-    entries.push(makeEntry(family, 'cheat-master'))
-  }
-  if (family.id === 'crown') {
-    entries.push(makeEntry(family, 'loot-hacker', '2026-09-03'))
+  for (const finish of releasedFinishesFor(family.id)) {
+    entries.push(makeEntry(family, finish, finish === 'loot-hacker' ? '2026-09-03' : undefined))
   }
 }
 

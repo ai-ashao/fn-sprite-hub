@@ -23,8 +23,8 @@ export const Route = createFileRoute('/sprites/$slug')({
 
     const { family, seo } = loaderData
     return pageHead({
-      title: `${family.name} Sprite in Fortnite – How to Get & Variants`,
-      description: `${family.name} Sprite guide for Fortnite Chapter 7 Season 4: rarity, ability, released variants, location guidance and collection tracking.`,
+      title: `${family.name} Sprite in Fortnite – Abilities & Variants`,
+      description: `${family.name} Sprite in Fortnite: ability, rarity, cataloged variants and browser-local collection tracking.`,
       path: `/sprites/${family.slug}`,
       indexable: seo?.indexable ?? false,
     })

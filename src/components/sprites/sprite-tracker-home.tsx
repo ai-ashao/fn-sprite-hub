@@ -1,16 +1,12 @@
-import { useMemo, useState } from 'react'
-import {
-  currentFamilyCount,
-  currentReleasedEntryCount,
-  currentSeason,
-  type SpriteFinishKind,
-  type SpriteRarity,
-} from '@/data/sprites'
+import { useMemo } from 'react'
+import { currentFamilyCount, currentReleasedEntryCount, currentSeason } from '@/data/sprites'
 import { useSpriteCollection } from '@/lib/sprites/collection'
+import { useTrackerWorkspace } from '@/lib/sprites/tracker-workspace'
+import { CollectionNotice } from './collection-notice'
 import { CollectionProgress } from './collection-progress'
 import { CollectionTools } from './collection-tools'
 import { HeroSpriteCluster } from './hero-sprite-cluster'
-import { type SortMode, SpriteFilters, type StatusFilter } from './sprite-filters'
+import { SpriteFilters } from './sprite-filters'
 import { SpriteGallery } from './sprite-gallery'
 import { SpriteMatrix } from './sprite-matrix'
 
@@ -31,12 +27,22 @@ const faqItems = [
 
 export function SpriteTrackerHome() {
   const collection = useSpriteCollection()
-  const [query, setQuery] = useState('')
-  const [status, setStatus] = useState<StatusFilter>('all')
-  const [rarity, setRarity] = useState<'all' | SpriteRarity>('all')
-  const [finish, setFinish] = useState<'all' | SpriteFinishKind>('all')
-  const [sort, setSort] = useState<SortMode>('name')
-  const [view, setView] = useState<'gallery' | 'matrix'>('gallery')
+  const {
+    query,
+    setQuery,
+    status,
+    setStatus,
+    rarity,
+    setRarity,
+    finish,
+    setFinish,
+    sort,
+    setSort,
+    view,
+    setView,
+    returnMessage,
+    rememberNavigation,
+  } = useTrackerWorkspace()
 
   const dateLabel = useMemo(
     () =>
@@ -88,6 +94,11 @@ export function SpriteTrackerHome() {
               Track every Fortnite Sprite and released entry. Mark what you own, find what you are
               missing, and save your collection locally in your browser.
             </p>
+            {collection.mounted && collection.metrics.owned > 0 ? (
+              <a className="sprite-continue-link" href="#collection">
+                Continue tracking your collection ↓
+              </a>
+            ) : null}
             <div className="sprite-meta-row">
               <span className="current">✓ Updated {dateLabel}</span>
               <span>Patch {currentSeason.patch}</span>
@@ -100,7 +111,12 @@ export function SpriteTrackerHome() {
         </div>
       </section>
 
-      <section className="sprite-container sprite-collection-shell">
+      {/* biome-ignore lint/correctness/useUniqueElementIds: Stable deep-link target shared by tracker links. */}
+      <section
+        className="sprite-container sprite-collection-shell"
+        id="collection"
+        onClickCapture={rememberNavigation}
+      >
         <header className="sprite-collection-head">
           <div>
             <h2>Your Sprite Collection</h2>
@@ -119,6 +135,8 @@ export function SpriteTrackerHome() {
           />
         </header>
 
+        <CollectionNotice />
+        {returnMessage ? <output className="sprite-return-message">{returnMessage}</output> : null}
         <SpriteFilters
           finish={finish}
           onFinishChange={setFinish}
@@ -168,13 +186,20 @@ export function SpriteTrackerHome() {
           />
         )}
 
-        <CollectionTools collection={collection.collection} onRestore={collection.restore} />
+        <CollectionTools collection={collection.collection} showNotice={false} />
 
         <div className="sprite-collection-actions">
           <span>Progress is stored only in this browser.</span>
           <button
-            onClick={() => {
-              if (window.confirm('Reset your current-season Sprite collection?')) collection.reset()
+            onClick={async () => {
+              const token = collection.confirmation()
+              if (
+                window.confirm(
+                  'Reset your current-season Sprite collection? A previous snapshot will be protected.',
+                )
+              ) {
+                await collection.reset(token)
+              }
             }}
             type="button"
           >

@@ -7,6 +7,9 @@ import {
   spriteFamilies,
 } from '@/data/sprites'
 import { useSpriteCollection } from '@/lib/sprites/collection'
+import { CollectionNotice } from './collection-notice'
+import { SpriteGuidanceSections, SpriteGuidanceSources, SpriteQuickAnswer } from './sprite-guidance'
+import { TrackerLinks } from './tracker-links'
 
 const statusLabel = {
   missing: 'Missing',
@@ -63,6 +66,7 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
           <p className="sprite-kicker">Chapter 7 Season 4 · Added {family.patchAdded}</p>
           <h1>{family.name} Sprite in Fortnite</h1>
           <p className="sprite-detail-lede">{family.ability}</p>
+          <SpriteQuickAnswer familyId={family.id} />
 
           <dl className="sprite-detail-stats">
             <div>
@@ -95,14 +99,7 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
             </div>
           </dl>
 
-          <div className="sprite-detail-actions">
-            <a className="sprite-primary-link" href="/">
-              Open tracker
-            </a>
-            <a className="sprite-secondary-link" href="/sprites">
-              Browse all Sprites
-            </a>
-          </div>
+          <TrackerLinks familyId={family.id} />
 
           <p className="sprite-detail-storage-note">
             Collection status is saved only in this browser.
@@ -110,7 +107,8 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
         </div>
       </header>
 
-      <main className="sprite-container sprite-detail-body sprite-detail-body-polished">
+      <div className="sprite-container sprite-detail-body sprite-detail-body-polished">
+        <CollectionNotice />
         <section className="sprite-detail-section sprite-detail-variants-section">
           <div className="sprite-detail-section-head">
             <div>
@@ -168,8 +166,8 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
 
         <aside className="sprite-detail-trust-panel">
           <div>
-            <small>DATA FRESHNESS</small>
-            <strong>Verified for {currentSeason.patch}</strong>
+            <small>CATALOG SNAPSHOT</small>
+            <strong>{currentSeason.patch} catalog</strong>
             <p>
               Roster and released finishes were last checked on{' '}
               <time dateTime={currentSeason.lastVerifiedAt}>{currentSeason.lastVerifiedAt}</time>.
@@ -178,6 +176,8 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
           <a href="/new-sprites">See the current update snapshot →</a>
         </aside>
 
+        <SpriteGuidanceSections familyId={family.id} name={family.name} />
+        <SpriteGuidanceSources familyId={family.id} />
         <div className="sprite-detail-info-grid">
           <section className="sprite-detail-info-card">
             <p className="sprite-section-eyebrow">ACQUISITION</p>
@@ -225,7 +225,7 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
             ))}
           </div>
         </section>
-      </main>
+      </div>
     </div>
   )
 }

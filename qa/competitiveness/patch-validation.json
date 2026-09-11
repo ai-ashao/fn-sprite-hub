@@ -1,0 +1,41 @@
+{
+  "scope": "Package/source checks; not complete Git checkout integration",
+  "typeScriptVersion": "5.8.3",
+  "exactSourceTransformsChecked": 3,
+  "results": [
+    {
+      "name": "every generated and replacement file exists",
+      "status": "passed"
+    },
+    {
+      "name": "no target path escapes the checkout",
+      "status": "passed"
+    },
+    {
+      "name": "new browser spec name is discovered and excluded from Vitest by both transforms",
+      "status": "passed"
+    },
+    {
+      "name": "transform rejects already-modified source instead of applying twice",
+      "status": "passed"
+    },
+    {
+      "name": "new files have valid TS/TSX syntax",
+      "status": "passed"
+    },
+    {
+      "name": "SHA-exact transform and syntax: src/components/sprites/sprite-tracker-home.tsx",
+      "status": "passed"
+    },
+    {
+      "name": "SHA-exact transform and syntax: src/components/sprites/sprite-detail-page.tsx",
+      "status": "passed"
+    },
+    {
+      "name": "SHA-exact transform and syntax: src/routes/sprites.$slug.tsx",
+      "status": "passed"
+    }
+  ],
+  "passed": 8,
+  "failed": 0
+}
