@@ -8,7 +8,12 @@ import {
 } from '@/data/sprites'
 import { useSpriteCollection } from '@/lib/sprites/collection'
 import { CollectionNotice } from './collection-notice'
-import { SpriteGuidanceSections, SpriteGuidanceSources, SpriteQuickAnswer } from './sprite-guidance'
+import {
+  SpriteAcquisitionSection,
+  SpriteGuidanceSections,
+  SpriteGuidanceSources,
+  SpriteQuickAnswer,
+} from './sprite-guidance'
 import { TrackerLinks } from './tracker-links'
 
 const statusLabel = {
@@ -100,15 +105,10 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
           </dl>
 
           <TrackerLinks familyId={family.id} />
-
-          <p className="sprite-detail-storage-note">
-            Collection status is saved only in this browser.
-          </p>
         </div>
       </header>
 
       <div className="sprite-container sprite-detail-body sprite-detail-body-polished">
-        <CollectionNotice />
         <section className="sprite-detail-section sprite-detail-variants-section">
           <div className="sprite-detail-section-head">
             <div>
@@ -120,6 +120,7 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
             </span>
           </div>
 
+          <CollectionNotice />
           <p className="sprite-detail-section-intro">
             Each released finish is tracked independently. Tap a card to cycle its collection state.
           </p>
@@ -164,6 +165,9 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
           </div>
         </section>
 
+        <SpriteAcquisitionSection family={family} />
+        <SpriteGuidanceSections familyId={family.id} name={family.name} />
+
         <aside className="sprite-detail-trust-panel">
           <div>
             <small>CATALOG SNAPSHOT</small>
@@ -175,27 +179,7 @@ export function SpriteDetailPage({ family }: Readonly<{ family: SpriteFamily }>)
           </div>
           <a href="/new-sprites">See the current update snapshot →</a>
         </aside>
-
-        <SpriteGuidanceSections familyId={family.id} name={family.name} />
         <SpriteGuidanceSources familyId={family.id} />
-        <div className="sprite-detail-info-grid">
-          <section className="sprite-detail-info-card">
-            <p className="sprite-section-eyebrow">ACQUISITION</p>
-            <h2>How to get {family.name}</h2>
-            <p>{family.acquisitionHint}</p>
-            <p className="sprite-detail-note">
-              Live-patch availability can change, so FN Sprite Hub avoids presenting one fixed
-              method as permanent.
-            </p>
-          </section>
-
-          <section className="sprite-detail-info-card">
-            <p className="sprite-section-eyebrow">LOCATION</p>
-            <h2>Where to find {family.name}</h2>
-            <p>{family.locationHint}</p>
-            <a href="/locations">See all current Sprite location guidance →</a>
-          </section>
-        </div>
 
         <section className="sprite-detail-section">
           <div className="sprite-detail-section-head">
