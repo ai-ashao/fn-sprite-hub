@@ -34,6 +34,7 @@ const checks = [
 
 const failures = []
 const results = new Map()
+const visibleText = (body) => body.replace(/<!--.*?-->/gs, '')
 
 for (const check of checks) {
   const url = `${baseUrl}${check.path}`
@@ -75,7 +76,7 @@ for (const check of checks) {
 
 const home = results.get('/')
 if (home) {
-  if (!home.body.includes('16 Sprite families · 61 entries')) {
+  if (!visibleText(home.body).includes('16 Sprite families · 61 entries')) {
     failures.push('/: expected the 16-family / 61-entry release snapshot.')
   }
   if (home.response.headers.get('x-robots-tag')?.toLowerCase().includes('noindex')) {
@@ -87,7 +88,7 @@ if (home) {
 }
 
 const variants = results.get('/variants')
-if (variants && !variants.body.includes('15 released')) {
+if (variants && !visibleText(variants.body).includes('15 released')) {
   failures.push('/variants: expected 15 released Loot Hacker entries.')
 }
 
