@@ -162,7 +162,6 @@ body {
 }
 
 .fn-language-pill {
-  margin-left: auto;
   padding: 9px 12px;
   border: 1px solid var(--sprite-line);
   border-radius: 999px;
@@ -170,6 +169,28 @@ body {
   color: #646158;
   font-size: 12px;
   font-weight: 800;
+}
+
+.fn-header-share {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 0 12px;
+  border: 1px solid var(--sprite-line);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 55%);
+  color: #5e5d56;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.fn-header-share:hover,
+.fn-header-share:focus-visible {
+  border-color: #aaa497;
+  background: #fffdf8;
+  color: var(--sprite-ink);
 }
 
 .sprite-site {
@@ -1078,10 +1099,6 @@ body {
   background: #ebe8df;
 }
 
-.sprite-share-preview:has(.sprite-share-pages) {
-  grid-template-rows: minmax(0, 1fr) auto;
-}
-
 .sprite-share-preview img {
   width: auto;
   max-width: 100%;
@@ -1099,23 +1116,9 @@ body {
   font-size: 12px;
 }
 
-.sprite-share-pages,
 .sprite-share-footer > div {
   display: flex;
   gap: 8px;
-}
-
-.sprite-share-pages button {
-  width: 32px;
-  height: 32px;
-  border: 1px solid #d4cec1;
-  border-radius: 50%;
-  background: #fffdf8;
-}
-
-.sprite-share-pages button[aria-current="page"] {
-  background: var(--sprite-ink);
-  color: #fff;
 }
 
 .sprite-share-footer {
@@ -1137,7 +1140,7 @@ body {
   font-weight: 850;
 }
 
-.sprite-share-footer button:last-child {
+.sprite-share-footer .sprite-share-primary-action {
   border-color: var(--sprite-ink);
   background: var(--sprite-ink);
   color: #fffdf8;
@@ -1834,6 +1837,28 @@ body {
 @media (max-width: 980px) {
   .fn-nav {
     display: none;
+  }
+
+  .fn-header-inner {
+    gap: 10px;
+  }
+
+  .fn-header-share {
+    width: 42px;
+    min-height: 42px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .fn-header-share-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .sprite-hero-grid {

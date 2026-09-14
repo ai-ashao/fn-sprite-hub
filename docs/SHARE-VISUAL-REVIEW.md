@@ -4,14 +4,14 @@ Use this after the artwork review/upgrade pass, not before it.
 
 ## Fixed review preview
 
-Review the original 1080×1350 PNG and a 360×450 scaled preview.
+Review the original 1080×1920 PNG and a 360×640 scaled preview.
 
 ## Required fixtures
 
 1. My Collection
 2. Missing 6
 3. Missing 24
-4. Missing All — Page 1
+4. Missing All
 5. Need to Master 12
 6. Celebration Collection
 7. Celebration Mastered
@@ -26,7 +26,7 @@ Every fixture must have:
 - no clipped required text
 - no text overlap
 - no broken or remote artwork
-- correct pagination
+- exactly one complete poster
 - visible FN Sprite Hub signature
 - readable Finish badge at 360px preview width
 - preview content matching the downloaded PNG
@@ -40,7 +40,7 @@ Score each item from 1–5:
 | My Collection |  |  |  |  |  |  |
 | Missing 6 |  |  |  |  |  |  |
 | Missing 24 |  |  |  |  |  |  |
-| Missing All — Page 1 |  |  |  |  |  |  |
+| Missing All |  |  |  |  |  |  |
 | Need to Master 12 |  |  |  |  |  |  |
 | Celebration Collection |  |  |  |  |  |  |
 | Celebration Mastered |  |  |  |  |  |  |

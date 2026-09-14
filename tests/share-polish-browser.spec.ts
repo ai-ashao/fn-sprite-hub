@@ -1,16 +1,17 @@
 import { expect, test } from '@playwright/test'
 
-test('Share Studio uses deterministic local fonts and fixed social-card dimensions', async ({
+test('Share Studio uses deterministic local fonts and fixed portrait-poster dimensions', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
 
   await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
-  await page.getByRole('button', { name: 'Share Collection' }).click()
+  await page.locator('[data-share-source="collection"]').first().click()
 
-  const preview = page.locator('[data-share-preview]')
+  const preview = page.locator('[data-share-studio]:visible [data-share-preview]')
   await expect(preview).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByRole('button', { name: 'Download PNG' })).toBeVisible()
 
   expect(
     await page.evaluate(() => ({
@@ -24,19 +25,19 @@ test('Share Studio uses deterministic local fonts and fixed social-card dimensio
       width: image.naturalWidth,
       height: image.naturalHeight,
     })),
-  ).toEqual({ width: 1080, height: 1350 })
+  ).toEqual({ width: 1080, height: 1920 })
 
   await page.getByRole('button', { name: /^My Collection/ }).click()
   await expect(preview).toBeVisible({ timeout: 15_000 })
 
   await preview.evaluate((image: HTMLImageElement) => {
     image.style.width = '360px'
-    image.style.height = '450px'
+    image.style.height = '640px'
     image.style.maxWidth = 'none'
   })
   const box = await preview.boundingBox()
   expect(box?.width).toBeCloseTo(360, 0)
-  expect(box?.height).toBeCloseTo(450, 0)
+  expect(box?.height).toBeCloseTo(640, 0)
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
 })

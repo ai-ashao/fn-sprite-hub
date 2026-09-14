@@ -57,12 +57,12 @@ Review the seven release fixtures:
 1. My Collection
 2. Missing 6
 3. Missing 24
-4. Missing All — Page 1
+4. Missing All
 5. Need to Master 12
 6. Celebration Collection
 7. Celebration Mastered
 
-Review at 1080×1350 and 360×450.
+Review at 1080×1920 and 360×640.
 
 ### 3. Legal review
 

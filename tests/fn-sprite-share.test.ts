@@ -20,25 +20,13 @@ function state(owned = 0, mastered = 0): CollectionStateV1 {
 }
 
 describe('Share Studio selection and deterministic layout', () => {
-  it.each([
-    [0, 3],
-    [1, 3],
-    [6, 3],
-    [12, 3],
-    [24, 2],
-    [25, 2],
-    [47, 1],
-    [61, 1],
-  ])(
-    'paginates a %i-owned collection with at most 24 missing entries per page',
-    (owned, expectedPages) => {
+  it.each([0, 1, 6, 12, 24, 25, 47, 61])(
+    'keeps a %i-owned collection in one missing-Sprites poster',
+    (owned) => {
       const selections = buildShareSelections('missing', state(owned))
-      expect(selections).toHaveLength(expectedPages)
-      expect(selections.every(({ entryIds }) => entryIds.length <= 24)).toBe(true)
-      expect(selections.map(({ page }) => page)).toEqual(
-        Array.from({ length: expectedPages }, (_, index) => index + 1),
-      )
-      expect(selections.every(({ pageCount }) => pageCount === expectedPages)).toBe(true)
+      expect(selections).toHaveLength(1)
+      expect(selections[0].entryIds).toHaveLength(currentReleasedEntryCount - owned)
+      expect(selections[0]).toMatchObject({ page: 1, pageCount: 1 })
     },
   )
 
@@ -72,7 +60,7 @@ describe('Share Studio selection and deterministic layout', () => {
     ).toBe('mastered')
   })
 
-  it('keeps every fixture inside the fixed 1080 by 1350 canvas with signature and page label', () => {
+  it('keeps every fixture inside the fixed 1080 by 1920 canvas with one stable filename', () => {
     const fixtures = [
       buildShareSelections('collection', state(20, 8))[0],
       buildShareSelections('missing', state(41))[0],
@@ -96,12 +84,10 @@ describe('Share Studio selection and deterministic layout', () => {
       expect(model.signature).toContain('fnspritehub.com')
       expect(model.cards.every((card) => card.x >= 0 && card.y >= 0)).toBe(true)
       expect(model.cards.every((card) => card.x + card.width <= model.width)).toBe(true)
-      expect(model.cards.every((card) => card.y + card.height <= 1225)).toBe(true)
+      expect(model.cards.every((card) => card.y + card.height <= 1810)).toBe(true)
+      expect(model.pageLabel).toBeUndefined()
+      expect(shareFileName(selection)).not.toContain('-of-')
     }
-
-    const multi = buildShareSelections('missing', state(0))[1]
-    expect(buildShareLayoutModel(multi, state(0)).pageLabel).toBe('2/3')
-    expect(shareFileName(multi)).toContain('2-of-3')
   })
 
   it('builds all three Discord modes from the same selection contract', () => {

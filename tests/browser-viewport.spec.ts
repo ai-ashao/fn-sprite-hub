@@ -32,7 +32,19 @@ for (const viewport of viewports) {
     )
 
     const mobileNavigation = page.locator('[data-mobile-navigation]')
+    const headerShare = page.locator('[data-share-source="header"]')
     const mobileFilterControls = page.locator('[data-mobile-filter-controls]')
+    await expect(headerShare).toBeVisible()
+    await expect(headerShare).toHaveAccessibleName('Share collection')
+    expect(
+      await headerShare.evaluate((button) => {
+        const language = button.parentElement?.querySelector('.fn-language-pill')
+        return Boolean(
+          language &&
+            (button.compareDocumentPosition(language) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0,
+        )
+      }),
+    ).toBe(true)
     if (viewport.name.startsWith('mobile')) {
       await expect(mobileNavigation).toBeVisible()
       await mobileNavigation.locator('summary').click()
@@ -180,10 +192,19 @@ test('backup, restore and Discord copy work without login', async ({ context, pa
   )
 })
 
-test('Share Studio previews and downloads deterministic multi-page PNGs on mobile', async ({
+test('Share Studio previews and downloads one deterministic portrait PNG on mobile', async ({
+  context,
   page,
 }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.addInitScript(() => {
+    ;(window as Window & { __shareEvents?: string[] }).__shareEvents = []
+    window.gtag = (...args: unknown[]) => {
+      const eventName = args[1]
+      if (args[0] === 'event' && typeof eventName === 'string') {
+        ;(window as Window & { __shareEvents?: string[] }).__shareEvents?.push(eventName)
+      }
+    }
     Object.defineProperty(navigator, 'canShare', { configurable: true, value: () => true })
     Object.defineProperty(navigator, 'share', {
       configurable: true,
@@ -195,30 +216,29 @@ test('Share Studio previews and downloads deterministic multi-page PNGs on mobil
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
-  await page.getByRole('button', { name: 'Share Collection' }).click()
+  await page.locator('[data-share-source="collection"]').first().click()
 
-  const studio = page.locator('[data-share-studio]')
+  const studio = page.locator('[data-share-studio]:visible')
   await expect(studio).toBeVisible()
-  await expect(page.locator('[data-share-preview]')).toBeVisible()
+  await expect(studio.locator('[data-share-preview]')).toBeVisible()
   await expect
     .poll(() =>
       page
-        .locator('[data-share-preview]')
+        .locator('[data-share-studio]:visible [data-share-preview]')
         .evaluate((image: HTMLImageElement) => image.naturalWidth),
     )
     .toBe(1080)
-  await expect(
-    page.getByRole('navigation', { name: 'Preview pages' }).getByRole('button'),
-  ).toHaveCount(3)
   expect(
-    await page.locator('[data-share-preview]').evaluate((image: HTMLImageElement) => ({
+    await studio.locator('[data-share-preview]').evaluate((image: HTMLImageElement) => ({
       width: image.naturalWidth,
       height: image.naturalHeight,
     })),
-  ).toEqual({ width: 1080, height: 1350 })
+  ).toEqual({ width: 1080, height: 1920 })
   const firstRenderMs = Number(await studio.locator('output').getAttribute('data-render-ms'))
   expect(firstRenderMs).toBeLessThanOrEqual(2_000)
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
+  await page.getByRole('button', { name: 'Copy Link' }).click()
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('http://127.0.0.1:4174/')
 
   await page.getByRole('button', { name: /^My Collection/ }).click()
   await expect
@@ -228,20 +248,36 @@ test('Share Studio previews and downloads deterministic multi-page PNGs on mobil
   expect(
     await page.evaluate(() => (window as Window & { __shareCalled?: boolean }).__shareCalled),
   ).toBe(true)
+  expect(
+    await page.evaluate(
+      () => (window as Window & { __shareEvents?: string[] }).__shareEvents ?? [],
+    ),
+  ).toEqual(
+    expect.arrayContaining([
+      'share_collection_click',
+      'share_image_generated',
+      'share_native_open',
+    ]),
+  )
 
   await page.getByRole('button', { name: /^Missing Sprites/ }).click()
-  await expect(page.getByRole('button', { name: 'Download 3 PNGs' })).toBeEnabled({
+  await expect(page.getByRole('button', { name: 'Download PNG' })).toBeEnabled({
     timeout: 15_000,
   })
 
   const downloadPromise = page.waitForEvent('download')
-  await page.getByRole('button', { name: 'Download 3 PNGs' }).click()
+  await page.getByRole('button', { name: 'Download PNG' }).click()
   const download = await downloadPromise
-  expect(download.suggestedFilename()).toBe('fn-sprite-hub-missing-1-of-3.png')
+  expect(download.suggestedFilename()).toBe('fn-sprite-hub-missing.png')
+  expect(
+    await page.evaluate(
+      () => (window as Window & { __shareEvents?: string[] }).__shareEvents ?? [],
+    ),
+  ).toContain('share_image_download')
 
   await page.getByRole('button', { name: 'Close Share Studio' }).click()
   await page.goto('/checklist')
-  await expect(page.getByRole('button', { name: 'Share Collection' })).toBeVisible()
+  await expect(page.locator('[data-share-source="collection"]')).toBeVisible()
 })
 
 const shareFixtures = [
@@ -297,15 +333,16 @@ for (const fixture of shareFixtures) {
     }, fixture)
     await page.reload()
     await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
-    await page.getByRole('button', { name: 'Share Collection' }).click()
-    const dialogBox = await page.locator('[data-share-studio]').boundingBox()
+    await page.locator('[data-share-source="collection"]').first().click()
+    const studio = page.locator('[data-share-studio]:visible')
+    const dialogBox = await studio.boundingBox()
     expect(dialogBox).not.toBeNull()
     expect(Math.abs((dialogBox?.x ?? 0) + (dialogBox?.width ?? 0) / 2 - 720)).toBeLessThanOrEqual(1)
     expect(Math.abs((dialogBox?.y ?? 0) + (dialogBox?.height ?? 0) / 2 - 450)).toBeLessThanOrEqual(
       1,
     )
     await page.getByRole('button', { name: new RegExp(`^${fixture.template}`) }).click()
-    const preview = page.locator('[data-share-preview]')
+    const preview = studio.locator('[data-share-preview]')
     await expect(preview).toBeVisible({ timeout: 15_000 })
     await expect
       .poll(() => preview.evaluate((image: HTMLImageElement) => image.naturalWidth))

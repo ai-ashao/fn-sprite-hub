@@ -1,4 +1,6 @@
+import { Share2 } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
+import { trackShareEvent } from '@/lib/analytics'
 import type { CollectionStateV1 } from '@/lib/sprites/collection'
 import { canExportShare } from '@/lib/sprites/share-lifecycle'
 import { renderSharePng, shareFileName } from '@/lib/sprites/share-renderer'
@@ -9,7 +11,13 @@ import {
   shareTemplateAvailable,
 } from '@/lib/sprites/share-selection'
 
-type Props = { collection: CollectionStateV1; buttonClassName?: string }
+type Props = {
+  collection: CollectionStateV1
+  buttonClassName?: string
+  source?: 'header' | 'collection'
+  triggerLabel?: string
+  triggerIcon?: boolean
+}
 type RenderedPage = { selection: ShareSelection; blob: Blob; url: string; file: File }
 type Result = { key: string; pages: RenderedPage[] }
 const templates: ReadonlyArray<{ id: ShareTemplate; label: string; description: string }> = [
@@ -23,13 +31,18 @@ const templates: ReadonlyArray<{ id: ShareTemplate; label: string; description: 
   },
 ]
 
-export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
+export function ShareStudio({
+  collection,
+  buttonClassName,
+  source = 'collection',
+  triggerLabel = 'Share Collection',
+  triggerIcon = false,
+}: Readonly<Props>) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const titleId = useId()
   const [isOpen, setIsOpen] = useState(false)
   const [template, setTemplate] = useState<ShareTemplate>('missing')
   const [result, setResult] = useState<Result | null>(null)
-  const [activePage, setActivePage] = useState(0)
   const [status, setStatus] = useState('')
   const [renderMs, setRenderMs] = useState<number>()
   const [busy, setBusy] = useState(false)
@@ -48,7 +61,7 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
   const live = useRef({ open: isOpen, key, canExport, sharing })
   live.current = { open: isOpen, key, canExport, sharing }
   const pages = canExport ? (result?.pages ?? []) : []
-  const current = pages[activePage]
+  const current = pages[0]
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -65,7 +78,6 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
     const allocated: RenderedPage[] = []
     setBusy(true)
     setResult(null)
-    setActivePage(0)
     setStatus(retry ? 'Rendering preview again…' : 'Rendering preview…')
     const started = performance.now()
     async function render() {
@@ -74,28 +86,29 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
           throw new Error(
             'This template is not available for the current collection. Choose another template.',
           )
-        const selections = buildShareSelections(template, collection)
-        for (const selection of selections) {
-          const blob = await renderSharePng(selection, collection)
-          if (cancelled || request !== requestRef.current) return
-          if (blob.size > 5 * 1024 * 1024)
-            throw new Error('A rendered PNG exceeded the 5 MB limit.')
-          allocated.push({
-            selection,
-            blob,
-            url: URL.createObjectURL(blob),
-            file: new File([blob], shareFileName(selection), { type: 'image/png' }),
-          })
-        }
+        const selection = buildShareSelections(template, collection)[0]
+        if (!selection) throw new Error('No entries are available for this template.')
+        const blob = await renderSharePng(selection, collection)
+        if (cancelled || request !== requestRef.current) return
+        if (blob.size > 5 * 1024 * 1024)
+          throw new Error('The rendered PNG exceeded the 5 MB limit.')
+        allocated.push({
+          selection,
+          blob,
+          url: URL.createObjectURL(blob),
+          file: new File([blob], shareFileName(selection), { type: 'image/png' }),
+        })
         if (cancelled || request !== requestRef.current) return
         setResult({ key, pages: allocated })
         const elapsed = Math.round(performance.now() - started)
         setRenderMs(elapsed)
-        setStatus(
-          allocated.length
-            ? `Ready · ${allocated.length} PNG${allocated.length === 1 ? '' : 's'} · ${elapsed} ms`
-            : 'No entries for this template. Choose another template.',
-        )
+        setStatus(`Ready · 1 PNG · ${elapsed} ms`)
+        trackShareEvent('share_image_generated', {
+          template,
+          format: 'png',
+          width: 1080,
+          height: 1920,
+        })
       } catch (error) {
         for (const page of allocated) URL.revokeObjectURL(page.url)
         allocated.length = 0
@@ -125,21 +138,38 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
     setSharing(false)
   }
 
-  function requestDownloads(selected: readonly RenderedPage[]) {
+  function downloadPage(page: RenderedPage) {
+    const url = URL.createObjectURL(page.blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = page.file.name
+    document.body.append(link)
+    link.click()
+    link.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 10_000)
+    trackShareEvent('share_image_download', {
+      template: page.selection.template,
+      format: 'png',
+      width: 1080,
+      height: 1920,
+    })
+  }
+
+  function requestDownload() {
     if (!live.current.canExport || live.current.key !== result?.key || live.current.sharing) return
-    for (const page of selected) {
-      const url = URL.createObjectURL(page.blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = page.file.name
-      document.body.append(link)
-      link.click()
-      link.remove()
-      window.setTimeout(() => URL.revokeObjectURL(url), 10_000)
+    const page = result?.pages[0]
+    if (!page) return
+    downloadPage(page)
+    setStatus('PNG download requested.')
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(new URL('/', window.location.origin).toString())
+      setStatus('Tracker link copied.')
+    } catch {
+      setStatus('Could not copy the link. Download the PNG or copy the address from your browser.')
     }
-    setStatus(
-      `Download requested for ${selected.length} PNG${selected.length === 1 ? '' : 's'}. If multiple downloads are blocked, download each preview page separately.`,
-    )
   }
 
   async function nativeShare() {
@@ -150,14 +180,20 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
       !result
     )
       return
+    const page = result.pages[0]
+    if (!page) return
     const expectedKey = result.key
     const shareJob = ++shareRef.current
     const request = requestRef.current
     live.current.sharing = true
     setSharing(true)
     try {
+      trackShareEvent('share_native_open', {
+        template: page.selection.template,
+        format: 'png',
+      })
       await navigator.share({
-        files: result.pages.map(({ file }) => file),
+        files: [page.file],
         title: 'FN Sprite Hub collection',
         text: '✦ Track yours at FN Sprite Hub · fnspritehub.com',
       })
@@ -166,11 +202,12 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
     } catch (error) {
       if (!live.current.open || live.current.key !== expectedKey || requestRef.current !== request)
         return
-      setStatus(
-        error instanceof DOMException && error.name === 'AbortError'
-          ? 'Sharing cancelled.'
-          : 'Native sharing was unavailable. Download the PNG instead.',
-      )
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        setStatus('Sharing cancelled.')
+      } else {
+        downloadPage(page)
+        setStatus('Native sharing was unavailable. PNG download requested instead.')
+      }
     } finally {
       if (shareRef.current === shareJob) {
         live.current.sharing = false
@@ -195,14 +232,20 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
     <>
       <button
         className={buttonClassName}
+        aria-label={triggerIcon ? 'Share collection' : undefined}
+        data-share-source={source}
         data-share-studio-trigger
         onClick={() => {
           setStatus('')
+          trackShareEvent(source === 'header' ? 'share_header_click' : 'share_collection_click', {
+            path: window.location.pathname,
+          })
           setIsOpen(true)
         }}
         type="button"
       >
-        Share Collection
+        {triggerIcon ? <Share2 aria-hidden="true" size={16} /> : null}
+        <span className={triggerIcon ? 'fn-header-share-label' : undefined}>{triggerLabel}</span>
       </button>
       <dialog
         className="sprite-share-dialog"
@@ -216,7 +259,7 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
             <div>
               <small>FN SPRITE HUB</small>
               <h2 id={titleId}>Share Studio</h2>
-              <p>Create a 1080 × 1350 PNG locally in your browser.</p>
+              <p>Create one 1080 × 1920 PNG locally in your browser.</p>
             </div>
             <button aria-label="Close Share Studio" onClick={closeStudio} type="button">
               ×
@@ -253,7 +296,7 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
               {busy ? <div className="sprite-share-loading">Rendering your collection…</div> : null}
               {current ? (
                 <img
-                  alt={`${templates.find(({ id }) => id === template)?.label} share preview, page ${activePage + 1} of ${pages.length}`}
+                  alt={`${templates.find(({ id }) => id === template)?.label} share preview`}
                   data-share-preview
                   src={current.url}
                 />
@@ -266,20 +309,6 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
                   </button>
                 </div>
               ) : null}
-              {pages.length > 1 ? (
-                <nav aria-label="Preview pages" className="sprite-share-pages">
-                  {pages.map((page, index) => (
-                    <button
-                      aria-current={index === activePage ? 'page' : undefined}
-                      key={page.file.name}
-                      onClick={() => setActivePage(index)}
-                      type="button"
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                </nav>
-              ) : null}
             </section>
           </div>
           <footer className="sprite-share-footer">
@@ -287,24 +316,15 @@ export function ShareStudio({ collection, buttonClassName }: Readonly<Props>) {
               {status}
             </output>
             <div>
-              <button
-                disabled={!canExport || sharing}
-                onClick={() => requestDownloads(pages)}
-                type="button"
-              >
-                Download {pages.length > 1 ? `${pages.length} PNGs` : 'PNG'}
+              <button disabled={sharing} onClick={() => void copyLink()} type="button">
+                Copy Link
               </button>
-              {pages.length > 1 ? (
-                <button
-                  disabled={!canExport || sharing}
-                  onClick={() => current && requestDownloads([current])}
-                  type="button"
-                >
-                  Download page {activePage + 1}
-                </button>
-              ) : null}
+              <button disabled={!canExport || sharing} onClick={requestDownload} type="button">
+                Download PNG
+              </button>
               {canNativeShare ? (
                 <button
+                  className="sprite-share-primary-action"
                   disabled={!canExport || sharing}
                   onClick={() => void nativeShare()}
                   type="button"

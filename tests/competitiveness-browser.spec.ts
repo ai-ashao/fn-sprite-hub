@@ -231,32 +231,69 @@ test('share template switching, cancelled native sharing and every PNG download'
   })
   await page.goto('/')
   await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
-  await page.getByRole('button', { name: 'Share Collection' }).click()
-  const studio = page.locator('[data-share-studio]')
+  await page.locator('[data-share-source="collection"]').first().click()
+  const studio = page.locator('[data-share-studio]:visible')
   await studio.getByRole('button', { name: /^My Collection/ }).click()
   await studio.getByRole('button', { name: /^Missing Sprites/ }).click()
-  const downloadButton = studio.getByRole('button', { name: /^Download (\d+ PNGs|PNG)$/ })
+  const downloadButton = studio.getByRole('button', { name: 'Download PNG' })
   await expect(downloadButton).toBeEnabled({ timeout: 15_000 })
   await studio.getByRole('button', { name: 'Share', exact: true }).click()
   await expect(studio.getByText('Sharing cancelled.')).toBeVisible()
-  const pageCount =
-    (await studio.getByRole('navigation', { name: 'Preview pages' }).getByRole('button').count()) ||
-    1
   const downloads: Array<import('@playwright/test').Download> = []
   page.on('download', (download) => downloads.push(download))
   await downloadButton.click()
-  await expect.poll(() => downloads.length, { timeout: 15_000 }).toBe(pageCount)
+  await expect.poll(() => downloads.length, { timeout: 15_000 }).toBe(1)
   for (let i = 0; i < downloads.length; i++) {
     const path = testInfo.outputPath(`share-${i + 1}.png`)
     await downloads[i].saveAs(path)
     const png = await readFile(path)
     expect(png.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
-    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1080, 1350])
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1080, 1920])
   }
-  if (pageCount > 1)
-    await expect(studio.getByRole('button', { name: 'Download page 1' })).toBeEnabled()
   await studio.getByRole('button', { name: 'Close Share Studio' }).click()
   await expect(studio).not.toBeVisible()
+})
+
+test('native sharing failure falls back to one PNG download', async ({ page }) => {
+  await page.addInitScript(() => {
+    ;(window as Window & { __shareEvents?: string[] }).__shareEvents = []
+    window.gtag = (...args: unknown[]) => {
+      if (args[0] === 'event' && typeof args[1] === 'string') {
+        ;(window as Window & { __shareEvents?: string[] }).__shareEvents?.push(args[1])
+      }
+    }
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: () => true })
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: async () => {
+        throw new Error('Native target unavailable')
+      },
+    })
+  })
+  await page.goto('/')
+  await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+  await page.locator('[data-share-source="header"]').click()
+  const studio = page.locator('[data-share-studio]:visible')
+  await expect(studio.getByRole('button', { name: 'Share', exact: true })).toBeEnabled({
+    timeout: 15_000,
+  })
+  const downloadPromise = page.waitForEvent('download')
+  await studio.getByRole('button', { name: 'Share', exact: true }).click()
+  const download = await downloadPromise
+  expect(download.suggestedFilename()).toBe('fn-sprite-hub-missing.png')
+  await expect(studio.getByText('PNG download requested instead.')).toBeVisible()
+  expect(
+    await page.evaluate(
+      () => (window as Window & { __shareEvents?: string[] }).__shareEvents ?? [],
+    ),
+  ).toEqual(
+    expect.arrayContaining([
+      'share_header_click',
+      'share_image_generated',
+      'share_native_open',
+      'share_image_download',
+    ]),
+  )
 })
 
 test('Crown and Klombo expose specific rules and sources without removing the indexing hold', async ({
@@ -288,6 +325,10 @@ test('SSR, launch sitemap, real 404 and dynamic catalog count remain consistent'
   expect(html).toContain('Fortnite Sprite Tracker')
   expect(html).not.toContain('noindex,nofollow')
   expect(html).toMatch(/16(?:<!-- -->)? Sprite families · (?:<!-- -->)?61(?:<!-- -->)? entries/)
+  const detail = await request.get('/sprites/jonesy')
+  const detailHtml = await detail.text()
+  expect(detailHtml).toContain('Related Sprites')
+  expect(detailHtml.match(/href="\/sprites\/[^"]+"/g)?.length ?? 0).toBeGreaterThanOrEqual(4)
   const sitemap = await request.get('/sitemap.xml')
   const sitemapText = await sitemap.text()
   expect(sitemapText).toContain(`<loc>${new URL(home.url()).origin}/</loc>`)

@@ -6,11 +6,13 @@ import {
   useRouterState,
 } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+import { ShareStudio } from '@/components/sprites/share-studio'
 import { Button } from '@/components/ui/button'
 import finalPatchStyles from '@/final-ui-patch.css?url'
 import { publicEnv } from '@/lib/config/env'
 import { epicFanContentDisclaimer, hasConfiguredEpicFanContentDisclaimer } from '@/lib/fan-content'
 import { site } from '@/lib/site'
+import { useSpriteCollection } from '@/lib/sprites/collection'
 import polishStyles from '@/sprite-polish.css?url'
 import spriteStyles from '@/sprite-theme.css?url'
 import styles from '@/styles.css?url'
@@ -54,6 +56,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const collection = useSpriteCollection()
 
   return (
     <div className="fn-app-shell" data-product-surface-mode="tool">
@@ -77,6 +80,14 @@ function RootComponent() {
               )
             })}
           </nav>
+
+          <ShareStudio
+            buttonClassName="fn-header-share"
+            collection={collection.collection}
+            source="header"
+            triggerIcon
+            triggerLabel="Share"
+          />
 
           <span className="fn-language-pill" title="English">
             EN

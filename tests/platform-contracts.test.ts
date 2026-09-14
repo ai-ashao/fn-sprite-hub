@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { createGtagQueue } from '../src/components/privacy-controls'
 import { disabledEmailAdapter } from '../src/lib/adapters/email'
 import { disabledStorageAdapter } from '../src/lib/adapters/storage'
+import { trackShareEvent } from '../src/lib/analytics'
 import { parsePublicEnv } from '../src/lib/config/env'
 import { FixedWindowRateLimiter } from '../src/lib/security/rate-limit'
 import { moduleManifests } from '../src/modules/manifests'
@@ -28,6 +29,29 @@ describe('platform contracts', () => {
       'default',
       { analytics_storage: 'denied' },
     ])
+  })
+
+  it('dispatches narrow share events only through an initialized analytics queue', () => {
+    const calls: unknown[][] = []
+    const originalWindow = globalThis.window
+    Object.defineProperty(globalThis, 'window', {
+      configurable: true,
+      value: { gtag: (...args: unknown[]) => calls.push(args) },
+    })
+    try {
+      trackShareEvent('share_header_click', { path: '/' })
+      trackShareEvent('share_image_generated', {
+        template: 'collection',
+        width: 1080,
+        height: 1920,
+      })
+      expect(calls).toEqual([
+        ['event', 'share_header_click', { path: '/' }],
+        ['event', 'share_image_generated', { template: 'collection', width: 1080, height: 1920 }],
+      ])
+    } finally {
+      Object.defineProperty(globalThis, 'window', { configurable: true, value: originalWindow })
+    }
   })
 
   it('enforces a fixed request window and resets after it expires', () => {

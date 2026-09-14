@@ -13,7 +13,7 @@ import {
 } from './collection'
 import type { ShareSelection } from './share-selection'
 
-export const shareCanvasSize = { width: 1080, height: 1350 } as const
+export const shareCanvasSize = { width: 1080, height: 1920 } as const
 
 export const shareFontFamilies = {
   display: 'Inter Variable',
@@ -110,20 +110,23 @@ export function buildShareLayoutModel(
   const metrics = collectionMetrics(collection)
   const entries = currentReleasedEntries().filter(({ id }) => selection.entryIds.includes(id))
   const isEntries = selection.template === 'missing' || selection.template === 'unmastered'
-  const denseEntries = isEntries && entries.length > 12
-  const columns = isEntries ? (entries.length <= 6 ? 2 : entries.length <= 12 ? 3 : 4) : 4
-  const gap = denseEntries ? 14 : 20
+  const denseEntries = isEntries && entries.length > 24
+  const columns = isEntries ? (entries.length <= 8 ? 2 : entries.length <= 18 ? 3 : 4) : 4
+  const gap = denseEntries ? 10 : 20
   const areaX = 70
   const areaWidth = 940
   const cardWidth = (areaWidth - gap * (columns - 1)) / columns
+  const startY = 360
+  const rows = Math.max(
+    1,
+    Math.ceil((isEntries ? entries.length : selection.familyIds.length) / columns),
+  )
+  const availableHeight = 1450
   const cardHeight = isEntries
-    ? entries.length <= 6
-      ? 250
-      : entries.length <= 12
-        ? 205
-        : 138
-    : 198
-  const startY = denseEntries ? 320 : isEntries ? 330 : 334
+    ? denseEntries
+      ? Math.min(104, (availableHeight - gap * (rows - 1)) / rows)
+      : Math.min(260, (availableHeight - gap * (rows - 1)) / rows)
+    : Math.min(310, (availableHeight - gap * (rows - 1)) / rows)
 
   const sourceCards = isEntries
     ? entries.map((entry) => ({
@@ -373,40 +376,40 @@ export async function renderSharePng(
 
   context.fillStyle = '#25251f'
   context.font = font(800, shareTypography.mainTitle, 'display')
-  context.fillText(model.title, 70, 170)
+  context.fillText(model.title, 70, 174)
 
   context.fillStyle = '#706f67'
   context.font = font(500, 28)
-  context.fillText(model.subtitle, 70, 218)
+  context.fillText(model.subtitle, 70, 226)
 
   context.fillStyle = '#4f6d48'
   context.font = font(800, shareTypography.summary)
-  context.fillText(model.summary, 70, 278)
+  context.fillText(model.summary, 70, 286)
 
-  if (model.pageLabel) {
-    context.textAlign = 'right'
-    context.font = font(500, shareTypography.pageLabel, 'mono')
-    context.fillText(model.pageLabel, 1010, 278)
-    context.textAlign = 'left'
-  }
+  context.fillStyle = '#d9e0d3'
+  roundedRect(context, 70, 310, 940, 16, 8)
+  context.fill()
+  context.fillStyle = '#6d8d63'
+  roundedRect(context, 70, 310, Math.max(16, 940 * (model.completionPercent / 100)), 16, 8)
+  context.fill()
 
   if (model.celebration) {
     context.textAlign = 'center'
     context.fillStyle = '#25251f'
     context.font = font(800, 200, 'display')
-    context.fillText(`${model.completionPercent}%`, 540, 610)
+    context.fillText(`${model.completionPercent}%`, 540, 720)
 
     context.fillStyle = '#5f6d58'
     context.font = font(800, 38)
     context.fillText(
       model.celebration === 'mastered' ? 'MASTERED' : 'COLLECTION COMPLETE',
       540,
-      680,
+      790,
     )
 
     context.fillStyle = '#706f67'
     context.font = font(700, 30)
-    context.fillText(model.summary, 540, 728)
+    context.fillText(model.summary, 540, 838)
     context.textAlign = 'left'
   }
 
@@ -417,20 +420,20 @@ export async function renderSharePng(
 
     if (model.celebration) {
       const x = 70 + index * 190
-      const y = 790
+      const y = 960
       const width = 172
-      const height = 236
+      const height = 270
 
       context.fillStyle = 'rgba(255,253,248,.9)'
       roundedRect(context, x, y, width, height, 26)
       context.fill()
 
-      drawImageContain(context, image, x + 16, y + 12, width - 32, 166)
+      drawImageContain(context, image, x + 16, y + 12, width - 32, 192)
 
       context.fillStyle = '#25251f'
       context.font = font(800, 24)
       context.textAlign = 'center'
-      context.fillText(card.title, x + width / 2, y + 215)
+      context.fillText(card.title, x + width / 2, y + 244)
       context.textAlign = 'left'
       continue
     }
@@ -440,21 +443,35 @@ export async function renderSharePng(
     context.fill()
 
     const isCollection = Boolean(card.markers)
+    const isDenseEntry = !isCollection && card.height < 120
     const textLeft = card.x + 14
 
     if (isCollection) {
-      drawImageContain(context, image, card.x + 18, card.y + 8, card.width - 36, 92)
+      drawImageContain(context, image, card.x + 18, card.y + 12, card.width - 36, 166)
 
       context.fillStyle = '#25251f'
       context.font = font(800, shareTypography.entryName)
-      context.fillText(card.title, textLeft, card.y + 127)
+      context.fillText(card.title, textLeft, card.y + 204)
 
-      drawCollectionMarkers(context, card, textLeft, card.y + 137, card.width - 28)
+      drawCollectionMarkers(context, card, textLeft, card.y + 218, card.width - 28)
 
       context.fillStyle = '#5d5a52'
       context.font = font(700, 18)
       const statusText = card.status ? `${card.badge} · ${card.status}` : card.badge
-      context.fillText(statusText, textLeft, card.y + card.height - 12)
+      context.fillText(statusText, textLeft, card.y + card.height - 18)
+      continue
+    }
+
+    if (isDenseEntry) {
+      const imageSize = Math.max(48, card.height - 16)
+      drawImageContain(context, image, card.x + 8, card.y + 8, imageSize, imageSize)
+      const denseTextLeft = card.x + imageSize + 18
+      context.fillStyle = '#25251f'
+      context.font = font(800, 17)
+      context.fillText(card.title, denseTextLeft, card.y + card.height / 2 - 3)
+      context.fillStyle = '#706f67'
+      context.font = font(500, 13, 'mono')
+      context.fillText(card.badge, denseTextLeft, card.y + card.height / 2 + 19)
       continue
     }
 
@@ -479,12 +496,12 @@ export async function renderSharePng(
 
   context.fillStyle = '#5e5a51'
   context.font = font(500, shareTypography.signature, 'mono')
-  context.fillText(model.signature, 70, 1306)
+  context.fillText(model.signature, 70, 1864)
 
   context.textAlign = 'right'
   context.fillStyle = '#858177'
   context.font = font(500, 18, 'mono')
-  context.fillText('Made locally in your browser', 1010, 1332)
+  context.fillText('Made locally in your browser', 1010, 1894)
   context.textAlign = 'left'
 
   return await new Promise((resolve, reject) => {
@@ -496,6 +513,5 @@ export async function renderSharePng(
 }
 
 export function shareFileName(selection: ShareSelection) {
-  const page = selection.pageCount > 1 ? `-${selection.page}-of-${selection.pageCount}` : ''
-  return `fn-sprite-hub-${selection.template}${page}.png`
+  return `fn-sprite-hub-${selection.template}.png`
 }

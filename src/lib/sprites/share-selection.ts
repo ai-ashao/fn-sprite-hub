@@ -12,8 +12,6 @@ export type ShareSelection = {
   pageCount: number
 }
 
-export const shareEntriesPerPage = 24
-
 // Curated for silhouette, rarity and color contrast. This is intentionally
 // explicit rather than depending on spriteFamilies array order.
 export const celebrationFamilyIds = ['bush', 'sonic', 'crown', 'klombo', 'x-ray'] as const
@@ -54,21 +52,15 @@ export function buildShareSelections(
     const state = entryState(collection, entry.id)
     return template === 'missing' ? state === 'missing' : state === 'owned'
   })
-  const pageCount = Math.max(1, Math.ceil(entries.length / shareEntriesPerPage))
-
-  return Array.from({ length: pageCount }, (_, index) => {
-    const pageEntries = entries.slice(
-      index * shareEntriesPerPage,
-      (index + 1) * shareEntriesPerPage,
-    )
-    return selection(
+  return [
+    selection(
       template,
-      Array.from(new Set(pageEntries.map(({ familyId }) => familyId))),
-      pageEntries.map(({ id }) => id),
-      index + 1,
-      pageCount,
-    )
-  })
+      Array.from(new Set(entries.map(({ familyId }) => familyId))),
+      entries.map(({ id }) => id),
+      1,
+      1,
+    ),
+  ]
 }
 
 function selection(
