@@ -120,6 +120,57 @@ for (const viewport of viewports) {
   })
 }
 
+test('desktop Hero artwork expands on hover and respects reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+
+  const artwork = page.locator('[data-sprite-hero-art]')
+  const primarySprite = artwork.locator('.sprite-hero-image.primary')
+  const initialTransform = await primarySprite.evaluate(
+    (image) => window.getComputedStyle(image).transform,
+  )
+
+  await artwork.hover()
+  await expect
+    .poll(() => primarySprite.evaluate((image) => window.getComputedStyle(image).transform))
+    .not.toBe(initialTransform)
+
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.reload()
+
+  const reducedMotionArtwork = page.locator('[data-sprite-hero-art]')
+  const reducedMotionSprite = reducedMotionArtwork.locator('.sprite-hero-image.primary')
+  const reducedMotionTransform = await reducedMotionSprite.evaluate(
+    (image) => window.getComputedStyle(image).transform,
+  )
+  await reducedMotionArtwork.hover()
+  expect(
+    await reducedMotionSprite.evaluate((image) => window.getComputedStyle(image).transform),
+  ).toBe(reducedMotionTransform)
+})
+
+test('Matrix sticky header does not overlap the first Sprite row', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+  await page.getByRole('button', { name: 'Matrix' }).click()
+
+  const matrix = page.locator('[data-sprite-matrix]')
+  const headerCell = matrix.locator('thead th').first()
+  const headerRow = matrix.locator('thead tr')
+  const firstSpriteRow = matrix.locator('tbody tr').first()
+
+  await expect(headerCell).toHaveCSS('top', '0px')
+
+  const headerBox = await headerRow.boundingBox()
+  const firstRowBox = await firstSpriteRow.boundingBox()
+  expect(headerBox).not.toBeNull()
+  expect(firstRowBox).not.toBeNull()
+  expect((headerBox?.y ?? 0) + (headerBox?.height ?? 0)).toBeLessThanOrEqual(
+    (firstRowBox?.y ?? 0) + 1,
+  )
+})
+
 test('canonical trailing slash redirects', async ({ page }) => {
   const response = await page.goto('/checklist/')
   expect(response?.status()).toBe(200)
