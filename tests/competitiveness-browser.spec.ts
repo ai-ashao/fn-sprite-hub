@@ -15,6 +15,38 @@ const base = () => ({
 })
 const backup = () => ({ ...base(), ownedEntryIds: ['crown:normal'] })
 
+test('favicon assets are wired into the document head and served locally', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/')
+
+  for (const selector of [
+    'link[rel="icon"][href="/favicon.ico"]',
+    'link[rel="icon"][href="/favicon.svg"]',
+    'link[rel="icon"][href="/favicon-32x32.png"]',
+    'link[rel="icon"][href="/favicon-16x16.png"]',
+    'link[rel="apple-touch-icon"][href="/apple-touch-icon.png"]',
+    'link[rel="manifest"][href="/site.webmanifest"]',
+  ]) {
+    await expect(page.locator(selector)).toHaveCount(1)
+  }
+
+  for (const asset of [
+    '/favicon.ico',
+    '/favicon.svg',
+    '/favicon-16x16.png',
+    '/favicon-32x32.png',
+    '/favicon-48x48.png',
+    '/apple-touch-icon.png',
+    '/android-chrome-192x192.png',
+    '/android-chrome-512x512.png',
+    '/site.webmanifest',
+  ]) {
+    expect((await request.get(asset)).status()).toBe(200)
+  }
+})
+
 for (const [name, raw] of [
   ['damaged JSON', '{damaged'],
   ['foreign season', JSON.stringify({ ...base(), seasonId: 'older-season' })],
