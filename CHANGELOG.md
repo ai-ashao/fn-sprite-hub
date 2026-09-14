@@ -7,6 +7,7 @@
 - Updated tracker, checklist, variants, freshness pages and Share Studio for the 61-entry snapshot.
 - Enabled indexing for reviewed owner pages while keeping all 16 Sprite detail pages behind the editorial noindex gate.
 - Extended production smoke coverage for live counts, artwork, robots directives and sitemap membership.
+- Added the Sprite mascot favicon family for browsers, Apple touch icons and the web app manifest.
 
 ## Unreleased
 
