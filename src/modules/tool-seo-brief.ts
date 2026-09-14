@@ -42,8 +42,8 @@ export const toolSeoBrief = {
       note: 'Tracker, checklist, database, variants, rarity, locations and freshness intents are represented by dedicated current pages in the SERP.',
     },
     {
-      source: 'Fortnite.GG Sprite tracker, reviewed 2026-09-08',
-      note: 'Current tracker displays 47 released current-season entries with separate Owned and Mastered state.',
+      source: 'Epic Games and Fortnite.GG Sprite tracker, reviewed 2026-09-14',
+      note: 'Current tracker displays 61 released current-season entries with separate Owned and Mastered state.',
     },
   ],
 } satisfies ToolSeoBrief

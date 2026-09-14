@@ -1,4 +1,4 @@
-import { releasedFinishesFor } from './released-sprite-finishes'
+import { releasedEntriesFor } from './released-sprite-finishes'
 import artworkData from './sprite-artworks.json'
 import { generalAcquisitionRule, guidanceSources, spriteGuidance } from './sprite-guidance'
 
@@ -6,7 +6,7 @@ export type SpriteRarity = 'Rare' | 'Epic' | 'Legendary' | 'Mythic'
 export type SpriteFinishKind = 'normal' | 'gold' | 'cheat-master' | 'loot-hacker'
 export type SpriteImageMode = 'entry' | 'family-fallback'
 
-export const currentDataVerifiedAt = '2026-09-08'
+export const currentDataVerifiedAt = '2026-09-14'
 
 export type SpriteFamily = {
   id: string
@@ -278,7 +278,7 @@ const spriteFamilyData: readonly Omit<SpriteFamily, 'seoReady'>[] = [
     introducedSeasonId: 'c7s4',
     patchAdded: 'v42.10',
     locationHint: 'Added in v42.10; this tracker does not claim a permanent fixed spawn.',
-    acquisitionHint: 'Track Base, Gold and Cheat Master as separate released entries.',
+    acquisitionHint: 'Track Base, Gold, Cheat Master and Loot Hacker as separate released entries.',
     verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
@@ -293,7 +293,7 @@ const spriteFamilyData: readonly Omit<SpriteFamily, 'seoReady'>[] = [
     patchAdded: 'v42.10',
     locationHint:
       'Added in v42.10; current acquisition should be checked against live loot and Cheat Code sources.',
-    acquisitionHint: 'Track Base, Gold and Cheat Master as separate released entries.',
+    acquisitionHint: 'Track Base, Gold, Cheat Master and Loot Hacker as separate released entries.',
     verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
@@ -308,7 +308,7 @@ const spriteFamilyData: readonly Omit<SpriteFamily, 'seoReady'>[] = [
     introducedSeasonId: 'c7s4',
     patchAdded: 'v42.10',
     locationHint: 'Reported around higher terrain after the v42.10 update.',
-    acquisitionHint: 'Track Base, Gold and Cheat Master as separate released entries.',
+    acquisitionHint: 'Track Base, Gold, Cheat Master and Loot Hacker as separate released entries.',
     verifiedAt: currentDataVerifiedAt,
     sourceRefs: commonSources,
   },
@@ -353,7 +353,7 @@ const artworkByEntryId = new Map(artworkData.map((record) => [record.entryId, re
 function makeEntry(
   family: SpriteFamily,
   finish: SpriteFinishKind,
-  releasedAt = family.patchAdded === 'v42.10' ? '2026-09-03' : '2026-08-20',
+  releasedAt: string,
 ): SpriteEntry {
   const entryId = `${family.id}:${finish}`
   const artwork = artworkByEntryId.get(entryId)
@@ -381,8 +381,8 @@ function makeEntry(
 const entries: SpriteEntry[] = []
 
 for (const family of spriteFamilies) {
-  for (const finish of releasedFinishesFor(family.id)) {
-    entries.push(makeEntry(family, finish, finish === 'loot-hacker' ? '2026-09-03' : undefined))
+  for (const [finish, releasedAt] of releasedEntriesFor(family.id)) {
+    entries.push(makeEntry(family, finish, releasedAt))
   }
 }
 
@@ -444,6 +444,9 @@ export function validateSpriteData(): readonly string[] {
     }
     if (!entry.sourceRefs.length) issues.push(`Entry ${entry.id} has no source references.`)
     if (!entry.verifiedAt) issues.push(`Entry ${entry.id} has no verification date.`)
+    if (!entry.releasedAt || Number.isNaN(Date.parse(entry.releasedAt))) {
+      issues.push(`Entry ${entry.id} has no valid release date.`)
+    }
     entryIds.add(entry.id)
   }
 

@@ -204,7 +204,7 @@ test('share template switching, cancelled native sharing and every PNG download'
   await studio.getByRole('button', { name: /^My Collection/ }).click()
   await studio.getByRole('button', { name: /^Missing Sprites/ }).click()
   const downloadButton = studio.getByRole('button', { name: /^Download (\d+ PNGs|PNG)$/ })
-  await expect(downloadButton).toBeEnabled()
+  await expect(downloadButton).toBeEnabled({ timeout: 15_000 })
   await studio.getByRole('button', { name: 'Share', exact: true }).click()
   await expect(studio.getByText('Sharing cancelled.')).toBeVisible()
   const pageCount =
@@ -213,7 +213,7 @@ test('share template switching, cancelled native sharing and every PNG download'
   const downloads: Array<import('@playwright/test').Download> = []
   page.on('download', (download) => downloads.push(download))
   await downloadButton.click()
-  await expect.poll(() => downloads.length).toBe(pageCount)
+  await expect.poll(() => downloads.length, { timeout: 15_000 }).toBe(pageCount)
   for (let i = 0; i < downloads.length; i++) {
     const path = testInfo.outputPath(`share-${i + 1}.png`)
     await downloads[i].saveAs(path)
@@ -247,17 +247,20 @@ test('Crown and Klombo expose specific rules and sources without removing the in
   ).toBeVisible()
 })
 
-test('SSR, empty sitemap, real 404 and dynamic catalog count remain consistent', async ({
+test('SSR, launch sitemap, real 404 and dynamic catalog count remain consistent', async ({
   request,
 }) => {
   const home = await request.get('/')
   expect(home.status()).toBe(200)
   const html = await home.text()
   expect(html).toContain('Fortnite Sprite Tracker')
-  expect(html).toContain('noindex,nofollow')
+  expect(html).not.toContain('noindex,nofollow')
+  expect(html).toMatch(/16(?:<!-- -->)? Sprite families · (?:<!-- -->)?61(?:<!-- -->)? entries/)
   const sitemap = await request.get('/sitemap.xml')
-  expect(await sitemap.text()).not.toContain('<loc>')
+  const sitemapText = await sitemap.text()
+  expect(sitemapText).toContain(`<loc>${new URL(home.url()).origin}/</loc>`)
+  expect(sitemapText).not.toContain('/sprites/jonesy')
   const missing = await request.get('/sprites/does-not-exist-for-qa')
   expect(missing.status()).toBe(404)
-  expect(currentReleasedEntryCount).toBe(47)
+  expect(currentReleasedEntryCount).toBe(61)
 })

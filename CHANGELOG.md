@@ -1,5 +1,13 @@
 # Changelog
 
+## FN Sprite Hub V1 - 2026-09-14
+
+- Expanded the verified Chapter 7 Season 4 catalog from 47 to 61 released entries.
+- Added 14 Loot Hacker artworks and explicit September 3/September 10 release dates.
+- Updated tracker, checklist, variants, freshness pages and Share Studio for the 61-entry snapshot.
+- Enabled indexing for reviewed owner pages while keeping all 16 Sprite detail pages behind the editorial noindex gate.
+- Extended production smoke coverage for live counts, artwork, robots directives and sitemap membership.
+
 ## Unreleased
 
 - Added SEO-first Tool Mode handoff through a typed Tool SEO Brief containing primary keyword, search intent, first-batch page map, locales, and research evidence.

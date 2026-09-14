@@ -1,31 +1,59 @@
-/** Explicit release snapshot inherited from the reviewed 2026-09-08 catalog.
+/** Explicit release snapshot verified on 2026-09-14.
  * This is NOT inferred from images or a default rule for newly added families.
  * Keep existing IDs stable; add a release only after checking its own evidence.
  */
 export type ReviewedFinish = 'normal' | 'gold' | 'cheat-master' | 'loot-hacker'
-const reviewed: Readonly<Record<string, readonly ReviewedFinish[]>> = {
-  jonesy: ['normal', 'gold', 'cheat-master'],
-  adventure: ['normal', 'gold', 'cheat-master'],
-  bush: ['normal', 'gold', 'cheat-master'],
-  sonic: ['normal', 'gold', 'cheat-master'],
-  tails: ['normal', 'gold', 'cheat-master'],
-  shadow: ['normal', 'gold', 'cheat-master'],
-  '8-bit': ['normal', 'gold', 'cheat-master'],
-  jackrabbit: ['normal', 'gold', 'cheat-master'],
-  crown: ['normal', 'gold', 'cheat-master', 'loot-hacker'],
-  killswitch: ['normal', 'gold', 'cheat-master'],
-  klombo: ['normal', 'gold', 'cheat-master'],
-  'mega-man': ['normal'],
-  overshield: ['normal', 'gold', 'cheat-master'],
-  'x-ray': ['normal', 'gold', 'cheat-master'],
-  onigiri: ['normal', 'gold', 'cheat-master'],
-  'storm-scout': ['normal', 'gold', 'cheat-master'],
+export type ReviewedRelease = readonly [finish: ReviewedFinish, releasedAt: string]
+
+const launchRelease = (finish: ReviewedFinish): ReviewedRelease => [finish, '2026-08-20']
+const patch421Release = (finish: ReviewedFinish): ReviewedRelease => [finish, '2026-09-03']
+const hackerRelease = (finish: ReviewedFinish): ReviewedRelease => [finish, '2026-09-10']
+
+const launchSet = (): readonly ReviewedRelease[] => [
+  launchRelease('normal'),
+  launchRelease('gold'),
+  launchRelease('cheat-master'),
+  hackerRelease('loot-hacker'),
+]
+
+const patch421Set = (): readonly ReviewedRelease[] => [
+  patch421Release('normal'),
+  patch421Release('gold'),
+  patch421Release('cheat-master'),
+  hackerRelease('loot-hacker'),
+]
+
+const reviewed: Readonly<Record<string, readonly ReviewedRelease[]>> = {
+  jonesy: launchSet(),
+  adventure: launchSet(),
+  bush: launchSet(),
+  sonic: launchSet(),
+  tails: launchSet(),
+  shadow: launchSet(),
+  '8-bit': launchSet(),
+  jackrabbit: launchSet(),
+  crown: [
+    launchRelease('normal'),
+    launchRelease('gold'),
+    launchRelease('cheat-master'),
+    patch421Release('loot-hacker'),
+  ],
+  killswitch: launchSet(),
+  klombo: launchSet(),
+  'mega-man': [patch421Release('normal')],
+  overshield: patch421Set(),
+  'x-ray': patch421Set(),
+  onigiri: patch421Set(),
+  'storm-scout': patch421Set(),
 }
 export const reviewedFamilyCount = Object.keys(reviewed).length
 export const reviewedReleasedEntryCount = Object.values(reviewed).reduce(
-  (total, finishes) => total + finishes.length,
+  (total, releases) => total + releases.length,
   0,
 )
-export function releasedFinishesFor(familyId: string): readonly ReviewedFinish[] {
+export function releasedEntriesFor(familyId: string): readonly ReviewedRelease[] {
   return Object.hasOwn(reviewed, familyId) ? reviewed[familyId] : []
+}
+export function releasedFinishesFor(familyId: string): readonly ReviewedFinish[] {
+  return releasedEntriesFor(familyId).map(([finish]) => finish)
 }

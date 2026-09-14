@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
+  currentDataVerifiedAt,
   currentFamilyCount,
   currentReleasedEntryCount,
   entriesForFamily,
@@ -13,9 +14,9 @@ import {
 } from '@/data/sprites'
 
 describe('FN Sprite Hub current-season data', () => {
-  it('matches the 2026-09-08 verified release snapshot', () => {
+  it('matches the 2026-09-14 verified release snapshot', () => {
     expect(currentFamilyCount).toBe(16)
-    expect(currentReleasedEntryCount).toBe(47)
+    expect(currentReleasedEntryCount).toBe(61)
     expect(spriteFamilies).toHaveLength(16)
   })
 
@@ -35,7 +36,7 @@ describe('FN Sprite Hub current-season data', () => {
       expect(familyIds.has(entry.familyId)).toBe(true)
       expect(entry.image.startsWith('/images/sprites/')).toBe(true)
       expect(entry.sourceRefs.length).toBeGreaterThan(0)
-      expect(entry.verifiedAt).toBe('2026-09-08')
+      expect(entry.verifiedAt).toBe(currentDataVerifiedAt)
 
       const file = path.join(process.cwd(), 'public', entry.image)
       expect(existsSync(file), entry.image).toBe(true)
@@ -44,7 +45,7 @@ describe('FN Sprite Hub current-season data', () => {
     expect(spriteEntries.filter(({ imageMode }) => imageMode === 'family-fallback')).toHaveLength(
       16,
     )
-    expect(spriteEntries.filter(({ imageMode }) => imageMode === 'entry')).toHaveLength(31)
+    expect(spriteEntries.filter(({ imageMode }) => imageMode === 'entry')).toHaveLength(45)
   })
 
   it('uses valid independent PNG artwork for every released variant', () => {
@@ -59,14 +60,27 @@ describe('FN Sprite Hub current-season data', () => {
     }
   })
 
-  it('tracks Mega Man as single-form and Crown with released Loot Hacker', () => {
+  it('tracks Mega Man as single-form and the other 15 families with Loot Hacker', () => {
     expect(entriesForFamily('mega-man').map((entry) => entry.finish)).toEqual(['normal'])
-    expect(entriesForFamily('crown').map((entry) => entry.finish)).toEqual([
-      'normal',
-      'gold',
-      'cheat-master',
-      'loot-hacker',
-    ])
+    for (const family of spriteFamilies.filter(({ id }) => id !== 'mega-man')) {
+      expect(entriesForFamily(family.id).map((entry) => entry.finish)).toEqual([
+        'normal',
+        'gold',
+        'cheat-master',
+        'loot-hacker',
+      ])
+    }
+  })
+
+  it('keeps Crown on the September 3 release and the other Loot Hackers on September 10', () => {
+    const lootHackers = spriteEntries.filter(({ finish }) => finish === 'loot-hacker')
+    expect(lootHackers).toHaveLength(15)
+    expect(lootHackers.find(({ familyId }) => familyId === 'crown')?.releasedAt).toBe('2026-09-03')
+    expect(
+      lootHackers
+        .filter(({ familyId }) => familyId !== 'crown')
+        .every(({ releasedAt }) => releasedAt === '2026-09-10'),
+    ).toBe(true)
   })
 
   it('builds one SEO detail route per current family', () => {

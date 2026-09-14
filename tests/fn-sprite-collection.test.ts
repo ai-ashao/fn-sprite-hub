@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { currentReleasedEntryCount } from '@/data/sprites'
+import { currentReleasedEntryCount, spriteEntries } from '@/data/sprites'
 import {
   buildDiscordCollectionSummary,
   type CollectionStateV1,
@@ -54,6 +54,27 @@ describe('Sprite collection state', () => {
       owned: 1,
       mastered: 1,
       missing: currentReleasedEntryCount - 1,
+    })
+  })
+
+  it('preserves a 47-entry collection while adding new Loot Hackers as missing', () => {
+    const previouslyReleasedIds = spriteEntries
+      .filter(({ familyId, finish }) => finish !== 'loot-hacker' || familyId === 'crown')
+      .map(({ id }) => id)
+    expect(previouslyReleasedIds).toHaveLength(47)
+
+    const normalized = normalizeCollectionState({
+      ...empty,
+      ownedEntryIds: previouslyReleasedIds,
+      masteredEntryIds: previouslyReleasedIds,
+    })
+    expect(normalized.ownedEntryIds).toEqual(previouslyReleasedIds)
+    expect(normalized.masteredEntryIds).toEqual(previouslyReleasedIds)
+    expect(collectionMetrics(normalized)).toMatchObject({
+      total: 61,
+      owned: 47,
+      mastered: 47,
+      missing: 14,
     })
   })
 
