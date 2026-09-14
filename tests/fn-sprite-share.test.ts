@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { currentReleasedEntries } from '@/data/sprites'
+import { currentReleasedEntries, currentReleasedEntryCount } from '@/data/sprites'
 import type { CollectionStateV1 } from '@/lib/sprites/collection'
 import { buildShareLayoutModel, shareCanvasSize, shareFileName } from '@/lib/sprites/share-renderer'
 import {
@@ -21,13 +21,14 @@ function state(owned = 0, mastered = 0): CollectionStateV1 {
 
 describe('Share Studio selection and deterministic layout', () => {
   it.each([
-    [0, 2],
-    [1, 2],
-    [6, 2],
-    [12, 2],
-    [24, 1],
-    [25, 1],
+    [0, 3],
+    [1, 3],
+    [6, 3],
+    [12, 3],
+    [24, 2],
+    [25, 2],
     [47, 1],
+    [61, 1],
   ])(
     'paginates a %i-owned collection with at most 24 missing entries per page',
     (owned, expectedPages) => {
@@ -47,20 +48,27 @@ describe('Share Studio selection and deterministic layout', () => {
     const unmastered = buildShareSelections('unmastered', collection).flatMap(
       ({ entryIds }) => entryIds,
     )
-    expect(missing).toHaveLength(34)
+    expect(missing).toHaveLength(48)
     expect(unmastered).toHaveLength(12)
     expect(missing.some((id) => unmastered.includes(id))).toBe(false)
   })
 
   it('unlocks both celebration outcomes only at full completion', () => {
-    expect(shareTemplateAvailable('celebration', state(46))).toBe(false)
+    expect(shareTemplateAvailable('celebration', state(currentReleasedEntryCount - 1))).toBe(false)
     expect(
-      buildShareLayoutModel(buildShareSelections('celebration', state(47))[0], state(47))
-        .celebration,
+      buildShareLayoutModel(
+        buildShareSelections('celebration', state(currentReleasedEntryCount))[0],
+        state(currentReleasedEntryCount),
+      ).celebration,
     ).toBe('collection')
     expect(
-      buildShareLayoutModel(buildShareSelections('celebration', state(47, 47))[0], state(47, 47))
-        .celebration,
+      buildShareLayoutModel(
+        buildShareSelections(
+          'celebration',
+          state(currentReleasedEntryCount, currentReleasedEntryCount),
+        )[0],
+        state(currentReleasedEntryCount, currentReleasedEntryCount),
+      ).celebration,
     ).toBe('mastered')
   })
 
@@ -71,12 +79,18 @@ describe('Share Studio selection and deterministic layout', () => {
       buildShareSelections('missing', state(23))[0],
       buildShareSelections('missing', state(0))[0],
       buildShareSelections('unmastered', state(12))[0],
-      buildShareSelections('celebration', state(47))[0],
-      buildShareSelections('celebration', state(47, 47))[0],
+      buildShareSelections('celebration', state(currentReleasedEntryCount))[0],
+      buildShareSelections(
+        'celebration',
+        state(currentReleasedEntryCount, currentReleasedEntryCount),
+      )[0],
     ]
 
     for (const selection of fixtures) {
-      const collection = selection.template === 'celebration' ? state(47, 47) : state(12)
+      const collection =
+        selection.template === 'celebration'
+          ? state(currentReleasedEntryCount, currentReleasedEntryCount)
+          : state(12)
       const model = buildShareLayoutModel(selection, collection)
       expect({ width: model.width, height: model.height }).toEqual(shareCanvasSize)
       expect(model.signature).toContain('fnspritehub.com')
@@ -86,8 +100,8 @@ describe('Share Studio selection and deterministic layout', () => {
     }
 
     const multi = buildShareSelections('missing', state(0))[1]
-    expect(buildShareLayoutModel(multi, state(0)).pageLabel).toBe('2/2')
-    expect(shareFileName(multi)).toContain('2-of-2')
+    expect(buildShareLayoutModel(multi, state(0)).pageLabel).toBe('2/3')
+    expect(shareFileName(multi)).toContain('2-of-3')
   })
 
   it('builds all three Discord modes from the same selection contract', () => {
@@ -96,7 +110,7 @@ describe('Share Studio selection and deterministic layout', () => {
       const pages = buildShareSelections(template, collection)
       const selection = { ...pages[0], entryIds: pages.flatMap(({ entryIds }) => entryIds) }
       const text = buildDiscordShareText(selection, collection)
-      expect(text).toContain('Collected: 2/47')
+      expect(text).toContain(`Collected: 2/${currentReleasedEntryCount}`)
       expect(text).toContain('fnspritehub.com')
     }
     expect(

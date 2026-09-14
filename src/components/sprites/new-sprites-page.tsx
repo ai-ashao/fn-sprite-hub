@@ -13,6 +13,16 @@ export function NewSpritesPage() {
     >
       <section className="sprite-changelog">
         <header>
+          <small>September 10, 2026</small>
+          <h2>Loot Hacker variants released</h2>
+          <p>
+            Fourteen more Loot Hacker variants entered the live loot pool, bringing the current
+            tracker to {currentReleasedEntryCount} released entries. Mega Man remains single-form.
+          </p>
+        </header>
+      </section>
+      <section className="sprite-changelog">
+        <header>
           <small>September 3, 2026</small>
           <h2>Patch v42.10</h2>
           <p>Five Sprite families were added to the current collection snapshot.</p>
@@ -26,10 +36,7 @@ export function NewSpritesPage() {
             </a>
           ))}
         </div>
-        <p>
-          Loot Hacker Crown is also counted as a separately released collectible entry in the
-          current {currentReleasedEntryCount}-entry denominator.
-        </p>
+        <p>Loot Hacker Crown was the first released Loot Hacker entry on September 3.</p>
       </section>
     </SpriteContentLayout>
   )

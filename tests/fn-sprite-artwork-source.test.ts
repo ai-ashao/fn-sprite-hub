@@ -24,9 +24,9 @@ describe('Sprite artwork single source of truth', () => {
   it('keeps independent variant download metadata unique and complete', () => {
     const variants = spriteArtworkManifest.filter(({ imageMode }) => imageMode === 'entry')
 
-    expect(variants).toHaveLength(31)
-    expect(new Set(variants.map(({ assetId }) => assetId)).size).toBe(31)
-    expect(new Set(variants.map(({ sourceUrl }) => sourceUrl)).size).toBe(31)
+    expect(variants).toHaveLength(45)
+    expect(new Set(variants.map(({ assetId }) => assetId)).size).toBe(45)
+    expect(new Set(variants.map(({ sourceUrl }) => sourceUrl)).size).toBe(45)
 
     for (const record of variants) {
       expect(record.assetId).toBeTypeOf('number')
@@ -37,12 +37,24 @@ describe('Sprite artwork single source of truth', () => {
   })
 
   it('records the product owner approval and its evidence for every use', () => {
+    const newLootHackers = spriteArtworkManifest.filter(
+      ({ entryId }) => entryId.endsWith(':loot-hacker') && entryId !== 'crown:loot-hacker',
+    )
+    expect(newLootHackers).toHaveLength(14)
+
     for (const record of spriteArtworkManifest) {
       expect(record.displayUseReview).toBe('approved')
       expect(record.exportUseReview).toBe('approved')
-      expect(record.reviewedAt).toBe('2026-09-09')
       expect(record.policyOrTermsRef).toBe('https://legal.epicgames.com/epicgames/fan-art-policy')
-      expect(record.reviewNote).toContain('Product owner approved')
+      expect(['2026-09-09', '2026-09-14']).toContain(record.reviewedAt)
+      expect(record.reviewNote).toContain('Product owner')
+    }
+
+    for (const record of newLootHackers) {
+      expect(record.reviewedAt).toBe('2026-09-14')
+      expect(record.sourceUrls).toContain(
+        'https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y',
+      )
     }
   })
 })

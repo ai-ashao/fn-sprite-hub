@@ -6,8 +6,8 @@ Reviewed engineering baseline: `1e058e1bad31a65379ead8948d971bff1aa5b290`
 
 - Tracker / checklist
 - Gallery / Matrix
-- 47-entry runtime model
-- 31 independent variant artworks
+- 61-entry runtime model
+- 45 independent variant artworks
 - Share Studio
 - deterministic Canvas renderer
 - same-origin artwork guard
@@ -16,6 +16,7 @@ Reviewed engineering baseline: `1e058e1bad31a65379ead8948d971bff1aa5b290`
 - dynamic Sprite details remain noindex by default
 - exact Epic Fan Content disclaimer in the root site footer
 - Fan Content disclaimer release gate
+- owner-page indexing enabled for the V1 launch
 
 ## Do not add before launch
 
@@ -26,15 +27,15 @@ Reviewed engineering baseline: `1e058e1bad31a65379ead8948d971bff1aa5b290`
 - more Share templates
 - advertising
 
-## Remaining human gates
+## Completed human gates
 
 ### 1. Artwork use review
 
-Review `src/data/sprite-artworks.json`.
+The current release manifest in `src/data/sprite-artworks.json` has been reviewed.
 
 Do not infer approval merely from a public Download button.
 
-For each record decide:
+Each record includes:
 
 ```text
 displayUseReview
@@ -65,7 +66,7 @@ Review at 1080×1350 and 360×450.
 
 ### 3. Legal review
 
-Review Privacy / Terms / operator information and only then move the legal profile out of `starter`.
+Privacy / Terms / operator information has passed the factual product-profile gate.
 
 Then:
 

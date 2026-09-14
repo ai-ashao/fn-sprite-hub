@@ -875,5 +875,271 @@
     "displayUseReview": "approved",
     "exportUseReview": "approved",
     "reviewNote": "Product owner approved display and share-export use on 2026-09-09."
+  },
+  {
+    "entryId": "killswitch:loot-hacker",
+    "localPath": "/images/sprites/killswitch/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6918"
+    ],
+    "assetId": 6918,
+    "assetPage": "https://fortnite.gg/assets?id=6918",
+    "sourceUrl": "https://fnggcdn.com/assets/uBRoax.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "adventure:loot-hacker",
+    "localPath": "/images/sprites/adventure/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6919"
+    ],
+    "assetId": 6919,
+    "assetPage": "https://fortnite.gg/assets?id=6919",
+    "sourceUrl": "https://fnggcdn.com/assets/BvVBrK.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "jonesy:loot-hacker",
+    "localPath": "/images/sprites/jonesy/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6920"
+    ],
+    "assetId": 6920,
+    "assetPage": "https://fortnite.gg/assets?id=6920",
+    "sourceUrl": "https://fnggcdn.com/assets/EMLR2x.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "storm-scout:loot-hacker",
+    "localPath": "/images/sprites/storm-scout/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6921"
+    ],
+    "assetId": 6921,
+    "assetPage": "https://fortnite.gg/assets?id=6921",
+    "sourceUrl": "https://fnggcdn.com/assets/0qKCAi.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "shadow:loot-hacker",
+    "localPath": "/images/sprites/shadow/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6922"
+    ],
+    "assetId": 6922,
+    "assetPage": "https://fortnite.gg/assets?id=6922",
+    "sourceUrl": "https://fnggcdn.com/assets/YftZGv.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "overshield:loot-hacker",
+    "localPath": "/images/sprites/overshield/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6923"
+    ],
+    "assetId": 6923,
+    "assetPage": "https://fortnite.gg/assets?id=6923",
+    "sourceUrl": "https://fnggcdn.com/assets/chnSTi.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "tails:loot-hacker",
+    "localPath": "/images/sprites/tails/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6924"
+    ],
+    "assetId": 6924,
+    "assetPage": "https://fortnite.gg/assets?id=6924",
+    "sourceUrl": "https://fnggcdn.com/assets/UmCu3O.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "klombo:loot-hacker",
+    "localPath": "/images/sprites/klombo/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6925"
+    ],
+    "assetId": 6925,
+    "assetPage": "https://fortnite.gg/assets?id=6925",
+    "sourceUrl": "https://fnggcdn.com/assets/RbEtIK.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "onigiri:loot-hacker",
+    "localPath": "/images/sprites/onigiri/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6926"
+    ],
+    "assetId": 6926,
+    "assetPage": "https://fortnite.gg/assets?id=6926",
+    "sourceUrl": "https://fnggcdn.com/assets/x4b9l0.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "x-ray:loot-hacker",
+    "localPath": "/images/sprites/x-ray/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6927"
+    ],
+    "assetId": 6927,
+    "assetPage": "https://fortnite.gg/assets?id=6927",
+    "sourceUrl": "https://fnggcdn.com/assets/LiwlLO.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "sonic:loot-hacker",
+    "localPath": "/images/sprites/sonic/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6928"
+    ],
+    "assetId": 6928,
+    "assetPage": "https://fortnite.gg/assets?id=6928",
+    "sourceUrl": "https://fnggcdn.com/assets/YxnJjc.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "8-bit:loot-hacker",
+    "localPath": "/images/sprites/8-bit/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6929"
+    ],
+    "assetId": 6929,
+    "assetPage": "https://fortnite.gg/assets?id=6929",
+    "sourceUrl": "https://fnggcdn.com/assets/AU7Ezo.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "jackrabbit:loot-hacker",
+    "localPath": "/images/sprites/jackrabbit/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6930"
+    ],
+    "assetId": 6930,
+    "assetPage": "https://fortnite.gg/assets?id=6930",
+    "sourceUrl": "https://fnggcdn.com/assets/L41Kcn.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
+  },
+  {
+    "entryId": "bush:loot-hacker",
+    "localPath": "/images/sprites/bush/loot-hacker.png",
+    "imageMode": "entry",
+    "sourceType": "specialist",
+    "sourceUrls": [
+      "https://communities.epicgames.com/thread/new-override-plus-hacker-sprites-is-live/7a3y",
+      "https://fortnite.gg/sprites",
+      "https://fortnite.gg/assets?id=6931"
+    ],
+    "assetId": 6931,
+    "assetPage": "https://fortnite.gg/assets?id=6931",
+    "sourceUrl": "https://fnggcdn.com/assets/i2jkz3.png",
+    "reviewedAt": "2026-09-14",
+    "policyOrTermsRef": "https://legal.epicgames.com/epicgames/fan-art-policy",
+    "displayUseReview": "approved",
+    "exportUseReview": "approved",
+    "reviewNote": "Product owner requested display and share-export inclusion for the verified Loot Hacker refresh on 2026-09-14."
   }
 ]

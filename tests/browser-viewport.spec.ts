@@ -119,15 +119,15 @@ test('Sprite detail exposes honest per-entry artwork state', async ({ page }) =>
   await page.goto('/sprites/jonesy')
 
   const entries = page.locator('.sprite-detail-entries button')
-  await expect(entries).toHaveCount(3)
+  await expect(entries).toHaveCount(4)
   await expect(
     page.locator('.sprite-detail-entries button[data-image-mode="family-fallback"]'),
   ).toHaveCount(1)
   await expect(page.locator('.sprite-detail-entries button[data-image-mode="entry"]')).toHaveCount(
-    2,
+    3,
   )
-  await expect(entries.getByRole('img')).toHaveCount(3)
-  await expect(entries).toContainText(['Base', 'Gold', 'Cheat Master'])
+  await expect(entries.getByRole('img')).toHaveCount(4)
+  await expect(entries).toContainText(['Base', 'Gold', 'Cheat Master', 'Loot Hacker'])
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
     await page.evaluate(() => window.innerWidth),
@@ -209,7 +209,7 @@ test('Share Studio previews and downloads deterministic multi-page PNGs on mobil
     .toBe(1080)
   await expect(
     page.getByRole('navigation', { name: 'Preview pages' }).getByRole('button'),
-  ).toHaveCount(2)
+  ).toHaveCount(3)
   expect(
     await page.locator('[data-share-preview]').evaluate((image: HTMLImageElement) => ({
       width: image.naturalWidth,
@@ -230,14 +230,14 @@ test('Share Studio previews and downloads deterministic multi-page PNGs on mobil
   ).toBe(true)
 
   await page.getByRole('button', { name: /^Missing Sprites/ }).click()
-  await expect(page.getByRole('button', { name: 'Download 2 PNGs' })).toBeEnabled({
+  await expect(page.getByRole('button', { name: 'Download 3 PNGs' })).toBeEnabled({
     timeout: 15_000,
   })
 
   const downloadPromise = page.waitForEvent('download')
-  await page.getByRole('button', { name: 'Download 2 PNGs' }).click()
+  await page.getByRole('button', { name: 'Download 3 PNGs' }).click()
   const download = await downloadPromise
-  expect(download.suggestedFilename()).toBe('fn-sprite-hub-missing-1-of-2.png')
+  expect(download.suggestedFilename()).toBe('fn-sprite-hub-missing-1-of-3.png')
 
   await page.getByRole('button', { name: 'Close Share Studio' }).click()
   await page.goto('/checklist')
@@ -258,7 +258,7 @@ const shareFixtures = [
     owned: Math.max(0, currentReleasedEntryCount - 24),
     mastered: 8,
   },
-  { name: 'missing-47-page-1', template: 'Missing Sprites', owned: 0, mastered: 0 },
+  { name: 'missing-all-page-1', template: 'Missing Sprites', owned: 0, mastered: 0 },
   { name: 'unmastered-12', template: 'Need to Master', owned: 12, mastered: 0 },
   {
     name: 'celebration-complete',

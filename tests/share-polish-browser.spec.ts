@@ -53,8 +53,8 @@ test('Gallery artwork opens the full Sprite page while variant controls stay inl
   await expect(detailLink).toHaveAttribute('href', /^\/sprites\/.+/)
 
   const variantTiles = firstCard.locator('.sprite-variant-tile')
-  await expect(variantTiles).toHaveCount(3)
-  await expect(variantTiles.locator('img')).toHaveCount(3)
+  await expect(variantTiles).toHaveCount(4)
+  await expect(variantTiles.locator('img')).toHaveCount(4)
 
   const firstVariant = variantTiles.first()
   await firstVariant.click()
@@ -64,7 +64,7 @@ test('Gallery artwork opens the full Sprite page while variant controls stay inl
   await detailLink.click()
   expect(new URL(page.url()).pathname).toBe(href)
   await expect(page.locator('.sprite-detail-stats')).toBeVisible()
-  await expect(page.locator('.sprite-detail-entries [data-entry-id]')).toHaveCount(3)
+  await expect(page.locator('.sprite-detail-entries [data-entry-id]')).toHaveCount(4)
 })
 
 test('Tracker filters can be reset without reloading the page', async ({ page }) => {

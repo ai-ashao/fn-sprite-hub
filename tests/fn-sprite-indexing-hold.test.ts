@@ -6,15 +6,15 @@ afterEach(() => {
   vi.resetModules()
 })
 
-test('QA30: default configuration still holds indexing and sitemap publication', async () => {
+test('QA30: V1 launch enables owner-page indexing and sitemap publication', async () => {
   const { site } = await import('@/lib/site')
   const { pageHead } = await import('@/lib/seo')
   const { sitemapEntries } = await import('@/i18n/routes')
-  expect(site.indexingEnabled).toBe(false)
-  expect(sitemapEntries()).toEqual([])
+  expect(site.indexingEnabled).toBe(true)
+  expect(sitemapEntries().length).toBeGreaterThan(0)
   expect(
     pageHead({ title: 'Test', description: 'Test.', path: '/', indexable: true }).meta,
-  ).toContainEqual({ name: 'robots', content: 'noindex,nofollow' })
+  ).not.toContainEqual({ name: 'robots', content: 'noindex,nofollow' })
 })
 
 test('QA30 isolated fixture: future release still respects per-page editorial gates', async () => {
@@ -23,7 +23,7 @@ test('QA30 isolated fixture: future release still respects per-page editorial ga
     absoluteUrl: (path: string) => new URL(path, 'https://fnspritehub.com').toString(),
   }))
   vi.doMock('@/data/sprites', () => ({
-    currentDataVerifiedAt: '2026-09-08',
+    currentDataVerifiedAt: '2026-09-14',
     spriteSeoRegistry: [
       {
         familyId: 'approved',
