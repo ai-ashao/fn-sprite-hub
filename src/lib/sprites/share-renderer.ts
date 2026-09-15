@@ -4,6 +4,7 @@ import {
   familyById,
   finishLabel,
   type SpriteFinishKind,
+  type SpriteRarity,
 } from '@/data/sprites'
 import {
   type CollectionStateV1,
@@ -13,7 +14,9 @@ import {
 } from './collection'
 import type { ShareSelection } from './share-selection'
 
-export const shareCanvasSize = { width: 1080, height: 1920 } as const
+export const shareCanvasWidth = 1080
+export const shareCanvasMinHeight = 720
+export const celebrationCanvasHeight = 1920
 
 export const shareFontFamilies = {
   display: 'Inter Variable',
@@ -24,27 +27,13 @@ export const shareFontFamilies = {
 export const shareTypography = {
   mainTitle: 74,
   summary: 34,
-  entryName: 28,
-  finishBadge: 24,
+  entryName: 20,
+  finishBadge: 14,
   signature: 24,
   pageLabel: 24,
 } as const
 
 const finishOrder: readonly SpriteFinishKind[] = ['normal', 'gold', 'cheat-master', 'loot-hacker']
-
-const finishShortLabel: Record<SpriteFinishKind, string> = {
-  normal: 'B',
-  gold: 'G',
-  'cheat-master': 'CM',
-  'loot-hacker': 'LH',
-}
-
-type ShareMarkerState = EntryState | 'na'
-
-type ShareMarker = {
-  label: string
-  state: ShareMarkerState
-}
 
 type ShareCard = {
   id: string
@@ -52,7 +41,8 @@ type ShareCard = {
   title: string
   badge: string
   status?: string
-  markers?: ShareMarker[]
+  state?: EntryState
+  rarity?: SpriteRarity
   x: number
   y: number
   width: number
@@ -70,6 +60,11 @@ export type ShareLayoutModel = {
   cards: ShareCard[]
   celebration: 'collection' | 'mastered' | null
   completionPercent: number
+  collectionPercent: number
+  masteryPercent: number
+  owned: number
+  mastered: number
+  total: number
 }
 
 export type ContainRect = {
@@ -108,68 +103,6 @@ export function buildShareLayoutModel(
   collection: CollectionStateV1,
 ): ShareLayoutModel {
   const metrics = collectionMetrics(collection)
-  const entries = currentReleasedEntries().filter(({ id }) => selection.entryIds.includes(id))
-  const isEntries = selection.template === 'missing' || selection.template === 'unmastered'
-  const denseEntries = isEntries && entries.length > 24
-  const columns = isEntries ? (entries.length <= 8 ? 2 : entries.length <= 18 ? 3 : 4) : 4
-  const gap = denseEntries ? 10 : 20
-  const areaX = 70
-  const areaWidth = 940
-  const cardWidth = (areaWidth - gap * (columns - 1)) / columns
-  const startY = 360
-  const rows = Math.max(
-    1,
-    Math.ceil((isEntries ? entries.length : selection.familyIds.length) / columns),
-  )
-  const availableHeight = 1450
-  const cardHeight = isEntries
-    ? denseEntries
-      ? Math.min(104, (availableHeight - gap * (rows - 1)) / rows)
-      : Math.min(260, (availableHeight - gap * (rows - 1)) / rows)
-    : Math.min(310, (availableHeight - gap * (rows - 1)) / rows)
-
-  const sourceCards = isEntries
-    ? entries.map((entry) => ({
-        id: entry.id,
-        image: entry.image,
-        title: familyById(entry.familyId)?.name ?? entry.displayName,
-        badge: finishLabel(entry.finish),
-      }))
-    : selection.familyIds.map((id) => {
-        const family = familyById(id)
-        const familyEntries = currentReleasedEntries().filter((entry) => entry.familyId === id)
-        const mastered = familyEntries.filter(
-          (entry) => entryState(collection, entry.id) === 'mastered',
-        ).length
-        const owned = familyEntries.filter(
-          (entry) => entryState(collection, entry.id) !== 'missing',
-        ).length
-        const markers = finishOrder.map((finish): ShareMarker => {
-          const entry = familyEntries.find((candidate) => candidate.finish === finish)
-          return {
-            label: finishShortLabel[finish],
-            state: entry ? entryState(collection, entry.id) : 'na',
-          }
-        })
-
-        return {
-          id,
-          image: family?.familyImage ?? '',
-          title: family?.name ?? id,
-          badge: `${owned}/${familyEntries.length} owned`,
-          status: `${mastered} mastered`,
-          markers,
-        }
-      })
-
-  const cards = sourceCards.map((card, index) => ({
-    ...card,
-    x: areaX + (index % columns) * (cardWidth + gap),
-    y: startY + Math.floor(index / columns) * (cardHeight + gap),
-    width: cardWidth,
-    height: cardHeight,
-  }))
-
   const celebration =
     selection.template === 'celebration'
       ? metrics.mastered === metrics.total
@@ -177,36 +110,100 @@ export function buildShareLayoutModel(
         : 'collection'
       : null
 
+  const entries = currentReleasedEntries()
+    .filter(({ id }) => selection.entryIds.includes(id))
+    .sort((left, right) => {
+      const finishDifference = finishOrder.indexOf(left.finish) - finishOrder.indexOf(right.finish)
+      if (finishDifference) return finishDifference
+      return (familyById(left.familyId)?.name ?? left.displayName).localeCompare(
+        familyById(right.familyId)?.name ?? right.displayName,
+      )
+    })
+
+  const columns = 5
+  const columnGap = 14
+  const rowGap = 16
+  const areaX = 54
+  const areaWidth = shareCanvasWidth - areaX * 2
+  const cardWidth = (areaWidth - columnGap * (columns - 1)) / columns
+  const cardHeight = 250
+  const startY = 350
+  const rows = Math.ceil(entries.length / columns)
+  const contentBottom = rows ? startY + rows * cardHeight + (rows - 1) * rowGap : startY
+  const canvasHeight = celebration
+    ? celebrationCanvasHeight
+    : Math.max(shareCanvasMinHeight, Math.ceil((contentBottom + 112) / 8) * 8)
+
+  const sourceCards = celebration
+    ? selection.familyIds.map((id) => {
+        const family = familyById(id)
+        return {
+          id,
+          image: family?.familyImage ?? '',
+          title: family?.name ?? id,
+          badge: family?.rarity ?? '',
+          rarity: family?.rarity,
+        }
+      })
+    : entries.map((entry) => {
+        const family = familyById(entry.familyId)
+        const state = entryState(collection, entry.id)
+        return {
+          id: entry.id,
+          image: entry.image,
+          title: entry.displayName,
+          badge: finishLabel(entry.finish),
+          status: state === 'mastered' ? 'Mastered' : state === 'owned' ? 'Owned' : 'Missing',
+          state,
+          rarity: family?.rarity,
+        }
+      })
+
+  const cards = sourceCards.map((card, index) => ({
+    ...card,
+    x: areaX + (index % columns) * (cardWidth + columnGap),
+    y: startY + Math.floor(index / columns) * (cardHeight + rowGap),
+    width: cardWidth,
+    height: cardHeight,
+  }))
+
   const title =
     selection.template === 'collection'
       ? 'My Collection'
       : selection.template === 'missing'
         ? 'Missing Sprites'
         : selection.template === 'unmastered'
-          ? 'Need to Master'
-          : celebration === 'mastered'
-            ? 'Mastery Complete'
-            : 'Collection Complete'
+          ? 'Unmastered Sprites'
+          : selection.template === 'mastered'
+            ? 'Mastered Sprites'
+            : celebration === 'mastered'
+              ? 'Mastery Complete'
+              : 'Collection Complete'
 
-  const count =
-    selection.template === 'missing' ? metrics.missing : metrics.owned - metrics.mastered
+  const count = selection.entryIds.length
 
   return {
-    ...shareCanvasSize,
+    width: shareCanvasWidth,
+    height: canvasHeight,
     title,
     subtitle: `Chapter ${currentSeason.chapter} · Season ${currentSeason.season} ${currentSeason.name}`,
     summary:
       selection.template === 'collection'
-        ? `${metrics.owned}/${metrics.total} owned · ${metrics.mastered}/${metrics.total} mastered`
+        ? `${metrics.owned}/${metrics.total} collected · ${metrics.mastered} mastered`
         : selection.template === 'celebration'
           ? `${metrics.total}/${metrics.total} · 100%`
-          : `${count} ${selection.template === 'missing' ? 'missing' : 'to master'} · ${metrics.owned}/${metrics.total} collected`,
+          : `${count} ${selection.template === 'missing' ? 'missing' : selection.template === 'mastered' ? 'mastered' : 'unmastered'} · ${metrics.owned}/${metrics.total} collected`,
     pageLabel: selection.pageCount > 1 ? `${selection.page}/${selection.pageCount}` : undefined,
     signature: '✦ Track yours at FN Sprite Hub · fnspritehub.com',
     cards,
     celebration,
     completionPercent:
       celebration === 'mastered' ? metrics.masteryPercent : metrics.collectionPercent,
+    collectionPercent: metrics.collectionPercent,
+    masteryPercent: metrics.masteryPercent,
+    owned: metrics.owned,
+    mastered: metrics.mastered,
+    total: metrics.total,
   }
 }
 
@@ -304,40 +301,54 @@ export function drawImageContain(
   context.drawImage(image, rect.x, rect.y, rect.width, rect.height)
 }
 
-function drawCollectionMarkers(
+const stateStyle: Record<EntryState, { fill: string; ink: string; symbol: string }> = {
+  missing: { fill: '#efede7', ink: '#746f66', symbol: '○' },
+  owned: { fill: '#e1efdd', ink: '#486943', symbol: '✓' },
+  mastered: { fill: '#f4e9b9', ink: '#705c16', symbol: '★' },
+}
+
+const rarityStyle: Record<SpriteRarity, { accent: string; tint: string }> = {
+  Rare: { accent: '#3f8eb5', tint: '#edf6fa' },
+  Epic: { accent: '#8b6bb5', tint: '#f3eef8' },
+  Legendary: { accent: '#b68132', tint: '#faf3e5' },
+  Mythic: { accent: '#9a5c75', tint: '#f8edf1' },
+}
+
+function fittedFontSize(
   context: CanvasRenderingContext2D,
-  card: ShareCard,
+  text: string,
+  maxWidth: number,
+  preferred: number,
+  minimum: number,
+): number {
+  for (let size = preferred; size > minimum; size -= 1) {
+    context.font = font(800, size)
+    if (context.measureText(text).width <= maxWidth) return size
+  }
+  return minimum
+}
+
+function drawProgress(
+  context: CanvasRenderingContext2D,
+  label: string,
+  value: number,
+  total: number,
+  percent: number,
   x: number,
-  y: number,
-  width: number,
+  accent: string,
 ) {
-  if (!card.markers?.length) return
-
-  const markerGap = 5
-  const markerWidth = (width - markerGap * 3) / 4
-  const markerHeight = 27
-
-  card.markers.forEach((marker, index) => {
-    const markerX = x + index * (markerWidth + markerGap)
-    const stateStyle: Record<ShareMarkerState, { fill: string; ink: string; symbol: string }> = {
-      missing: { fill: '#f2eee6', ink: '#847d72', symbol: '○' },
-      owned: { fill: '#e9f2e4', ink: '#55734d', symbol: '✓' },
-      mastered: { fill: '#eee9f8', ink: '#66568d', symbol: '★' },
-      na: { fill: '#efede7', ink: '#aaa398', symbol: '—' },
-    }
-    const style = stateStyle[marker.state]
-
-    context.fillStyle = style.fill
-    roundedRect(context, markerX, y, markerWidth, markerHeight, 10)
+  const width = 452
+  context.fillStyle = '#59584f'
+  context.font = font(700, 19, 'mono')
+  context.fillText(`${label}: ${value}/${total}`, x, 280)
+  context.fillStyle = '#d9ddd4'
+  roundedRect(context, x, 294, width, 16, 8)
+  context.fill()
+  if (percent > 0) {
+    context.fillStyle = accent
+    roundedRect(context, x, 294, width * (percent / 100), 16, 8)
     context.fill()
-
-    context.fillStyle = style.ink
-    context.font = font(500, 15, 'mono')
-    context.textAlign = 'center'
-    context.fillText(`${marker.label}${style.symbol}`, markerX + markerWidth / 2, y + 19)
-  })
-
-  context.textAlign = 'left'
+  }
 }
 
 export async function renderSharePng(
@@ -367,31 +378,44 @@ export async function renderSharePng(
 
   context.fillStyle = 'rgba(156,138,197,.11)'
   context.beginPath()
-  context.arc(1010, 1190, 310, 0, Math.PI * 2)
+  context.arc(1010, model.height * 0.68, 310, 0, Math.PI * 2)
   context.fill()
 
   context.fillStyle = '#5f6d58'
-  context.font = font(500, 24, 'mono')
-  context.fillText(`${currentSeason.patch} · CURRENT SEASON`, 70, 78)
+  context.font = font(500, 20, 'mono')
+  context.fillText(`FN SPRITE HUB · ${currentSeason.patch}`, 54, 62)
 
   context.fillStyle = '#25251f'
-  context.font = font(800, shareTypography.mainTitle, 'display')
-  context.fillText(model.title, 70, 174)
+  const titleSize = fittedFontSize(context, model.title, 972, shareTypography.mainTitle, 50)
+  context.font = font(800, titleSize, 'display')
+  context.fillText(model.title, 54, 142)
 
   context.fillStyle = '#706f67'
-  context.font = font(500, 28)
-  context.fillText(model.subtitle, 70, 226)
+  context.font = font(500, 24)
+  context.fillText(model.subtitle, 54, 188)
 
   context.fillStyle = '#4f6d48'
-  context.font = font(800, shareTypography.summary)
-  context.fillText(model.summary, 70, 286)
+  context.font = font(800, 30)
+  context.fillText(model.summary, 54, 232)
 
-  context.fillStyle = '#d9e0d3'
-  roundedRect(context, 70, 310, 940, 16, 8)
-  context.fill()
-  context.fillStyle = '#6d8d63'
-  roundedRect(context, 70, 310, Math.max(16, 940 * (model.completionPercent / 100)), 16, 8)
-  context.fill()
+  drawProgress(
+    context,
+    'COLLECTION',
+    model.owned,
+    model.total,
+    model.collectionPercent,
+    54,
+    '#6d8d63',
+  )
+  drawProgress(
+    context,
+    'MASTERY',
+    model.mastered,
+    model.total,
+    model.masteryPercent,
+    574,
+    '#b39334',
+  )
 
   if (model.celebration) {
     context.textAlign = 'center'
@@ -438,70 +462,67 @@ export async function renderSharePng(
       continue
     }
 
-    context.fillStyle = 'rgba(255,253,248,.9)'
+    const rarity = card.rarity ? rarityStyle[card.rarity] : undefined
+    context.fillStyle = rarity?.tint ?? 'rgba(255,253,248,.94)'
     roundedRect(context, card.x, card.y, card.width, card.height, 24)
     context.fill()
+    context.strokeStyle = rarity?.accent ?? '#d7d1c5'
+    context.lineWidth = 2
+    context.stroke()
 
-    const isCollection = Boolean(card.markers)
-    const isDenseEntry = !isCollection && card.height < 120
-    const textLeft = card.x + 14
+    context.fillStyle = rarity?.accent ?? '#7b776e'
+    roundedRect(context, card.x, card.y, card.width, 7, 4)
+    context.fill()
 
-    if (isCollection) {
-      drawImageContain(context, image, card.x + 18, card.y + 12, card.width - 36, 166)
+    const textLeft = card.x + 13
+    context.fillStyle = '#68655d'
+    context.font = font(600, shareTypography.finishBadge, 'mono')
+    context.fillText(card.badge.toUpperCase(), textLeft, card.y + 30)
 
-      context.fillStyle = '#25251f'
-      context.font = font(800, shareTypography.entryName)
-      context.fillText(card.title, textLeft, card.y + 204)
-
-      drawCollectionMarkers(context, card, textLeft, card.y + 218, card.width - 28)
-
-      context.fillStyle = '#5d5a52'
-      context.font = font(700, 18)
-      const statusText = card.status ? `${card.badge} · ${card.status}` : card.badge
-      context.fillText(statusText, textLeft, card.y + card.height - 18)
-      continue
+    if (card.state && card.status) {
+      const style = stateStyle[card.state]
+      context.font = font(700, 12, 'mono')
+      const statusText = `${style.symbol} ${card.status}`
+      const statusWidth = context.measureText(statusText).width + 18
+      const statusX = card.x + card.width - statusWidth - 10
+      context.fillStyle = style.fill
+      roundedRect(context, statusX, card.y + 44, statusWidth, 25, 10)
+      context.fill()
+      context.fillStyle = style.ink
+      context.fillText(statusText, statusX + 9, card.y + 61)
     }
 
-    if (isDenseEntry) {
-      const imageSize = Math.max(48, card.height - 16)
-      drawImageContain(context, image, card.x + 8, card.y + 8, imageSize, imageSize)
-      const denseTextLeft = card.x + imageSize + 18
-      context.fillStyle = '#25251f'
-      context.font = font(800, 17)
-      context.fillText(card.title, denseTextLeft, card.y + card.height / 2 - 3)
-      context.fillStyle = '#706f67'
-      context.font = font(500, 13, 'mono')
-      context.fillText(card.badge, denseTextLeft, card.y + card.height / 2 + 19)
-      continue
-    }
+    context.save()
+    if (card.state === 'missing') context.globalAlpha = 0.44
+    drawImageContain(context, image, card.x + 16, card.y + 42, card.width - 32, 132)
+    context.restore()
 
-    const imageBottomReserve = 72
-    drawImageContain(
-      context,
-      image,
-      card.x + 14,
-      card.y + 8,
-      card.width - 28,
-      Math.max(48, card.height - imageBottomReserve),
-    )
+    if (card.rarity) {
+      context.fillStyle = rarity?.accent ?? '#706f67'
+      context.font = font(700, 13, 'mono')
+      context.fillText(card.rarity.toUpperCase(), textLeft, card.y + 198)
+    }
 
     context.fillStyle = '#25251f'
-    context.font = font(800, shareTypography.entryName)
-    context.fillText(card.title, textLeft, card.y + card.height - 39)
-
-    context.fillStyle = '#706f67'
-    context.font = font(500, shareTypography.finishBadge, 'mono')
-    context.fillText(card.badge, textLeft, card.y + card.height - 10)
+    const entryFontSize = fittedFontSize(
+      context,
+      card.title,
+      card.width - 26,
+      shareTypography.entryName,
+      13,
+    )
+    context.font = font(800, entryFontSize)
+    context.fillText(card.title, textLeft, card.y + 231)
   }
 
   context.fillStyle = '#5e5a51'
   context.font = font(500, shareTypography.signature, 'mono')
-  context.fillText(model.signature, 70, 1864)
+  context.fillText(model.signature, 54, model.height - 58)
 
   context.textAlign = 'right'
   context.fillStyle = '#858177'
   context.font = font(500, 18, 'mono')
-  context.fillText('Made locally in your browser', 1010, 1894)
+  context.fillText('Made locally in your browser', 1026, model.height - 24)
   context.textAlign = 'left'
 
   return await new Promise((resolve, reject) => {

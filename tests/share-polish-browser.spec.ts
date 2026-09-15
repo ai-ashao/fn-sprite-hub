@@ -1,12 +1,15 @@
 import { expect, test } from '@playwright/test'
 
-test('Share Studio uses deterministic local fonts and fixed portrait-poster dimensions', async ({
+test('Share Studio uses deterministic local fonts and dynamic portrait-poster dimensions', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
 
   await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+  const firstEntry = page.locator('[data-sprite-card] .sprite-entry-chip').first()
+  await firstEntry.click()
+  await expect(firstEntry).toHaveAttribute('data-entry-state', 'owned')
   await page.locator('[data-share-source="collection"]').first().click()
 
   const preview = page.locator('[data-share-studio]:visible [data-share-preview]')
@@ -20,24 +23,27 @@ test('Share Studio uses deterministic local fonts and fixed portrait-poster dime
     })),
   ).toEqual({ inter: true, mono: true })
 
-  expect(
-    await preview.evaluate((image: HTMLImageElement) => ({
-      width: image.naturalWidth,
-      height: image.naturalHeight,
-    })),
-  ).toEqual({ width: 1080, height: 1920 })
+  const missingDimensions = await preview.evaluate((image: HTMLImageElement) => ({
+    width: image.naturalWidth,
+    height: image.naturalHeight,
+  }))
+  expect(missingDimensions.width).toBe(1080)
+  expect(missingDimensions.height).toBeGreaterThan(1920)
 
   await page.getByRole('button', { name: /^My Collection/ }).click()
   await expect(preview).toBeVisible({ timeout: 15_000 })
+  await expect
+    .poll(() => preview.evaluate((image: HTMLImageElement) => image.naturalHeight))
+    .toBe(720)
 
   await preview.evaluate((image: HTMLImageElement) => {
     image.style.width = '360px'
-    image.style.height = '640px'
+    image.style.height = 'auto'
     image.style.maxWidth = 'none'
   })
   const box = await preview.boundingBox()
   expect(box?.width).toBeCloseTo(360, 0)
-  expect(box?.height).toBeCloseTo(640, 0)
+  expect(box?.height).toBeCloseTo(240, 0)
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
 })

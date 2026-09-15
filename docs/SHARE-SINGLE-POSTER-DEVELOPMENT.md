@@ -15,8 +15,10 @@ In scope:
 - Add a persistent Share control immediately before the language control in the desktop header.
 - Keep a directly accessible icon-sized Share control in the mobile header, outside the menu.
 - Keep the existing Share Collection call to action below the Tracker/checklist collection UI.
-- Keep My Collection, Missing Sprites, Need to Master, and 100% Celebration templates.
-- Render exactly one 1080 x 1920 PNG for every template and collection state.
+- Keep My Collection, Missing Sprites, Unmastered Sprites, Mastered Sprites, and the separate 100%
+  Celebration template.
+- Render exactly one 1080px-wide, dynamically sized PNG for every available template and collection
+  state.
 - Prefer file-based Web Share API sharing. Always expose Download PNG; automatically request the
   PNG download after a genuine native-share failure. A user cancellation does not download.
 - Add Copy Link for the canonical Tracker URL. The link contains no collection payload.
@@ -43,11 +45,11 @@ test, not an implementation rewrite.
 | --- | --- |
 | `src/routes/__root.tsx` | Mount the shared Share Studio in the header before the language pill. |
 | `src/components/sprites/share-studio.tsx` | Add trigger source/label/icon options, single-result lifecycle, Copy Link, native-share fallback, and analytics hooks. |
-| `src/lib/sprites/share-selection.ts` | Collapse missing/unmastered pagination into one deterministic selection. |
-| `src/lib/sprites/share-renderer.ts` | Change canvas to 1080 x 1920 and add responsive family, entry, dense-entry, and celebration layouts. |
+| `src/lib/sprites/share-selection.ts` | Filter the current collection state into four deterministic image types and disable empty results. |
+| `src/lib/sprites/share-renderer.ts` | Use a fixed 1080px width, dynamic row-based height, readable entry cards, and the separate celebration layout. |
 | `src/lib/analytics.ts` | Define narrow GA4 share event names and a guarded browser dispatch helper. |
 | `src/sprite-theme.css` | Style desktop/mobile header Share control and portrait preview/action layout. |
-| `tests/fn-sprite-share.test.ts` | Assert one-page selection and 1080 x 1920 layout containment. |
+| `tests/fn-sprite-share.test.ts` | Assert one-image selection and dynamic 1080px-wide layout containment. |
 | `tests/browser-viewport.spec.ts` | Verify both header entry points, single PNG, mobile access, Copy Link, and native sharing. |
 | `tests/share-polish-browser.spec.ts` | Update portrait preview and local-font assertions. |
 | `tests/competitiveness-browser.spec.ts` | Verify native failure download fallback and raw SSR Related Sprites anchors. |
@@ -72,13 +74,16 @@ test, not an implementation rewrite.
 
 ## Poster layout
 
-- Canvas: 1080 x 1920, PNG, portrait 9:16.
-- Header zone: patch, template title, season, collected/mastered summary, and progress bar.
-- My Collection: 16 family cards in a 4 x 4 grid, with artwork, finish markers, owned count, and
-  mastered count.
-- Missing Sprites / Need to Master: 2–4 columns chosen by entry count. Up to 24 entries use visual
-  cards; 25–61 entries use compact artwork rows with a name and finish label. Row height is derived
-  from available poster height so every released entry fits one image.
+- Canvas: fixed 1080px width and dynamic height, PNG.
+- Header zone: patch, template title, season, collected/mastered summary, and separate collection and
+  mastery progress bars.
+- My Collection: every entry currently marked Owned or Mastered.
+- Missing Sprites: every entry currently marked Missing.
+- Unmastered Sprites: every entry marked Owned but not Mastered.
+- Mastered Sprites: every entry currently marked Mastered.
+- Regular image types use a consistent five-column entry-card grid. Height grows by complete rows so
+  all selected entries remain in one PNG. A type with no matching entries is disabled and cannot
+  produce an empty image.
 - Celebration: large 100% statement plus a curated five-family artwork row.
 - Footer: FN Sprite Hub signature and local-rendering note. No page number is needed.
 
@@ -113,8 +118,8 @@ initialized (which includes an unconfigured GA4 deployment).
 
 - Desktop Share is directly before EN; mobile Share is visible while the navigation menu is closed.
 - Tracker/checklist Share Collection remains present.
-- Each available template produces one 1080 x 1920 PNG with all selected content inside the safe
-  poster area and a stable filename without page suffixes.
+- Each available template produces one 1080px-wide PNG with a content-derived height, all selected
+  entries inside the safe area, and a stable filename without page suffixes.
 - Web Share receives exactly one PNG File. Unsupported share keeps Download PNG visible. A real
   native-share failure starts one PNG download; cancellation does not.
 - Copy Link copies the Tracker URL without collection data.
@@ -128,7 +133,8 @@ initialized (which includes an unconfigured GA4 deployment).
 ## Regression checklist
 
 - Collection state still cycles, persists, restores, resets, and exports a JSON backup.
-- All four templates retain correct eligibility and entry semantics.
+- All four collection image types retain correct eligibility and entry semantics; Celebration stays
+  separately gated behind 100% completion.
 - Same-origin artwork and approved-export gates remain unchanged.
 - Dialog close, template switching, retry, URL revocation, and stale-render guards still work.
 - Checklist CTA, Discord copy, canonical redirects, 404 behavior, indexability hold, sitemap, and

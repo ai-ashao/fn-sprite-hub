@@ -24,8 +24,8 @@ describe('Share visual polish contracts', () => {
   it('keeps the social-card typography above the readability floor', () => {
     expect(shareTypography.mainTitle).toBeGreaterThanOrEqual(56)
     expect(shareTypography.summary).toBeGreaterThanOrEqual(30)
-    expect(shareTypography.entryName).toBeGreaterThanOrEqual(28)
-    expect(shareTypography.finishBadge).toBeGreaterThanOrEqual(24)
+    expect(shareTypography.entryName).toBeGreaterThanOrEqual(18)
+    expect(shareTypography.finishBadge).toBeGreaterThanOrEqual(12)
     expect(shareTypography.signature).toBeGreaterThanOrEqual(24)
     expect(shareTypography.pageLabel).toBeGreaterThanOrEqual(24)
   })
@@ -48,15 +48,14 @@ describe('Share visual polish contracts', () => {
     expect(selection.familyIds).toEqual([...celebrationFamilyIds])
   })
 
-  it('renders four family finish status slots on the collection poster', () => {
+  it('renders collected entries with their exact saved state on the collection image', () => {
     const selection = buildShareSelections('collection', state(12, 4))[0]
     const model = buildShareLayoutModel(selection, state(12, 4))
 
-    expect(model.cards.length).toBeGreaterThan(0)
-    expect(model.cards.every((card) => card.markers?.length === 4)).toBe(true)
-    expect(model.cards.some((card) => card.markers?.some((marker) => marker.state === 'na'))).toBe(
-      true,
-    )
+    expect(model.cards).toHaveLength(12)
+    expect(model.cards.filter((card) => card.state === 'mastered')).toHaveLength(4)
+    expect(model.cards.filter((card) => card.state === 'owned')).toHaveLength(8)
+    expect(model.cards.some((card) => card.state === 'missing')).toBe(false)
   })
 
   it('derives celebration totals from the current dataset', () => {

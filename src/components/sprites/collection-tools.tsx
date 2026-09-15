@@ -9,9 +9,9 @@ import {
 import type { Confirmation } from '@/lib/sprites/collection-store'
 import { requestTextDownload } from '@/lib/sprites/download'
 import {
+  buildDiscordShareSelection,
   buildDiscordShareText,
-  buildShareSelections,
-  type ShareTemplate,
+  type DiscordShareTemplate,
 } from '@/lib/sprites/share-selection'
 import { CollectionNotice } from './collection-notice'
 import { ShareStudio } from './share-studio'
@@ -39,8 +39,7 @@ export function CollectionTools({ collection, showNotice = true }: Readonly<Prop
   const [isError, setIsError] = useState(false)
   const [pending, setPending] = useState<Pending | null>(null)
   const [busy, setBusy] = useState(false)
-  const [discordMode, setDiscordMode] =
-    useState<Exclude<ShareTemplate, 'celebration'>>('collection')
+  const [discordMode, setDiscordMode] = useState<DiscordShareTemplate>('collection')
   const current = collectionMetrics(controller.collection)
   const incoming = pending ? collectionMetrics(pending.state) : null
 
@@ -86,17 +85,8 @@ export function CollectionTools({ collection, showNotice = true }: Readonly<Prop
 
   async function copyDiscordSummary() {
     try {
-      const selections = buildShareSelections(discordMode, collection)
-      const first = selections[0]
-      if (!first) throw new Error('There are no entries to copy for this selection.')
-      const combined = {
-        ...first,
-        entryIds: selections.flatMap(({ entryIds }) => entryIds),
-        familyIds: selections.flatMap(({ familyIds }) => familyIds),
-        page: 1,
-        pageCount: 1,
-      }
-      await navigator.clipboard.writeText(buildDiscordShareText(combined, collection))
+      const selection = buildDiscordShareSelection(discordMode, collection)
+      await navigator.clipboard.writeText(buildDiscordShareText(selection, collection))
       setIsError(false)
       setMessage('Discord summary copied.')
     } catch {
@@ -139,9 +129,7 @@ export function CollectionTools({ collection, showNotice = true }: Readonly<Prop
             <span className="sr-only">Discord summary type</span>
             <select
               aria-label="Discord summary type"
-              onChange={(event) =>
-                setDiscordMode(event.target.value as Exclude<ShareTemplate, 'celebration'>)
-              }
+              onChange={(event) => setDiscordMode(event.target.value as DiscordShareTemplate)}
               value={discordMode}
             >
               <option value="collection">Collection Summary</option>

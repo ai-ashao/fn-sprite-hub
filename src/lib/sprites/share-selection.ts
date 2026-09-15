@@ -1,7 +1,9 @@
 import { currentReleasedEntries, currentSeason, familyById, spriteFamilies } from '@/data/sprites'
 import { type CollectionStateV1, collectionMetrics, entryState } from './collection'
 
-export type ShareTemplate = 'collection' | 'missing' | 'unmastered' | 'celebration'
+export type ShareTemplate = 'collection' | 'missing' | 'unmastered' | 'mastered' | 'celebration'
+export type CollectionShareTemplate = Exclude<ShareTemplate, 'celebration'>
+export type DiscordShareTemplate = Exclude<CollectionShareTemplate, 'mastered'>
 
 export type ShareSelection = {
   template: ShareTemplate
@@ -20,27 +22,17 @@ export function shareTemplateAvailable(
   template: ShareTemplate,
   collection: CollectionStateV1,
 ): boolean {
-  if (template !== 'celebration') return true
-  const metrics = collectionMetrics(collection)
-  return metrics.owned === metrics.total || metrics.mastered === metrics.total
+  if (template === 'celebration') {
+    const metrics = collectionMetrics(collection)
+    return metrics.owned === metrics.total || metrics.mastered === metrics.total
+  }
+  return entriesForShareTemplate(template, collection).length > 0
 }
 
 export function buildShareSelections(
   template: ShareTemplate,
   collection: CollectionStateV1,
 ): ShareSelection[] {
-  if (template === 'collection') {
-    return [
-      selection(
-        template,
-        spriteFamilies.map(({ id }) => id),
-        [],
-        1,
-        1,
-      ),
-    ]
-  }
-
   if (template === 'celebration') {
     if (!shareTemplateAvailable(template, collection)) return []
 
@@ -48,10 +40,8 @@ export function buildShareSelections(
     return [selection(template, [...representativeFamilies], [], 1, 1)]
   }
 
-  const entries = currentReleasedEntries().filter((entry) => {
-    const state = entryState(collection, entry.id)
-    return template === 'missing' ? state === 'missing' : state === 'owned'
-  })
+  const entries = entriesForShareTemplate(template, collection)
+  if (!entries.length) return []
   return [
     selection(
       template,
@@ -61,6 +51,43 @@ export function buildShareSelections(
       1,
     ),
   ]
+}
+
+export function buildDiscordShareSelection(
+  template: DiscordShareTemplate,
+  collection: CollectionStateV1,
+): ShareSelection {
+  if (template === 'collection') {
+    return selection(
+      template,
+      spriteFamilies.map(({ id }) => id),
+      [],
+      1,
+      1,
+    )
+  }
+
+  const entries = currentReleasedEntries().filter((entry) => {
+    const state = entryState(collection, entry.id)
+    return template === 'missing' ? state === 'missing' : state === 'owned'
+  })
+  return selection(
+    template,
+    Array.from(new Set(entries.map(({ familyId }) => familyId))),
+    entries.map(({ id }) => id),
+    1,
+    1,
+  )
+}
+
+function entriesForShareTemplate(template: CollectionShareTemplate, collection: CollectionStateV1) {
+  return currentReleasedEntries().filter((entry) => {
+    const state = entryState(collection, entry.id)
+    if (template === 'collection') return state !== 'missing'
+    if (template === 'missing') return state === 'missing'
+    if (template === 'unmastered') return state === 'owned'
+    return state === 'mastered'
+  })
 }
 
 function selection(

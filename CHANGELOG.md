@@ -11,6 +11,8 @@
 
 ## Unreleased
 
+- Added four collection-state image exports—My Collection, Missing, Unmastered, and Mastered—as
+  single 1080px-wide PNGs with dynamic height; empty image types are disabled.
 - Added SEO-first Tool Mode handoff through a typed Tool SEO Brief containing primary keyword, search intent, first-batch page map, locales, and research evidence.
 - Disabled starter Guides by default, removed them from primary navigation and sitemap, and added a residue gate that blocks indexable Guides while ShipLean starter guide slugs remain.
 - Changed Tool Registry sitemap behavior to explicit opt-in: only `status: 'live'` plus `indexable: true` enters sitemap.

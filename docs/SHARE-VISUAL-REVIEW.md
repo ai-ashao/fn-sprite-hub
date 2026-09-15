@@ -2,9 +2,9 @@
 
 Use this after the artwork review/upgrade pass, not before it.
 
-## Fixed review preview
+## Review preview
 
-Review the original 1080×1920 PNG and a 360×640 scaled preview.
+Review the original 1080px-wide PNG at its natural dynamic height and a 360px-wide scaled preview.
 
 ## Required fixtures
 
@@ -12,9 +12,10 @@ Review the original 1080×1920 PNG and a 360×640 scaled preview.
 2. Missing 6
 3. Missing 24
 4. Missing All
-5. Need to Master 12
-6. Celebration Collection
-7. Celebration Mastered
+5. Unmastered 12
+6. Mastered 8
+7. Celebration Collection
+8. Celebration Mastered
 
 `Missing All` must be generated from the current released dataset, not a hard-coded count.
 
@@ -41,7 +42,8 @@ Score each item from 1–5:
 | Missing 6 |  |  |  |  |  |  |
 | Missing 24 |  |  |  |  |  |  |
 | Missing All |  |  |  |  |  |  |
-| Need to Master 12 |  |  |  |  |  |  |
+| Unmastered 12 |  |  |  |  |  |  |
+| Mastered 8 |  |  |  |  |  |  |
 | Celebration Collection |  |  |  |  |  |  |
 | Celebration Mastered |  |  |  |  |  |  |
 

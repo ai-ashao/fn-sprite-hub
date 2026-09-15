@@ -109,6 +109,13 @@ for (const viewport of viewports) {
     await expect(
       page.locator('[data-sprite-card]').first().locator('.sprite-entry-chip').first(),
     ).toHaveAttribute('data-entry-state', 'missing')
+    const firstShareEntry = page
+      .locator('[data-sprite-card]')
+      .first()
+      .locator('.sprite-entry-chip')
+      .first()
+    await firstShareEntry.click()
+    await expect(firstShareEntry).toHaveAttribute('data-entry-state', 'owned')
 
     await expect(page.getByRole('button', { name: 'Download backup' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Restore backup' })).toBeVisible()
@@ -267,6 +274,9 @@ test('Share Studio previews and downloads one deterministic portrait PNG on mobi
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   await expect(page.locator('[data-sprite-progress]')).toHaveAttribute('data-mounted', 'true')
+  const collectedEntry = page.locator('[data-sprite-card] .sprite-entry-chip').first()
+  await collectedEntry.click()
+  await expect(collectedEntry).toHaveAttribute('data-entry-state', 'owned')
   await page.locator('[data-share-source="collection"]').first().click()
 
   const studio = page.locator('[data-share-studio]:visible')
@@ -284,7 +294,12 @@ test('Share Studio previews and downloads one deterministic portrait PNG on mobi
       width: image.naturalWidth,
       height: image.naturalHeight,
     })),
-  ).toEqual({ width: 1080, height: 1920 })
+  ).toEqual({ width: 1080, height: expect.any(Number) })
+  expect(
+    await studio
+      .locator('[data-share-preview]')
+      .evaluate((image: HTMLImageElement) => image.naturalHeight),
+  ).toBeGreaterThan(1920)
   const firstRenderMs = Number(await studio.locator('output').getAttribute('data-render-ms'))
   expect(firstRenderMs).toBeLessThanOrEqual(2_000)
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
@@ -295,6 +310,7 @@ test('Share Studio previews and downloads one deterministic portrait PNG on mobi
   await expect
     .poll(async () => Number(await studio.locator('output').getAttribute('data-render-ms')))
     .toBeLessThanOrEqual(1_000)
+  await expect(page.getByRole('button', { name: /^Mastered Sprites/ })).toBeDisabled()
   await page.getByRole('button', { name: 'Share', exact: true }).click()
   expect(
     await page.evaluate(() => (window as Window & { __shareCalled?: boolean }).__shareCalled),
@@ -346,7 +362,8 @@ const shareFixtures = [
     mastered: 8,
   },
   { name: 'missing-all-page-1', template: 'Missing Sprites', owned: 0, mastered: 0 },
-  { name: 'unmastered-12', template: 'Need to Master', owned: 12, mastered: 0 },
+  { name: 'unmastered-12', template: 'Unmastered Sprites', owned: 12, mastered: 0 },
+  { name: 'mastered-8', template: 'Mastered Sprites', owned: 20, mastered: 8 },
   {
     name: 'celebration-complete',
     template: '100% Celebration',

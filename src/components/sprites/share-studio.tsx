@@ -3,7 +3,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { trackShareEvent } from '@/lib/analytics'
 import type { CollectionStateV1 } from '@/lib/sprites/collection'
 import { canExportShare } from '@/lib/sprites/share-lifecycle'
-import { renderSharePng, shareFileName } from '@/lib/sprites/share-renderer'
+import { buildShareLayoutModel, renderSharePng, shareFileName } from '@/lib/sprites/share-renderer'
 import {
   buildShareSelections,
   type ShareSelection,
@@ -18,12 +18,24 @@ type Props = {
   triggerLabel?: string
   triggerIcon?: boolean
 }
-type RenderedPage = { selection: ShareSelection; blob: Blob; url: string; file: File }
+type RenderedPage = {
+  selection: ShareSelection
+  blob: Blob
+  url: string
+  file: File
+  width: number
+  height: number
+}
 type Result = { key: string; pages: RenderedPage[] }
 const templates: ReadonlyArray<{ id: ShareTemplate; label: string; description: string }> = [
-  { id: 'collection', label: 'My Collection', description: 'A family-level season poster.' },
+  { id: 'collection', label: 'My Collection', description: 'Every Sprite you have collected.' },
   { id: 'missing', label: 'Missing Sprites', description: 'Only entries you still need.' },
-  { id: 'unmastered', label: 'Need to Master', description: 'Owned entries not yet mastered.' },
+  {
+    id: 'unmastered',
+    label: 'Unmastered Sprites',
+    description: 'Collected entries not yet mastered.',
+  },
+  { id: 'mastered', label: 'Mastered Sprites', description: 'Only your mastered entries.' },
   {
     id: 'celebration',
     label: '100% Celebration',
@@ -88,26 +100,29 @@ export function ShareStudio({
           )
         const selection = buildShareSelections(template, collection)[0]
         if (!selection) throw new Error('No entries are available for this template.')
+        const dimensions = buildShareLayoutModel(selection, collection)
         const blob = await renderSharePng(selection, collection)
         if (cancelled || request !== requestRef.current) return
-        if (blob.size > 5 * 1024 * 1024)
-          throw new Error('The rendered PNG exceeded the 5 MB limit.')
+        if (blob.size > 10 * 1024 * 1024)
+          throw new Error('The rendered PNG exceeded the 10 MB limit.')
         allocated.push({
           selection,
           blob,
           url: URL.createObjectURL(blob),
           file: new File([blob], shareFileName(selection), { type: 'image/png' }),
+          width: dimensions.width,
+          height: dimensions.height,
         })
         if (cancelled || request !== requestRef.current) return
         setResult({ key, pages: allocated })
         const elapsed = Math.round(performance.now() - started)
         setRenderMs(elapsed)
-        setStatus(`Ready · 1 PNG · ${elapsed} ms`)
+        setStatus(`Ready · 1 PNG · ${dimensions.width} × ${dimensions.height} · ${elapsed} ms`)
         trackShareEvent('share_image_generated', {
           template,
           format: 'png',
-          width: 1080,
-          height: 1920,
+          width: dimensions.width,
+          height: dimensions.height,
         })
       } catch (error) {
         for (const page of allocated) URL.revokeObjectURL(page.url)
@@ -150,8 +165,8 @@ export function ShareStudio({
     trackShareEvent('share_image_download', {
       template: page.selection.template,
       format: 'png',
-      width: 1080,
-      height: 1920,
+      width: page.width,
+      height: page.height,
     })
   }
 
@@ -237,6 +252,12 @@ export function ShareStudio({
         data-share-studio-trigger
         onClick={() => {
           setStatus('')
+          if (!shareTemplateAvailable(template, collection)) {
+            const availableTemplate = templates.find(({ id }) =>
+              shareTemplateAvailable(id, collection),
+            )
+            if (availableTemplate) setTemplate(availableTemplate.id)
+          }
           trackShareEvent(source === 'header' ? 'share_header_click' : 'share_collection_click', {
             path: window.location.pathname,
           })
@@ -259,7 +280,7 @@ export function ShareStudio({
             <div>
               <small>FN SPRITE HUB</small>
               <h2 id={titleId}>Share Studio</h2>
-              <p>Create one 1080 × 1920 PNG locally in your browser.</p>
+              <p>Create one readable 1080px-wide PNG locally in your browser.</p>
             </div>
             <button aria-label="Close Share Studio" onClick={closeStudio} type="button">
               ×
@@ -269,6 +290,10 @@ export function ShareStudio({
             <aside aria-label="Share templates" className="sprite-share-templates">
               {templates.map((item) => {
                 const enabled = shareTemplateAvailable(item.id, collection)
+                const selectionCount =
+                  item.id === 'celebration'
+                    ? undefined
+                    : buildShareSelections(item.id, collection)[0]?.entryIds.length
                 return (
                   <button
                     aria-pressed={template === item.id}
@@ -282,7 +307,11 @@ export function ShareStudio({
                   >
                     <strong>{item.label}</strong>
                     <span className="sprite-share-template-description">
-                      {enabled ? item.description : 'Complete the collection to unlock.'}
+                      {enabled
+                        ? `${item.description}${selectionCount === undefined ? '' : ` · ${selectionCount}`}`
+                        : item.id === 'celebration'
+                          ? 'Complete the collection to unlock.'
+                          : `No ${item.label.toLowerCase()} yet.`}
                     </span>
                   </button>
                 )
